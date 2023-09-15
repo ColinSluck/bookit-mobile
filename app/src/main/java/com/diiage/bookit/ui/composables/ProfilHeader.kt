@@ -47,8 +47,7 @@ fun Line(leftValue: Int, topValue: Int, rightValue: Int, bottomValue: Int, width
 @Composable
 fun ProfilHeader(lastnameValue: String, firstnameValue: String, createdAccountValue: String) {
     Column(
-        Modifier
-            .background(color = Color(0xFFFFFFFF))
+        Modifier.background(color = Color(0xFFFFFFFF))
     ) {
         Row(
             Modifier
@@ -57,15 +56,18 @@ fun ProfilHeader(lastnameValue: String, firstnameValue: String, createdAccountVa
         ) {
             Text(
                 text = "PROFIL",
-                style = (TextStyle(
+                style = TextStyle(
                     fontSize = 24.sp,
                     fontWeight = FontWeight(700),
                     color = Color(0xFF000000),
-                ))
+                ),
+                modifier = Modifier.padding(start = 39.dp)
             )
         }
         Row(
-            Modifier.fillMaxWidth()
+            Modifier
+                .fillMaxWidth()
+                .padding(start = 39.dp)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ellipse8),
@@ -102,7 +104,7 @@ fun ProfilHeader(lastnameValue: String, firstnameValue: String, createdAccountVa
                 }
             }
         }
-        Line(leftValue = 8, topValue = 39, rightValue = 8, bottomValue = 28, widthValue = 305)
+        Line(leftValue = 63, topValue = 30, rightValue = 62, bottomValue = 28, widthValue = 305)
     }
 }
 

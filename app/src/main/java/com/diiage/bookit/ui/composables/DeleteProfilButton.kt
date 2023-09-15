@@ -22,14 +22,8 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun DeleteProfilButton() {
-
-}
-
-@Preview
-@Composable
-fun DeleteProfilButtonPreview() {
     Box(
-        
+
     ){
         val context = LocalContext.current
         Button(
@@ -53,4 +47,10 @@ fun DeleteProfilButtonPreview() {
             )
         }
     }
+}
+
+@Preview
+@Composable
+fun DeleteProfilButtonPreview() {
+    DeleteProfilButton()
 }

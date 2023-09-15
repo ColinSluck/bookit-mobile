@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -42,7 +43,7 @@ fun ValueText(value: String) {
             modifier = Modifier
                 .padding(horizontal = 58.dp)
                 .fillMaxWidth()
-                .height(15.dp),
+                .height(18.dp),
             style = TextStyle(
                 fontSize = 14.sp,
                 fontWeight = FontWeight(500),
@@ -110,5 +111,5 @@ fun PersonalInformation(lastnameValue: String, firstnameValue: String, emailValu
 @Preview
 @Composable
 fun PersonalInformationPreview() {
-    PersonalInformation(lastnameValue = "MARTIN", firstnameValue = "Lucas", emailValue = "lucas.martin@diiage.org")
+    PersonalInformation(lastnameValue = "ANGUENOT", firstnameValue = "Logan", emailValue = "logan.anguenot@diiage.org")
 }
