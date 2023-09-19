@@ -3,6 +3,7 @@ package com.diiage.bookit.composables
 import android.graphics.fonts.Font
 import android.graphics.fonts.FontFamily
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -63,14 +64,19 @@ fun Stepper() {
             Button(
                 modifier = Modifier.weight(1f)
                     .padding(start = 16.dp, end = 8.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .clickable (enabled = currentStep > 0) {
+                        if (currentStep > 0) {
+                            currentStep--
+                        }
+                    },
                 colors = ButtonDefaults.buttonColors(Color.Transparent),
                 onClick = {
                     if (currentStep > 0) {
                         currentStep--
                     }
                 },
-                enabled = currentStep > 0
+                //enabled = currentStep > 0
             ) {
                 Text(
                     text = "Retour",
