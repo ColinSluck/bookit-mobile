@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.diiage.bookit.ui.core.composables.DeconnectionButton
-import com.diiage.bookit.ui.core.composables.DeleteProfilButton
+import com.diiage.bookit.ui.core.composables.BI_Button
 import com.diiage.bookit.ui.composables.PersonalInformation
 import com.diiage.bookit.ui.composables.ProfilHeader
 import com.diiage.bookit.ui.composables.QuickAnnouncement
@@ -45,7 +45,7 @@ private fun ProfilContent(
     ){
         Column {
             ProfilHeader(lastnameValue = "Logan", firstnameValue = "ANGUENOT", createdAccountValue = "2023-09-05T07:15:58.774737")
-            state.role?.let{
+            role?.let{
                 Row(
                     modifier = Modifier
                         .padding(horizontal = 45.dp, vertical = 36.dp),
@@ -61,18 +61,17 @@ private fun ProfilContent(
                     .background(Color(0xFFFFFFFF))
             ){
                 Row(
-                    modifier = Modifier.padding(start = 30.dp, end = 29.dp, top = if (state.role !=null) 47.dp else 270.dp),
+                    modifier = Modifier.padding(start = 30.dp, end = 29.dp, top = if (role !=null) 47.dp else 270.dp),
                     horizontalArrangement = Arrangement.Center
                 ){
-                    DeconnectionButton()
+                    BI_Button("Déconnexion", 371, 45, Color(0xFFE63946), Color(0xFFFFFFFF), 16, 400)
                 }
                 Row(
                     modifier = Modifier.padding(start = 30.dp, top = 11.dp, end = 29.dp),
                     horizontalArrangement = Arrangement.Center
                 ){
-                    DeleteProfilButton()
+                    BI_Button("Supprimer mon compte", 371, 45, Color.Transparent, Color(0xFF000000), 16, 400, Color(0xFFE63946))
                 }
-
             }
         }
     }
