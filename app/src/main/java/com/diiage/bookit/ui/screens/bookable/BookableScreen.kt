@@ -18,20 +18,28 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.diiage.bookit.R
+import com.diiage.bookit.ui.core.composables.PreviewContent
+
+private typealias UIState = BookableState
+@Composable
+fun BookableScreen(navController: NavController) {
+    val viewModel: BookableViewModel = viewModel()
+    val state by viewModel.state.collectAsState()
+
+    BookableContent(
+        state = state,
+    )
+}
 
 @Composable
-fun BookableView(
-    initialImages: List<ImageBitmap>,
-    title: String = "Title",
-    description: String = "Description",
-    people: Int = 0,
-    location: String = "Location",
-    materials: List<String>,
-    available: Boolean = false
+fun BookableContent(
+    state: UIState = UIState()
 ) {
 
-    var images by remember { mutableStateOf(initialImages) }
+    var images by remember { mutableStateOf(state.initialImages) }
 
     Box(
         modifier = Modifier
@@ -88,7 +96,7 @@ fun BookableView(
                     .padding(PaddingValues(15.dp, 5.dp, 15.dp, 0.dp))
             ) {
                 Text(
-                    text = title,
+                    text = state.title,
                     fontSize = 26.sp,
                     //fontFamily = FontFamily(Font(R.font.poppins_bold)),
                     fontWeight = FontWeight(700),
@@ -96,16 +104,16 @@ fun BookableView(
                 )
 
                 Text(
-                    text = if (available) "Disponible" else "Indisponible",
+                    text = if (state.available) "Disponible" else "Indisponible",
                     fontSize = 12.sp,
                     //fontFamily = FontFamily(Font(R.font.poppins_bold)),
                     fontWeight = FontWeight(400),
-                    color = if (available) Color(0xFF457B9D) else Color(0xFFE63946),
+                    color = if (state.available) Color(0xFF457B9D) else Color(0xFFE63946),
                 )
             }
 
             Text(
-                text = description,
+                text = state.description,
                 fontSize = 18.sp,
                 //fontFamily = FontFamily(Font(R.font.poppins_bold)),
                 fontWeight = FontWeight(400),
@@ -128,7 +136,7 @@ fun BookableView(
                     contentDescription = ""
                 )
                 
-                Text(text = "$people personnes maximum")
+                Text(text = "$state.people personnes maximum")
             }
 
             Row {
@@ -137,10 +145,10 @@ fun BookableView(
                     contentDescription = ""
                 )
 
-                Text(text = location)
+                Text(text = state.location)
             }
 
-            materials.forEach() {
+            state.materials.forEach() {
                 Row {
                     Image(
                         bitmap = ImageBitmap.imageResource(R.drawable.bookable_placeholder),
@@ -165,7 +173,7 @@ fun BookableView(
         {
             Button(
                 onClick = { /*TODO*/ },
-                enabled = available,
+                enabled = state.available,
                 shape = RoundedCornerShape(size = 5.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF457B9D),
@@ -188,38 +196,8 @@ fun BookableView(
 
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
-fun BookableViewPreview(){
-    BookableView(
-        title = "Salle de réunion D17",
-        initialImages = listOf(
-            ImageBitmap.imageResource(R.drawable.bookable_placeholder),
-            ImageBitmap.imageResource(R.drawable.bookable_placeholder_2),
-            ImageBitmap.imageResource(R.drawable.bookable_placeholder_3),
-            ImageBitmap.imageResource(R.drawable.bookable_placeholder_4)
-        ),
-        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ut felis ac erat imperdiet vehicula at quis lacus. Ut aliquam velit libero, id cursus enim scelerisque ac. Curabitur gravida tempor ex, pulvinar convallis massa mollis in. Nullam eu tempor orci. Duis lorem massa, dictum vel semper eget, tempus sagittis ante. Aliquam tincidunt at nulla ut sollicitudin. Donec commodo tellus eu rutrum aliquet. Praesent eget purus nec risus iaculis malesuada. Donec lobortis dui augue, sit amet feugiat enim viverra eget. Nulla arcu nibh, tristique vel semper quis, interdum sed tellus. Aliquam vel fermentum lectus. Etiam condimentum tincidunt porta. Donec nec scelerisque magna. Cras mauris nibh, porttitor a blandit in, egestas id urna. Vestibulum iaculis vel urna sagittis commodo. Nullam a mauris ut massa accumsan luctus.",
-        location = "D17",
-        materials = listOf("Matériel 1", "Matériel 2", "Matériel 3"),
-        available = true
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BookableViewPreview2(){
-    BookableView(
-        title = "Salle de réunion D17",
-        initialImages = listOf(
-            ImageBitmap.imageResource(R.drawable.bookable_placeholder),
-            ImageBitmap.imageResource(R.drawable.bookable_placeholder_2),
-            ImageBitmap.imageResource(R.drawable.bookable_placeholder_3),
-            ImageBitmap.imageResource(R.drawable.bookable_placeholder_4)
-        ),
-        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ut felis ac erat imperdiet vehicula at quis lacus. Ut aliquam velit libero, id cursus enim scelerisque ac. Curabitur gravida tempor ex, pulvinar convallis massa mollis in. Nullam eu tempor orci. Duis lorem massa, dictum vel semper eget, tempus sagittis ante. Aliquam tincidunt at nulla ut sollicitudin. Donec commodo tellus eu rutrum aliquet. Praesent eget purus nec risus iaculis malesuada. Donec lobortis dui augue, sit amet feugiat enim viverra eget. Nulla arcu nibh, tristique vel semper quis, interdum sed tellus. Aliquam vel fermentum lectus. Etiam condimentum tincidunt porta. Donec nec scelerisque magna. Cras mauris nibh, porttitor a blandit in, egestas id urna. Vestibulum iaculis vel urna sagittis commodo. Nullam a mauris ut massa accumsan luctus.",
-        location = "D17",
-        materials = listOf("Matériel 1", "Matériel 2", "Matériel 3"),
-        available = false
-    )
+private fun BookablePreview() = PreviewContent {
+    BookableContent()
 }
