@@ -52,9 +52,11 @@ fun bookableView(
 
 
         Column( // Colone qui contient : L'image(box), le nom(ligne1), Localisation(ligne2), Options(ligne3)
-            Modifier
+
+            modifier = Modifier
                 .background(Color.White)
-                .padding(3.dp)
+                .padding(3.dp),
+
         ) {
 
             Box(
@@ -65,7 +67,7 @@ fun bookableView(
                 Image(
                     painter = painterResource(id = R.drawable.img),
                     contentDescription = "bookable image",
-                    contentScale = ContentScale.FillBounds,
+                    contentScale = ContentScale.Crop,
                 )
 
                     BookingDate(bookingDate = bookingDate, bookingTime = bookingTime)

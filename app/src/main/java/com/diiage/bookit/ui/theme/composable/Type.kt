@@ -1,4 +1,4 @@
-package com.diiage.bookit.ui.theme
+package com.diiage.bookit.ui.theme.composable
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
