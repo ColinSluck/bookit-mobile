@@ -48,13 +48,13 @@ fun ProfilView(
                         modifier = Modifier.padding(start = 30.dp, end = 29.dp, top = if (role !=null) 47.dp else 270.dp),
                         horizontalArrangement = Arrangement.Center
                     ){
-                        DeconnectionButton()
+                        BI_Button("Déconnexion", 371, 45, Color(0xFFE63946), Color(0xFFFFFFFF), 16, 400)
                     }
                     Row(
                         modifier = Modifier.padding(start = 30.dp, top = 11.dp, end = 29.dp),
                         horizontalArrangement = Arrangement.Center
                     ){
-                        //BI_Button("Supprimer mon compte", 371, 45, Color.Transparent, Color(0xFF000000), 16, 400, Color(0xFFE63946))
+                        BI_Button("Supprimer mon compte", 371, 45, Color.Transparent, Color(0xFF000000), 16, 400, Color(0xFFE63946))
                     }
 
                 }
