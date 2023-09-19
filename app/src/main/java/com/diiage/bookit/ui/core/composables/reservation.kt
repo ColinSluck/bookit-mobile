@@ -1,4 +1,4 @@
-package com.diiage.bookit.ui.theme.composable.composable
+package com.diiage.bookit.ui.core.composables
 
 import android.os.Build
 import androidx.annotation.RequiresApi

@@ -1,4 +1,4 @@
-package com.diiage.bookit.ui.composables
+package com.diiage.bookit.ui.core.composables.navbar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

@@ -1,4 +1,4 @@
-package com.diiage.bookit.ui.functions
+package com.diiage.bookit.ui.core.functions
 
 import java.text.SimpleDateFormat
 import java.util.Date

@@ -1,4 +1,4 @@
-package com.diiage.bookit.ui.views
+package com.diiage.bookit.ui.screens.profil
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.diiage.bookit.ui.composables.DeconnectionButton
-import com.diiage.bookit.ui.composables.DeleteProfilButton
+import com.diiage.bookit.ui.core.composables.DeconnectionButton
+import com.diiage.bookit.ui.core.composables.DeleteProfilButton
 import com.diiage.bookit.ui.composables.PersonalInformation
 import com.diiage.bookit.ui.composables.ProfilHeader
 import com.diiage.bookit.ui.composables.QuickAnnouncement

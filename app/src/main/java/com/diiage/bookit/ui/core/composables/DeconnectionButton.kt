@@ -1,4 +1,4 @@
-package com.diiage.bookit.ui.composables
+package com.diiage.bookit.ui.core.composables
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.height

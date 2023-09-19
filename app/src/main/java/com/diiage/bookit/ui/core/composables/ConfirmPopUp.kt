@@ -1,4 +1,4 @@
-package com.diiage.bookit.ui.theme.composable.composable
+package com.diiage.bookit.ui.core.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

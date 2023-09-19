@@ -1,4 +1,4 @@
-package com.diiage.bookit.ui.theme
+package com.diiage.bookit.ui.core.theme
 
 import android.app.Activity
 import android.os.Build

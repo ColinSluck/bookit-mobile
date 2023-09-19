@@ -1,4 +1,4 @@
-package com.diiage.bookit.ui.composables
+package com.diiage.bookit.ui.screens.bookable
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*

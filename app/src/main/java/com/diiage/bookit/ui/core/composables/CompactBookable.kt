@@ -1,4 +1,4 @@
-package com.diiage.bookit.ui.composables
+package com.diiage.bookit.ui.core.composables
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image

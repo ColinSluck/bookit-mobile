@@ -1,4 +1,4 @@
-package com.diiage.bookit.ui.composables
+package com.diiage.bookit.ui.core.composables.navbar
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.clickable
