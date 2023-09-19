@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.diiage.bookit.ui.core.composables.DeconnectionButton
-import com.diiage.bookit.ui.core.composables.DeleteProfilButton
+import com.diiage.bookit.ui.core.composables.BI_Button
 import com.diiage.bookit.ui.composables.PersonalInformation
 import com.diiage.bookit.ui.composables.ProfilHeader
 import com.diiage.bookit.ui.composables.QuickAnnouncement
@@ -54,7 +54,7 @@ fun ProfilView(
                         modifier = Modifier.padding(start = 30.dp, top = 11.dp, end = 29.dp),
                         horizontalArrangement = Arrangement.Center
                     ){
-                        DeleteProfilButton()
+                        //BI_Button("Supprimer mon compte", 371, 45, Color.Transparent, Color(0xFF000000), 16, 400, Color(0xFFE63946))
                     }
 
                 }
