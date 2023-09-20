@@ -5,13 +5,16 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,6 +24,7 @@ import com.diiage.bookit.ui.core.Screen
 import com.diiage.bookit.ui.core.composables.navbar.Navbar
 import com.diiage.bookit.ui.core.theme.BookItTheme
 import com.diiage.bookit.ui.screens.bookable.BookableScreen
+import com.diiage.bookit.ui.screens.bookings.BookingsScreen
 import com.diiage.bookit.ui.screens.profil.ProfilScreen
 
 class MainActivity : ComponentActivity() {
@@ -48,12 +52,16 @@ private fun MainContent() {
     val navController = rememberNavController()
 
     Scaffold(bottomBar = { Navbar(navController) }) {
-        NavHost(navController = navController, startDestination = Screen.Profil.route) {
+        Box(modifier = Modifier.padding(bottom = 87.dp)) {
+            NavHost(navController = navController, startDestination = Screen.Profil.route) {
 
-            composable(Screen.Profil.route) { ProfilScreen(navController) }
+                composable(Screen.Profil.route) { ProfilScreen(navController) }
 
-            composable(Screen.Bookings.route) { BookableScreen(navController) }
+                composable(Screen.Bookings.route) { BookingsScreen(navController) }
 
+                composable(Screen.Bookable.route) { BookableScreen(navController) }
+
+            }
         }
     }
 }
