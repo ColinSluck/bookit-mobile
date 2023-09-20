@@ -1,14 +1,16 @@
-package com.diiage.bookit.ui.core.composables
+package com.diiage.bookit.ui.core.composables.bookings
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -38,35 +40,26 @@ fun CompactBookable(
     materials: String,
     date: Date,
     image: ImageBitmap = ImageBitmap.imageResource(R.drawable.bookable_placeholder),
-    onClick: () -> Unit = {}
+    onClick: () -> Unit
 ) {
 
-    val isPressed = remember { mutableStateOf(false) }
-    val scale = animateFloatAsState(if (isPressed.value) 0.95f else 1f, label = "").value
-
     val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    val scale = animateFloatAsState(if (isPressed) 0.95f else 1f, label = "").value
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .height(90.dp)
+            .height(112.dp)
             .width(334.dp)
+            .padding(0.dp, 12.dp, 0.dp, 12.dp)
             .scale(scale)
-            .clickable (
+            .clickable(
                 interactionSource = interactionSource,
                 indication = null,
                 onClick = onClick
             )
-            .pointerInput(Unit) {
-                detectTapGestures(
-                    onPress = {
-                        isPressed.value = true
-                        tryAwaitRelease()
-                        isPressed.value = false
-                    }
-                )
-            }
     ) {
         Image(
             bitmap = image,
@@ -133,6 +126,7 @@ fun CompactBookablePreview1() {
         location = "1er étage",
         materials = "Vidéoprojecteur, Paperboard",
         date = Date(),
+        onClick = {}
     )
 }
 
@@ -144,5 +138,6 @@ fun CompactBookablePreview2() {
         location = "1er étage dvsdvdùvksdùkvlsdvsdmvlksdlmvsdv",
         materials = "Vidéoprojecteur, Paperboard dvlskvmldsvlmsdkvmdlskvlmdskvlmdsvs",
         date = Date(),
+        onClick = {}
     )
 }
