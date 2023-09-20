@@ -1,10 +1,9 @@
 package com.diiage.bookit.ui.screens.home
 
 import android.app.Application
-import android.view.View
-import androidx.lifecycle.ViewModel
+import com.diiage.bookit.ui.core.ViewModel
 
-class HomeViewModel(application: Application) : ViewModel() {
+class HomeViewModel(application: Application) : ViewModel<HomeState>(HomeState(), application) {
 
 }
 
