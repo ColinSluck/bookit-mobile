@@ -34,8 +34,7 @@ import com.diiage.bookit.R
 @Composable
 fun QuickAnnouncement() {
 
-    Row(
-    ) {
+    Row {
         val context = LocalContext.current
        Button(
            onClick = {
@@ -53,8 +52,7 @@ fun QuickAnnouncement() {
                    .weight(2f)
                    .fillMaxHeight()
            ){
-               Column(
-               ){
+               Column {
                    Text(
                        text = "Ajoutez votre annonce rapidement !",
                        style = TextStyle(

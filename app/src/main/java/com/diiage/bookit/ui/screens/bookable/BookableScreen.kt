@@ -140,7 +140,7 @@ fun BookableView(
                 Text(text = location)
             }
 
-            materials.forEach() {
+            materials.forEach {
                 Row {
                     Image(
                         bitmap = ImageBitmap.imageResource(R.drawable.bookable_placeholder),

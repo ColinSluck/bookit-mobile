@@ -22,9 +22,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun DeleteProfilButton() {
-    Box(
-
-    ){
+    Box {
         val context = LocalContext.current
         Button(
             onClick = {

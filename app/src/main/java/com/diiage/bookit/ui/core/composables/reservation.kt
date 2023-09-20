@@ -46,9 +46,7 @@ fun bookableView(
 
 ) {
 
-    Box (
-
-    ){
+    Box {
 
 
         Column( // Colone qui contient : L'image(box), le nom(ligne1), Localisation(ligne2), Options(ligne3)
