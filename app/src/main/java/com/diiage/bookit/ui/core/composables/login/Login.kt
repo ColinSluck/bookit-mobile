@@ -21,9 +21,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.diiage.bookit.R
+import com.diiage.bookit.ui.screens.login.LoginState
+
+private typealias UIState = LoginState
 
 @Composable
-fun Login() {
+fun Login(
+    state: UIState = UIState()
+) {
     Box (
         modifier = Modifier
             .fillMaxWidth()
