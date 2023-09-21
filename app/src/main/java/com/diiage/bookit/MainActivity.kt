@@ -25,6 +25,7 @@ import com.diiage.bookit.ui.core.composables.navbar.Navbar
 import com.diiage.bookit.ui.core.theme.BookItTheme
 import com.diiage.bookit.ui.screens.bookable.BookableScreen
 import com.diiage.bookit.ui.screens.bookings.BookingsScreen
+import com.diiage.bookit.ui.screens.home.HomeScreen
 import com.diiage.bookit.ui.screens.profil.ProfilScreen
 
 class MainActivity : ComponentActivity() {
@@ -53,13 +54,15 @@ private fun MainContent() {
 
     Scaffold(bottomBar = { Navbar(navController) }) {
         Box(modifier = Modifier.padding(bottom = 87.dp)) {
-            NavHost(navController = navController, startDestination = Screen.Profil.route) {
+            NavHost(navController = navController, startDestination = Screen.Home.route) {
 
                 composable(Screen.Profil.route) { ProfilScreen(navController) }
 
                 composable(Screen.Bookings.route) { BookingsScreen(navController) }
 
                 composable(Screen.Bookable.route) { BookableScreen(navController) }
+
+                composable(Screen.Home.route) { HomeScreen() }
 
             }
         }
