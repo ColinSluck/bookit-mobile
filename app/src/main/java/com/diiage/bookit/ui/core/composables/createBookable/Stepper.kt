@@ -30,11 +30,10 @@ fun Stepper(currentStep: Int, onNextStep: () -> Unit, onPreviousStep: () -> Unit
             .background(Color.White)
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Créez une ligne de rectangles pour les étapes
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
