@@ -1,23 +1,12 @@
 package com.diiage.bookit.ui.core.composables
 
-import android.graphics.Paint.Align
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,15 +15,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,13 +29,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -190,22 +173,32 @@ fun AreYouSurePopUp(onCloseClick: () -> Unit) {
                     .background(Color.Gray)
             )
 
-            Row (verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(end=227.dp)){
+            Row (horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .padding(start=10.dp)
+                    .fillMaxWidth()){
                 Text(text = "Salle de réunion D17",
                     style = TextStyle(fontSize = 15.sp, fontWeight = FontWeight.Bold),
+                    textAlign = TextAlign.Right,
                     modifier = Modifier
                 )
             }
 
             Column(
-                verticalArrangement = Arrangement.SpaceBetween,
+                verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .height(100.dp)
+                    .fillMaxWidth()
+                    .padding(start = 10.dp)
+                    .height(140.dp
+                    )
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(end=295.dp)){
+                    horizontalArrangement = Arrangement.Start,
+                    modifier = Modifier
+                        .padding(end=0.dp)
+                        .fillMaxWidth()){
                     Image(
                         painter = painterResource(id = R.drawable.img_3),
                         contentDescription = "Localisation icon",
@@ -223,7 +216,10 @@ fun AreYouSurePopUp(onCloseClick: () -> Unit) {
                 }
 
                 Row(verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(end=340.dp)){
+                    horizontalArrangement = Arrangement.Start,
+                    modifier = Modifier
+                        .padding(end=0.dp)
+                        .fillMaxWidth()){
                     Image(
                         painter = painterResource(id = R.drawable.img_4),
                         contentDescription = "Person numbers",
@@ -241,7 +237,10 @@ fun AreYouSurePopUp(onCloseClick: () -> Unit) {
                 }
 
                 Row(verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(end=270.dp)){
+                    horizontalArrangement = Arrangement.Start,
+                    modifier = Modifier
+                        .padding(end=0.dp)
+                        .fillMaxWidth()){
                     Image(
                         painter = painterResource(id = R.drawable.img_5),
                         contentDescription = "Date",
@@ -259,7 +258,10 @@ fun AreYouSurePopUp(onCloseClick: () -> Unit) {
                 }
 
                 Row(verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(end=275.dp)){
+                    horizontalArrangement = Arrangement.Start,
+                    modifier = Modifier
+                        .padding(end=0.dp)
+                        .fillMaxWidth()){
                     Image(
                         painter = painterResource(id = R.drawable.img_6),
                         contentDescription = "Hour",
@@ -306,7 +308,7 @@ fun InviteCollabPopUp(onCloseClick: () -> Unit) {
                 textAlign = TextAlign.Center,
                 style = TextStyle(fontSize = 22.sp,fontWeight = FontWeight.Bold),
                 modifier = Modifier
-                    .padding(top=10.dp)
+                    .padding(top = 10.dp)
                     .fillMaxWidth())
 
             Divider(
@@ -320,7 +322,7 @@ fun InviteCollabPopUp(onCloseClick: () -> Unit) {
                 textAlign = TextAlign.Left,
                 style = TextStyle(fontSize = 15.sp,fontWeight = FontWeight.SemiBold),
                 modifier = Modifier
-                    .padding(top=50.dp, start = 10.dp)
+                    .padding(top = 50.dp, start = 10.dp)
                     .fillMaxWidth())
 
             InputField()
@@ -335,7 +337,7 @@ fun InviteCollabPopUp(onCloseClick: () -> Unit) {
 
 
 @Composable
-fun AreYouSureCancelPopUp(onCloseClick: () -> Unit) {
+fun AreYouSureCancelPopUp(onCloseClick: () -> Unit, onValidateClick: () -> Unit) {
     Row (
         modifier = Modifier
             .background(Color.White)
@@ -380,7 +382,9 @@ fun AreYouSureCancelPopUp(onCloseClick: () -> Unit) {
                 modifier = Modifier
                     .height(150.dp)
             ) {
-                YesButton(onCloseClick)
+                YesButton(
+                    onCloseClick = {onCloseClick()},
+                    onValidateClick = {onValidateClick()})
 
 
                 NoButton(onCloseClick)
@@ -430,7 +434,7 @@ fun PasswordDemand(onCloseClick: () -> Unit) {
                 Text(text = "Mot de passe",
                     style = TextStyle(fontSize = 15.sp,fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Left),
                     modifier = Modifier
-                        .padding(top=20.dp, start = 10.dp)
+                        .padding(top = 20.dp, start = 10.dp)
                         .fillMaxWidth())
 
                 PasswordTextField()
@@ -600,7 +604,7 @@ fun NoButton(onCloseClick: () -> Unit) {
 }
 
 @Composable
-fun YesButton(onCloseClick: () -> Unit) {
+fun YesButton(onCloseClick: () -> Unit,onValidateClick: () -> Unit) {
 
     Button(
         shape = MaterialTheme.shapes.small,
@@ -608,7 +612,7 @@ fun YesButton(onCloseClick: () -> Unit) {
             .padding(bottom = 3.dp)
             .width(367.dp)
             .height(60.dp),
-        onClick = onCloseClick,
+        onClick = { onValidateClick() },
         colors = ButtonDefaults.buttonColors(
             Color(0xFFE63946)
         ),
@@ -727,7 +731,7 @@ fun Preview6() {
 @Preview
 @Composable
 fun Preview7() {
-    AreYouSureCancelPopUp(onCloseClick = {})
+    AreYouSureCancelPopUp(onCloseClick = {}, onValidateClick = {})
 }
 
 @Preview
