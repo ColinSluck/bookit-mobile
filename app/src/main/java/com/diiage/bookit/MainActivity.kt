@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.diiage.bookit.ui.theme.composable.BookItTheme
+import com.diiage.bookit.ui.theme.composable.composable.MyScreen
 import com.diiage.bookit.ui.theme.composable.composable.bookableView
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
+                MyScreen()
         }
     }
 }

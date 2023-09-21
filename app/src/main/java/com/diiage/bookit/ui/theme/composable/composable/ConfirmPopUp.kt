@@ -1,5 +1,12 @@
 package com.diiage.bookit.ui.theme.composable.composable
 
+import android.graphics.Paint.Align
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -9,6 +16,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -53,7 +61,7 @@ import com.diiage.bookit.R
 
 
 @Composable
-fun CoonexionPopUp() {
+fun ConfirmationPopUp(onCloseClick: () -> Unit) {
     Row (
         modifier = Modifier
             .background(Color.White)
@@ -100,9 +108,9 @@ fun CoonexionPopUp() {
                     .padding(bottom = 30.dp)
             )
 
-            CloseButton {
+            CloseButton(onCloseClick)
 
-            }
+
 
         }
 
@@ -112,7 +120,7 @@ fun CoonexionPopUp() {
 
 
 @Composable
-fun InvitationSuccessPopUp() {
+fun InvitationSuccessPopUp(onCloseClick: () -> Unit) {
     Row (
         modifier = Modifier
             .background(Color.White)
@@ -146,9 +154,7 @@ fun InvitationSuccessPopUp() {
                     .padding(bottom = 30.dp, top = 5.dp)
             )
 
-            CloseButton {
-
-            }
+            CloseButton(onCloseClick)
 
         }
 
@@ -157,7 +163,7 @@ fun InvitationSuccessPopUp() {
 }
 
 @Composable
-fun AreYouSurePopUp() {
+fun AreYouSurePopUp(onCloseClick: () -> Unit) {
     Row (
         modifier = Modifier
             .background(Color.White)
@@ -272,36 +278,36 @@ fun AreYouSurePopUp() {
             }
 
 
-            ConfirmButton {
-
-            }
-            ReturnButton {
-
-            }
+            ConfirmButton(onCloseClick)
+            ReturnButton(onCloseClick)
         }
     }
 }
 
 
 @Composable
-fun InviteCollabPopUp() {
+fun InviteCollabPopUp(onCloseClick: () -> Unit) {
 
     Row (
         modifier = Modifier
             .background(Color.White)
-            .padding(0.dp),
+            .fillMaxWidth()
+            ,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ){
 
         Column (
             verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
         ){
             Text(text = "Inviter vos collaborateurs",
+                textAlign = TextAlign.Center,
                 style = TextStyle(fontSize = 22.sp,fontWeight = FontWeight.Bold),
                 modifier = Modifier
-                    .padding(top=10.dp))
+                    .padding(top=10.dp)
+                    .fillMaxWidth())
 
             Divider(
                 modifier = Modifier
@@ -311,16 +317,16 @@ fun InviteCollabPopUp() {
             )
 
             Text(text = "Email",
+                textAlign = TextAlign.Left,
                 style = TextStyle(fontSize = 15.sp,fontWeight = FontWeight.SemiBold),
                 modifier = Modifier
-                    .padding(top=50.dp, end = 330.dp))
+                    .padding(top=50.dp, start = 10.dp)
+                    .fillMaxWidth())
 
             InputField()
 
 
-            ValidButton {
-
-            }
+            ValidButton(onCloseClick)
 
 
         }
@@ -329,7 +335,7 @@ fun InviteCollabPopUp() {
 
 
 @Composable
-fun AreYouSureCancelPopUp() {
+fun AreYouSureCancelPopUp(onCloseClick: () -> Unit) {
     Row (
         modifier = Modifier
             .background(Color.White)
@@ -374,14 +380,10 @@ fun AreYouSureCancelPopUp() {
                 modifier = Modifier
                     .height(150.dp)
             ) {
-                YesButton(){
-
-                }
+                YesButton(onCloseClick)
 
 
-                NoButton {
-
-                }
+                NoButton(onCloseClick)
             }
 
 
@@ -391,7 +393,7 @@ fun AreYouSureCancelPopUp() {
 
 
 @Composable
-fun PasswordDemand() {
+fun PasswordDemand(onCloseClick: () -> Unit) {
 
     Row (
         modifier = Modifier
@@ -426,19 +428,16 @@ fun PasswordDemand() {
                     .height(300.dp)
             ){
                 Text(text = "Mot de passe",
-                    style = TextStyle(fontSize = 15.sp,fontWeight = FontWeight.SemiBold),
+                    style = TextStyle(fontSize = 15.sp,fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Left),
                     modifier = Modifier
-                        .padding(top=20.dp, end = 285.dp))
+                        .padding(top=20.dp, start = 10.dp)
+                        .fillMaxWidth())
 
                 PasswordTextField()
 
-                SupprimAccountButton {
+                SupprimAccountButton(onCloseClick)
 
-                }
-
-                CancelButton {
-
-                }
+                CancelButton(onCloseClick)
             }
 
 
@@ -495,15 +494,15 @@ fun InputField() {
 }
 
 @Composable
-fun CloseButton(onClick: () -> Unit) {
+fun CloseButton(onCloseClick: () -> Unit) {
     Button(
+        onClick = onCloseClick,
         shape = MaterialTheme.shapes.small,
         border = BorderStroke(1.dp, Color(red = 69, green = 123, blue = 157)),
         modifier = Modifier
             .padding(bottom = 3.dp)
             .width(367.dp)
             .height(60.dp),
-        onClick = onClick,
         colors = ButtonDefaults.buttonColors(
 
             Color.White
@@ -522,14 +521,15 @@ fun CloseButton(onClick: () -> Unit) {
 
 
 @Composable
-fun SupprimAccountButton(onClick: () -> Unit) {
+fun SupprimAccountButton(onCloseClick: () -> Unit) {
+    var isComponentVisible by remember { mutableStateOf(false) }
     Button(
         shape = MaterialTheme.shapes.small,
         modifier = Modifier
             .padding(bottom = 3.dp)
             .width(367.dp)
             .height(60.dp),
-        onClick = onClick,
+        onClick = onCloseClick,
         colors = ButtonDefaults.buttonColors(
             Color(0xFF7A7A7A)
         ),
@@ -543,10 +543,12 @@ fun SupprimAccountButton(onClick: () -> Unit) {
             }
         }
     )
+
 }
 
 @Composable
-fun CancelButton(onClick: () -> Unit) {
+fun CancelButton(onCloseClick: () -> Unit) {
+    var isComponentVisible by remember { mutableStateOf(false) }
     Button(
         shape = MaterialTheme.shapes.small,
         border = BorderStroke(1.dp, Color(red = 69, green = 123, blue = 157)),
@@ -554,7 +556,7 @@ fun CancelButton(onClick: () -> Unit) {
             .padding(bottom = 3.dp)
             .width(367.dp)
             .height(60.dp),
-        onClick = onClick,
+        onClick = onCloseClick,
         colors = ButtonDefaults.buttonColors(
             Color.White
         ),
@@ -572,7 +574,8 @@ fun CancelButton(onClick: () -> Unit) {
 
 
 @Composable
-fun NoButton(onClick: () -> Unit) {
+fun NoButton(onCloseClick: () -> Unit) {
+    var isComponentVisible by remember { mutableStateOf(false) }
     Button(
         shape = MaterialTheme.shapes.small,
         border = BorderStroke(1.dp, Color(red = 69, green = 123, blue = 157)),
@@ -580,7 +583,7 @@ fun NoButton(onClick: () -> Unit) {
             .padding(bottom = 3.dp)
             .width(367.dp)
             .height(60.dp),
-        onClick = onClick,
+        onClick = onCloseClick,
         colors = ButtonDefaults.buttonColors(
             Color.White
         ),
@@ -597,14 +600,15 @@ fun NoButton(onClick: () -> Unit) {
 }
 
 @Composable
-fun YesButton(onClick: () -> Unit) {
+fun YesButton(onCloseClick: () -> Unit) {
+
     Button(
         shape = MaterialTheme.shapes.small,
         modifier = Modifier
             .padding(bottom = 3.dp)
             .width(367.dp)
             .height(60.dp),
-        onClick = onClick,
+        onClick = onCloseClick,
         colors = ButtonDefaults.buttonColors(
             Color(0xFFE63946)
         ),
@@ -622,14 +626,15 @@ fun YesButton(onClick: () -> Unit) {
 
 
 @Composable
-fun ConfirmButton(onClick: () -> Unit) {
+fun ConfirmButton(onCloseClick: () -> Unit) {
+    var isComponentVisible by remember { mutableStateOf(false) }
     Button(
         shape = MaterialTheme.shapes.small,
         modifier = Modifier
             .padding(bottom = 3.dp)
             .width(367.dp)
             .height(60.dp),
-        onClick = onClick,
+        onClick = onCloseClick,
         colors = ButtonDefaults.buttonColors(
             Color(red = 69, green = 123, blue = 157)
         ),
@@ -645,14 +650,15 @@ fun ConfirmButton(onClick: () -> Unit) {
 }
 
 @Composable
-fun ValidButton(onClick: () -> Unit) {
+fun ValidButton(onCloseClick: () -> Unit) {
+    var isComponentVisible by remember { mutableStateOf(false) }
     Button(
         shape = MaterialTheme.shapes.small,
         modifier = Modifier
             .padding(bottom = 3.dp)
             .width(367.dp)
             .height(60.dp),
-        onClick = onClick,
+        onClick = onCloseClick,
         colors = ButtonDefaults.buttonColors(
             Color(red = 69, green = 123, blue = 157)
         ),
@@ -668,7 +674,8 @@ fun ValidButton(onClick: () -> Unit) {
 }
 
 @Composable
-fun ReturnButton(onClick: () -> Unit) {
+fun ReturnButton(onCloseClick: () -> Unit) {
+    var isComponentVisible by remember { mutableStateOf(false) }
     Button(
         shape = MaterialTheme.shapes.small,
         border = BorderStroke(1.dp, Color(red = 69, green = 123, blue = 157)),
@@ -676,7 +683,7 @@ fun ReturnButton(onClick: () -> Unit) {
             .padding(bottom = 3.dp)
             .width(367.dp)
             .height(60.dp),
-        onClick = onClick,
+        onClick = onCloseClick,
         colors = ButtonDefaults.buttonColors(
 
             Color.White
@@ -696,37 +703,37 @@ fun ReturnButton(onClick: () -> Unit) {
 @Preview
 @Composable
 fun Preview3() {
-    CoonexionPopUp()
+    ConfirmationPopUp(onCloseClick = {})
 }
 
 @Preview
 @Composable
 fun Preview4() {
-    InvitationSuccessPopUp()
+    InvitationSuccessPopUp(onCloseClick = {})
 }
 
 @Preview
 @Composable
 fun Preview5() {
-    AreYouSurePopUp()
+    AreYouSurePopUp(onCloseClick = {})
 }
 
 @Preview
 @Composable
 fun Preview6() {
-    InviteCollabPopUp()
+    InviteCollabPopUp(onCloseClick = {})
 }
 
 @Preview
 @Composable
 fun Preview7() {
-    AreYouSureCancelPopUp()
+    AreYouSureCancelPopUp(onCloseClick = {})
 }
 
 @Preview
 @Composable
 fun Preview8() {
-    PasswordDemand()
+    PasswordDemand(onCloseClick = {})
 }
 
 
