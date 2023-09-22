@@ -20,6 +20,7 @@ import com.diiage.bookit.ui.core.composables.createBookable.Stepper
 import com.diiage.bookit.ui.core.composables.createBookable.AddInformation
 import com.diiage.bookit.ui.core.composables.createBookable.MaxCapacity
 import com.diiage.bookit.ui.core.composables.createBookable.Equipement
+import com.diiage.bookit.ui.core.composables.createBookable.AddPhotos
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -34,6 +35,7 @@ fun CreateBookableScreen() {
                 1 -> Step2Content()
                 2 -> Step3Content()
                 3 -> Step4Content()
+                4 -> Step5Content()
             }
         }
 
@@ -61,9 +63,9 @@ fun Step2Content() {
 fun Step3Content() {
     Column {
         AddInformation()
-        
+
         Spacer(modifier = Modifier.padding(16.dp))
-        
+
         MaxCapacity()
     }
 }
@@ -71,6 +73,11 @@ fun Step3Content() {
 @Composable
 fun Step4Content() {
     Equipement()
+}
+
+@Composable
+fun Step5Content() {
+    AddPhotos()
 }
 
 @Preview(showBackground = true)
