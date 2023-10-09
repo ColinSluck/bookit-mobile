@@ -46,6 +46,9 @@ android {
     }
 }
 
+val ktorVersion: String by project
+
+
 dependencies {
 
     implementation("androidx.core:core-ktx:1.9.0")
@@ -59,6 +62,7 @@ dependencies {
     implementation("androidx.compose.ui:ui:1.3.3")
     implementation("androidx.compose.material:material:1.3.1")
     implementation("androidx.navigation:navigation-compose:2.7.2")
+    implementation("androidx.navigation:navigation-runtime-ktx:2.7.4")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -70,4 +74,9 @@ dependencies {
     //Koin
     implementation( "io.insert-koin:koin-androidx-compose:3.5.0")
     implementation("io.insert-koin:koin-android:3.5.0")
+
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-cio:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 }

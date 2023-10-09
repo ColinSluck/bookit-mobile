@@ -16,13 +16,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.diiage.bookit.ui.core.composables.DeconnectionButton
 import com.diiage.bookit.ui.core.composables.BI_Button
 import com.diiage.bookit.ui.composables.PersonalInformation
 import com.diiage.bookit.ui.composables.ProfilHeader
 import com.diiage.bookit.ui.composables.QuickAnnouncement
 import com.diiage.bookit.ui.core.composables.PreviewContent
-import com.diiage.bookit.ui.core.composables.navbar.Navbar
 
 private typealias UIState = ProfilState
 
@@ -40,6 +38,7 @@ fun ProfilScreen(navController: NavController) {
 private fun ProfilContent(
     state: UIState = UIState(),
 ) {
+    val role = state.role
     Box(
         Modifier.background(Color(0xFFFFFFFF))
     ){
