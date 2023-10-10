@@ -15,8 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Stepper(currentStep: Int, onNextStep: () -> Unit, onPreviousStep: () -> Unit) {
-
+fun Stepper(currentStep: Int, onNextStep: () -> Unit, onPreviousStep: () -> Unit,  onFinish: () -> Unit) {
     val stepColors = listOf(
         Color(0xFFD9D9D9),
         Color(0xFFD9D9D9),
@@ -86,6 +85,7 @@ fun Stepper(currentStep: Int, onNextStep: () -> Unit, onPreviousStep: () -> Unit
                     )
                 }
 
+                val action = if (currentStep == stepColors.size - 1) onFinish else onNextStep
                 Button(
                     colors = ButtonDefaults.buttonColors(Color(0xFF457B9D)),
                     modifier = Modifier
@@ -97,11 +97,12 @@ fun Stepper(currentStep: Int, onNextStep: () -> Unit, onPreviousStep: () -> Unit
                             color = Color(0xFF457B9D),
                             shape = RoundedCornerShape(size = 5.dp)
                         ),
-                    onClick = onNextStep,
-                    enabled = currentStep < stepColors.size - 1
+                    onClick = action,
+                    enabled = currentStep < stepColors.size
                 ) {
+                    val text = if (currentStep == stepColors.size - 1)  "Terminer" else "Suivant"
                     Text(
-                        text = "Suivant",
+                        text = text,
                         modifier = Modifier
                             .width(80.dp)
                             .height(24.dp),

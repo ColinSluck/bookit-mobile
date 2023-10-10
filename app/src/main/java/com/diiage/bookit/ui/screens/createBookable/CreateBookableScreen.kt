@@ -21,33 +21,40 @@ import com.diiage.bookit.ui.core.composables.createBookable.AddInformation
 import com.diiage.bookit.ui.core.composables.createBookable.MaxCapacity
 import com.diiage.bookit.ui.core.composables.createBookable.Equipement
 import com.diiage.bookit.ui.core.composables.createBookable.AddPhotos
+import com.diiage.bookit.ui.core.composables.createBookable.Confirmation
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun CreateBookableScreen() {
     val viewModel: CreateBookableViewModel = viewModel()
 
-    Column() {
+    Column {
         Header()
-        Box() {
+        Box {
             when (viewModel.currentStep) {
                 0 -> Step1Content()
                 1 -> Step2Content()
                 2 -> Step3Content()
                 3 -> Step4Content()
                 4 -> Step5Content()
+                5 -> Step6Content()
             }
         }
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Stepper(
-            currentStep = viewModel.currentStep,
-            onNextStep = viewModel::onNextStep,
-            onPreviousStep = viewModel::onPreviousStep
-        )
+        if (viewModel.currentStep != 5) {
+            Stepper(
+                currentStep = viewModel.currentStep,
+                onNextStep = viewModel::onNextStep,
+                onPreviousStep = viewModel::onPreviousStep,
+                onFinish = viewModel::onFinish
+            )
+        }
     }
+
 }
+
 
 @Composable
 fun Step1Content() {
@@ -78,6 +85,11 @@ fun Step4Content() {
 @Composable
 fun Step5Content() {
     AddPhotos()
+}
+
+@Composable
+fun Step6Content() {
+    Confirmation()
 }
 
 @Preview(showBackground = true)

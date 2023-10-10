@@ -70,7 +70,7 @@ private fun MainContent() {
 //    }
 
     Scaffold(bottomBar = {  }) {
-        Box() {
+        Box {
             NavHost(navController = navController, startDestination = Screen.CreateBookable.route) {
 
                 composable(Screen.Profil.route) { ProfilScreen(navController) }

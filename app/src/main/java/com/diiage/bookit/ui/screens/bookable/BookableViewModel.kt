@@ -6,9 +6,7 @@ import androidx.compose.ui.res.imageResource
 import com.diiage.bookit.R
 import com.diiage.bookit.ui.core.ViewModel
 
-class BookableViewModel(application: Application) : ViewModel<BookableState>(BookableState(), application) {
-
-}
+class BookableViewModel(application: Application) : ViewModel<BookableState>(BookableState(), application)
 
 data class BookableState(
     val initialImages: List<Int> = listOf(

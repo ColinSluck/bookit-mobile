@@ -25,4 +25,8 @@ class CreateBookableViewModel : ViewModel() {
             currentStep--
         }
     }
+
+    fun onFinish() {
+        currentStep = 5
+    }
 }
