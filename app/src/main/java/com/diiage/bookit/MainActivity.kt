@@ -23,6 +23,7 @@ import com.diiage.bookit.ui.core.composables.navbar.Navbar
 import com.diiage.bookit.ui.core.theme.BookItTheme
 import com.diiage.bookit.ui.screens.bookable.BookableScreen
 import com.diiage.bookit.ui.screens.bookings.BookingsScreen
+import com.diiage.bookit.ui.screens.createBookable.CreateBookableScreen
 import com.diiage.bookit.ui.screens.home.HomeScreen
 import com.diiage.bookit.ui.screens.profil.ProfilScreen
 
@@ -50,9 +51,27 @@ private fun MainContent() {
 
     val navController = rememberNavController()
 
-    Scaffold(bottomBar = { Navbar(navController) }) {
-        Box(modifier = Modifier.padding(bottom = 87.dp)) {
-            NavHost(navController = navController, startDestination = Screen.Home.route) {
+//    Scaffold(bottomBar = { Navbar(navController) }) {
+//        Box(modifier = Modifier.padding(bottom = 87.dp)) {
+//            NavHost(navController = navController, startDestination = Screen.CreateBookable.route) {
+//
+//                composable(Screen.Profil.route) { ProfilScreen(navController) }
+//
+//                composable(Screen.Bookings.route) { BookingsScreen(navController) }
+//
+//                composable(Screen.Bookable.route) { BookableScreen(navController) }
+//
+//                composable(Screen.Home.route) { HomeScreen() }
+//
+//                composable(Screen.CreateBookable.route) { CreateBookableScreen() }
+//
+//            }
+//        }
+//    }
+
+    Scaffold(bottomBar = {  }) {
+        Box {
+            NavHost(navController = navController, startDestination = Screen.CreateBookable.route) {
 
                 composable(Screen.Profil.route) { ProfilScreen(navController) }
 
@@ -61,6 +80,8 @@ private fun MainContent() {
                 composable(Screen.Bookable.route) { BookableScreen(navController) }
 
                 composable(Screen.Home.route) { HomeScreen() }
+
+                composable(Screen.CreateBookable.route) { CreateBookableScreen() }
 
             }
         }
