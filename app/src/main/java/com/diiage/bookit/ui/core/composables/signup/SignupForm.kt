@@ -25,10 +25,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.diiage.bookit.domain.models.Signup
 import com.diiage.bookit.ui.core.composables.InputForm
+import com.diiage.bookit.ui.screens.signup.SignupAction
 
 @Composable
-fun SignUpForm() {
+fun SignUpForm(handleAction: (SignupAction) -> Unit) {
     val lastNameState = remember { mutableStateOf(TextFieldValue("")) }
     val firstNameState = remember { mutableStateOf(TextFieldValue("")) }
     val emailState = remember { mutableStateOf(TextFieldValue("")) }
@@ -78,7 +80,12 @@ fun SignUpForm() {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
         ) {
-            SignUpButton(onClick = { /* TODO */ })
+            SignUpButton(onClick = {
+                if (passwordState.value.text == confirmPasswordState.value.text) {
+                    val signUp = Signup(emailState.value.text, passwordState.value.text, firstNameState.value.text, lastNameState.value.text)
+                    handleAction(SignupAction.OnSignup(signUp))
+                }
+            })
         }
         Row (
             modifier = Modifier
@@ -127,10 +134,4 @@ fun SignUpButton(onClick: () -> Unit) {
             )
         )
     }
-}
-
-@Preview
-@Composable
-fun SignUpFormPreview() {
-    SignUpForm()
 }

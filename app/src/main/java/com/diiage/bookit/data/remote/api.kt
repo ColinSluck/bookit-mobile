@@ -1,6 +1,7 @@
 package com.diiage.bookit.data.remote
 
 import com.diiage.bookit.domain.models.Credentials
+import com.diiage.bookit.domain.models.Signup
 import com.diiage.bookit.domain.models.User
 import io.ktor.client.call.body
 import io.ktor.client.request.post
@@ -23,12 +24,29 @@ class API() {
                 setBody(credentials)
             }
 
-            if (response.status == HttpStatusCode.OK) {
-                return response.body<User>()
-            } else {
-                return null
+            if (response.status != HttpStatusCode.OK) {
+                return null;
             }
 
+            return response.body<User>()
+
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    suspend fun signup(signup: Signup): User? {
+        try {
+            val response: HttpResponse = client.post("/api/auth/signup") {
+                contentType(ContentType.Application.Json)
+                setBody(signup)
+            }
+
+            if (response.status != HttpStatusCode.Created) {
+                return null;
+            }
+
+            return response.body<User>()
         } catch (e: Exception) {
             throw e
         }
