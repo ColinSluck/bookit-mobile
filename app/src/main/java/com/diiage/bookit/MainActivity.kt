@@ -15,14 +15,17 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.diiage.bookit.ui.core.Screen
 import com.diiage.bookit.ui.core.composables.navbar.Navbar
 import com.diiage.bookit.ui.core.theme.BookItTheme
 import com.diiage.bookit.ui.screens.bookable.BookableScreen
 import com.diiage.bookit.ui.screens.bookings.BookingsScreen
+import com.diiage.bookit.ui.screens.filter.FilterScreen
 import com.diiage.bookit.ui.screens.home.HomeScreen
 import com.diiage.bookit.ui.screens.profil.ProfilScreen
 
@@ -50,8 +53,14 @@ private fun MainContent() {
 
     val navController = rememberNavController()
 
-    Scaffold(bottomBar = { Navbar(navController) }) {
-        Box(modifier = Modifier.padding(bottom = 87.dp)) {
+    val currentRoute = navController.currentBackStackEntry?.destination?.route
+
+    Scaffold(bottomBar = {
+        if (shouldShowNavBar(navController)) {
+            Navbar(navController)
+        }
+    }) {
+        Box(modifier = if (shouldShowNavBar(navController)) Modifier.padding(bottom = 87.dp) else Modifier) {
             NavHost(navController = navController, startDestination = Screen.Home.route) {
 
                 composable(Screen.Profil.route) { ProfilScreen(navController) }
@@ -60,9 +69,21 @@ private fun MainContent() {
 
                 composable(Screen.Bookable.route) { BookableScreen(navController) }
 
-                composable(Screen.Home.route) { HomeScreen() }
+                composable(Screen.Home.route) { HomeScreen(navController) }
+
+                composable(Screen.Filter.route) { FilterScreen() }
 
             }
         }
     }
+}
+
+@Composable
+fun shouldShowNavBar(navController: NavHostController): Boolean {
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+    val routesWithoutNavBar = setOf(
+        Screen.Filter.route
+    )
+
+    return currentRoute !in routesWithoutNavBar
 }
