@@ -1,6 +1,8 @@
 package com.diiage.bookit.di
 
-import com.diiage.bookit.data.remote.repositories.API
+import android.content.Context
+import android.content.SharedPreferences
+import com.diiage.bookit.data.remote.API
 import com.diiage.bookit.data.remote.repositories.PreferenceRepositoryImpl
 import com.diiage.bookit.domain.repositories.PreferenceRepository
 import org.koin.android.ext.koin.androidContext
@@ -9,7 +11,7 @@ import org.koin.dsl.module
 
 val dataModule = module {
 
-    single { androidContext() }
+    single<SharedPreferences> { get<Context>().getSharedPreferences("bookit_pref", Context.MODE_PRIVATE) }
     single<PreferenceRepository> { PreferenceRepositoryImpl(get()) }
 
     single { API() }
