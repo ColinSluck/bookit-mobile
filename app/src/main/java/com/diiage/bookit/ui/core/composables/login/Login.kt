@@ -21,13 +21,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.diiage.bookit.R
+import com.diiage.bookit.ui.screens.login.LoginAction
 import com.diiage.bookit.ui.screens.login.LoginState
 
 private typealias UIState = LoginState
 
 @Composable
 fun Login(
-    state: UIState = UIState()
+    state: UIState = UIState(),
+    handleAction: (LoginAction) -> Unit
 ) {
     Box (
         modifier = Modifier
@@ -36,7 +38,7 @@ fun Login(
     ) {
         Column {
             LoginInformation()
-            LoginForm()
+            LoginForm(handleAction = handleAction)
         }
     }
 }
@@ -78,21 +80,6 @@ fun LoginInformation() {
                 textAlign = TextAlign.Left
                 )
             )
-        }
-    }
-}
-
-@Preview(name = "Login preview 1", showBackground = true)
-@Composable
-fun LoginPreview1() {
-    Box (
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color(0xFFFFFFFF))
-            .padding(40.dp)
-    ) {
-        Column {
-            Login()
         }
     }
 }
