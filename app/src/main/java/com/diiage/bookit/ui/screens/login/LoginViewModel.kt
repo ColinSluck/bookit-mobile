@@ -25,6 +25,8 @@ class LoginViewModel (application: Application) : ViewModel<LoginState>(LoginSta
 
     private fun login(credentials: Credentials) {
         viewModelScope.launch {
+            if(!isValidEmail(credentials.email)) return@launch
+
             val user = api.login(credentials) ?: return@launch
 
             preferencesRepository.save("access_token", user.accessToken)
@@ -33,6 +35,10 @@ class LoginViewModel (application: Application) : ViewModel<LoginState>(LoginSta
             val userString = Json.encodeToString(user)
             preferencesRepository.save("user", userString)
         }
+    }
+
+    private fun isValidEmail(email: String) : Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 }
 
