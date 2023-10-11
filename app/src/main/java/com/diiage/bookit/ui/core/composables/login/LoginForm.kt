@@ -24,10 +24,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.diiage.bookit.domain.models.Credentials
 import com.diiage.bookit.ui.core.composables.InputForm
+import com.diiage.bookit.ui.screens.login.LoginAction
 
 @Composable
-fun LoginForm() {
+fun LoginForm(handleAction: (LoginAction) -> Unit) {
     val emailState = remember { mutableStateOf(TextFieldValue("")) }
     val passwordState = remember { mutableStateOf(TextFieldValue("")) }
 
@@ -52,7 +54,10 @@ fun LoginForm() {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
         ) {
-            LoginButton(onClick = { /* TODO */ })
+            LoginButton(onClick = {
+                val credentials = Credentials(emailState.value.text, passwordState.value.text)
+                handleAction(LoginAction.OnConnect(credentials))
+            })
         }
         Row (
             modifier = Modifier
@@ -98,10 +103,3 @@ fun LoginButton(onClick: () -> Unit) {
         )
     }
 }
-
-@Preview(name = "Login form preview 1", showBackground = true)
-@Composable
-fun LoginFormPreview1() {
-    LoginForm()
-}
-

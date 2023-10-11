@@ -1,5 +1,6 @@
 package com.diiage.bookit.ui.screens.login
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -14,9 +15,18 @@ fun LoginScreen(navController: NavController) {
     val viewModel: LoginViewModel = viewModel()
     val state by viewModel.state.collectAsState()
 
-    Login(
+    LoginContent(
         state = state,
+        handleAction = viewModel::handleAction
     )
+}
+
+@Composable
+fun LoginContent(
+    state: LoginState = LoginState(),
+    handleAction: (LoginAction) -> Unit
+) {
+    Login(state = state, handleAction = handleAction)
 }
 
 @Preview

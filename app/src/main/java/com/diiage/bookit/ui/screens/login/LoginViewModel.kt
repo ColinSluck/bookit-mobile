@@ -21,6 +21,8 @@ class LoginViewModel (application: Application) : ViewModel<LoginState>(LoginSta
     fun login(credentials: Credentials) {
         viewModelScope.launch {
             val user = api.login(credentials)
+
+            // DO SOMETHING
         }
     }
 

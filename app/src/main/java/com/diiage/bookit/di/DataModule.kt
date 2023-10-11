@@ -7,6 +7,6 @@ import org.koin.dsl.module
 val dataModule = module {
 
     // ID API
-    single<API> { API() }
+    single { API() }
 
 }
