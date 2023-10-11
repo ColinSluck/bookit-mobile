@@ -45,7 +45,6 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MainContent() {
-
     val navController = rememberNavController()
 
     Scaffold(bottomBar = { Navbar(navController) }) {
@@ -56,7 +55,6 @@ private fun MainContent() {
             composable(Screen.Bookings.route) { BookableScreen(navController) }
 
             composable(Screen.Login.route) { LoginScreen(navController) }
-
         }
     }
 }

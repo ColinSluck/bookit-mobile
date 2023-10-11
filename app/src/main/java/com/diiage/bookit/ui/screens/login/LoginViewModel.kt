@@ -22,7 +22,7 @@ class LoginViewModel (application: Application) : ViewModel<LoginState>(LoginSta
         viewModelScope.launch {
             val user = api.login(credentials)
 
-            // DO SOMETHING
+            // Save in SharedPreferences
         }
     }
 
