@@ -8,9 +8,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
@@ -27,6 +31,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,7 +41,6 @@ import com.diiage.bookit.R
 import java.time.format.DateTimeFormatter
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun bookableView(
                     bookableName : String,
@@ -49,12 +55,7 @@ fun bookableView(
     Box (
 
     ){
-
-
         Column( // Colone qui contient : L'image(box), le nom(ligne1), Localisation(ligne2), Options(ligne3)
-            Modifier
-                .background(Color.White)
-                .padding(3.dp)
         ) {
 
             Box(
@@ -63,29 +64,40 @@ fun bookableView(
             ) {//box pour l'image
 
                 Image(
-                    painter = painterResource(id = R.drawable.img),
+                    painter = painterResource(id = R.drawable.rectangle8),
                     contentDescription = "bookable image",
                     contentScale = ContentScale.FillBounds,
+                    modifier = Modifier
+                        .width(353.dp)
+                        .height(195.dp)
                 )
-
+                Row(
+                    Modifier
+                        .padding(start = 229.dp, top = 7.dp)
+                ){
                     BookingDate(bookingDate = bookingDate, bookingTime = bookingTime)
+                }
             }
 
             Row(//ligne1 pour le nom
-                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     modifier = Modifier.padding(2.dp),
                     color = Color.Black,
                     text = bookableName,
-                    style = TextStyle(fontSize = 8.sp)
+                    style = TextStyle(
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                        fontWeight = FontWeight(700),
+                        color = Color(0xFF000000)
+                    )
                 )
 
                 Column( //colonne qui contient un ligne pour afficher le nombre de participants
-                    modifier = Modifier.padding(start = 10.dp)
+                    modifier = Modifier.padding(start = 166.dp)
                 ) {
                     PersonsNumber(
-                        personNumber = personNumber,
+                        personNumber = personNumber
                     )
                 }
             }
@@ -96,18 +108,22 @@ fun bookableView(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
-                    imageVector = Icons.Default.LocationOn,
+                    painter = painterResource(id = R.drawable.image9),
                     contentDescription = "Icône Localisation",
-                    tint = Color.Black,
                     modifier = Modifier
-                        .size(9.dp)
+                        .size(20.dp)
                 )
 
                 Text(
                     modifier = Modifier.padding(2.dp),
                     color = Color.Black,
                     text = bookableLoc,
-                    style = TextStyle(fontSize = 5.sp)
+                    style = TextStyle(
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                        fontWeight = FontWeight(400),
+                        color = Color(0xFF000000)
+                    )
                 )
             }
 
@@ -116,18 +132,22 @@ fun bookableView(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
-                    imageVector = Icons.Default.List,
+                    painter = painterResource(id = R.drawable.image10),
                     contentDescription = "Icône Localisation",
-                    tint = Color.Black,
                     modifier = Modifier
-                        .size(9.dp)
+                        .size(20.dp)
                 )
 
                 Text(
                     modifier = Modifier.padding(2.dp),
                     color = Color.Black,
                     text = bookableOptions,
-                    style = TextStyle(fontSize = 5.sp)
+                    style = TextStyle(
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                        fontWeight = FontWeight(400),
+                        color = Color(0xFF000000)
+                    )
                 )
             }
 
@@ -137,23 +157,25 @@ fun bookableView(
 }
 @Composable
 fun PersonsNumber(//composable pour le nombre de participants
-    personNumber : String,
-    modifier: Modifier = Modifier
+    personNumber : String
 
 ) {
     Row {
 
-        Icon(imageVector = Icons.Default.Person,
+        Icon(
+            painter = painterResource(id = R.drawable.image8),
             contentDescription = "Icône d'utilisateur",
             tint = Color.Black,
             modifier = Modifier
-                .size(12.dp)
+                .size(25.dp)
         )
 
         Text(
             text = personNumber,
             style = TextStyle(
-                fontSize = 8.sp,
+                fontSize = 16.sp,
+                fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                fontWeight = FontWeight(400),
                 color = Color.Black,
             )
         )
@@ -162,57 +184,54 @@ fun PersonsNumber(//composable pour le nombre de participants
 }
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BookingDate(
     bookingDate: String,
     bookingTime: String,
 ) {
    // val currentDate = LocalDate.now()
-    val formattedDate = bookingDate.format(DateTimeFormatter.ofPattern("dd/MM"))
+    //val formattedDate = bookingDate.format(DateTimeFormatter.ofPattern("dd/MM"))
+    val formattedDate = bookingDate
 
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier
-           .padding(start = 63.dp, top = 5.dp)
-           .height(7.dp)
-           .clip(RoundedCornerShape(2.dp))
+            .background(Color(0xFFFFFFFF), shape = RoundedCornerShape(size = 5.dp))
 
     ) {
+        Row(
+            Modifier.padding(7.dp)
+        ){
+            Text(text = "Le $formattedDate à $bookingTime",
+                style = TextStyle(
+                    color = Color(0xFF000000),
+                    fontSize = 11.sp,
+                    fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                    fontWeight = FontWeight(400)
+                )
 
+            )
 
-        Text(text = "Le $formattedDate à $bookingTime",
-            style = TextStyle(
-                Color.Black,
-                fontSize = 4.sp ),
-            modifier = Modifier
-                .background(Color.White)
-                .height(8.dp)
-                .padding(1.dp)
-
-        )
-
-        Icon(imageVector = Icons.Default.DateRange,
-            contentDescription = "Icône d'utilisateur",
-            tint = Color.Black,
-            modifier = Modifier
-                .size(8.dp)
-                .background(Color.White)
-        )
+            Icon(
+                painter = painterResource(id = R.drawable.image18),
+                contentDescription = "Icône d'utilisateur",
+                modifier = Modifier
+                    .size(15.dp)
+                    .padding(start = 1.dp)
+            )
+        }
     }
     
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun Preview1() {
     bookableView(bookableName = "Salle de réunion D17", bookableLoc ="1er étage" , bookableOptions = "Tableau blanc, machine à café...", personNumber = "6", bookingDate = "14/09", bookingTime = "10:30")
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun Preview2() {

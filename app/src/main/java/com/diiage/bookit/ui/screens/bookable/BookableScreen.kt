@@ -14,7 +14,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,7 +39,7 @@ fun BookableScreen(navController: NavController) {
 
 @Composable
 fun BookableContent(
-    state: UIState = UIState()
+    state: UIState = UIState(),
 ) {
 
     var images by remember { mutableStateOf(state.initialImages) }
@@ -52,7 +55,7 @@ fun BookableContent(
                 .verticalScroll(rememberScrollState())
         ) {
             Image(
-                bitmap = images[0],
+                bitmap = ImageBitmap.imageResource(images[0]),
                 contentScale = ContentScale.FillBounds,
                 contentDescription = "",
                 modifier = Modifier
@@ -71,7 +74,7 @@ fun BookableContent(
                 //foreach image in images except first
                 images.drop(1).drop(0).forEachIndexed { index, image ->
                     Image(
-                        bitmap = image,
+                        bitmap = ImageBitmap.imageResource(image),
                         contentScale = ContentScale.FillBounds,
                         contentDescription = "",
                         modifier = Modifier
@@ -98,7 +101,7 @@ fun BookableContent(
                 Text(
                     text = state.title,
                     fontSize = 26.sp,
-                    //fontFamily = FontFamily(Font(R.font.poppins_bold)),
+                    fontFamily = FontFamily(Font(R.font.poppins_bold)),
                     fontWeight = FontWeight(700),
                     color = Color.Black
                 )
@@ -106,7 +109,7 @@ fun BookableContent(
                 Text(
                     text = if (state.available) "Disponible" else "Indisponible",
                     fontSize = 12.sp,
-                    //fontFamily = FontFamily(Font(R.font.poppins_bold)),
+                    fontFamily = FontFamily(Font(R.font.poppins_bold)),
                     fontWeight = FontWeight(400),
                     color = if (state.available) Color(0xFF457B9D) else Color(0xFFE63946),
                 )
@@ -115,7 +118,7 @@ fun BookableContent(
             Text(
                 text = state.description,
                 fontSize = 18.sp,
-                //fontFamily = FontFamily(Font(R.font.poppins_bold)),
+                fontFamily = FontFamily(Font(R.font.poppins_bold)),
                 fontWeight = FontWeight(400),
                 color = Color(0xFF7A7A7A),
                 modifier = Modifier
@@ -131,34 +134,20 @@ fun BookableContent(
             )
 
             Row {
-                Image(
-                    bitmap = ImageBitmap.imageResource(R.drawable.bookable_placeholder),
-                    contentDescription = ""
-                )
-                
-                Text(text = "$state.people personnes maximum")
+                Text(text = "${state.people} personnes maximum")
             }
 
             Row {
-                Image(
-                    bitmap = ImageBitmap.imageResource(R.drawable.bookable_placeholder),
-                    contentDescription = ""
-                )
-
                 Text(text = state.location)
             }
 
             state.materials.forEach() {
                 Row {
-                    Image(
-                        bitmap = ImageBitmap.imageResource(R.drawable.bookable_placeholder),
-                        contentDescription = ""
-                    )
-
                     Text(text = it)
                 }
             }
 
+            Spacer(Modifier.height(94.dp))
         }
 
         Row(
@@ -187,6 +176,10 @@ fun BookableContent(
                 Text(
                     text = "Réserver",
                     color = Color.White,
+                    fontSize = 14.sp,
+                    fontFamily = FontFamily(Font(R.font.poppins_bold)),
+                    fontWeight = FontWeight(700),
+                    textAlign = TextAlign.Center,
                 )
             }
         }

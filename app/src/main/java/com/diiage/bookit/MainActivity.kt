@@ -5,16 +5,20 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavType
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.diiage.bookit.ui.core.Screen
@@ -46,18 +50,42 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MainContent() {
+
     val navController = rememberNavController()
 
-    Scaffold(bottomBar = { Navbar(navController) }) {
-        NavHost(navController = navController, startDestination = Screen.Signup.route) {
+    val currentRoute = navController.currentBackStackEntry?.destination?.route
 
-            composable(Screen.Profil.route) { ProfilScreen(navController) }
+    Scaffold(bottomBar = {
+        if (shouldShowNavBar(navController)) {
+            Navbar(navController)
+        }
+    }) {
+        Box(modifier = if (shouldShowNavBar(navController)) Modifier.padding(bottom = 87.dp) else Modifier) {
+            NavHost(navController = navController, startDestination = Screen.Home.route) {
 
-            composable(Screen.Bookings.route) { BookableScreen(navController) }
+                composable(Screen.Profil.route) { ProfilScreen(navController) }
+
+                composable(Screen.Bookings.route) { BookingsScreen(navController) }
+
+                composable(Screen.Bookable.route) { BookableScreen(navController) }
+
+                composable(Screen.Home.route) { HomeScreen(navController) }
+
+                composable(Screen.Filter.route) { FilterScreen() }
 
             composable(Screen.Login.route) { LoginScreen(navController) }
 
             composable(Screen.Signup.route) { SignupScreen(navController) }
         }
     }
+}
+
+@Composable
+fun shouldShowNavBar(navController: NavHostController): Boolean {
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+    val routesWithoutNavBar = setOf(
+        Screen.Filter.route
+    )
+
+    return currentRoute !in routesWithoutNavBar
 }

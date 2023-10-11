@@ -23,26 +23,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.diiage.bookit.R
+import com.diiage.bookit.ui.core.composables.Line
 import com.diiage.bookit.ui.core.functions.calculateAccountAge
-
-@Composable
-fun Line(leftValue: Int, topValue: Int, rightValue: Int, bottomValue: Int, widthValue: Int) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(leftValue.dp, topValue.dp, rightValue.dp, bottomValue.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Divider(
-            modifier = Modifier
-                .padding(0.dp)
-                .width(widthValue.dp)
-                .background(color = Color(0x807A7A7A)),
-            color = Color(0x807A7A7A),
-            thickness = 1.dp
-        )
-    }
-}
 
 @Composable
 fun ProfilHeader(lastnameValue: String, firstnameValue: String, createdAccountValue: String) {

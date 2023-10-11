@@ -44,7 +44,7 @@ private fun ProfilContent(
     ){
         Column {
             ProfilHeader(lastnameValue = "Logan", firstnameValue = "ANGUENOT", createdAccountValue = "2023-09-05T07:15:58.774737")
-            role?.let{
+            state.role?.let{
                 Row(
                     modifier = Modifier
                         .padding(horizontal = 45.dp, vertical = 36.dp),
@@ -60,7 +60,7 @@ private fun ProfilContent(
                     .background(Color(0xFFFFFFFF))
             ){
                 Row(
-                    modifier = Modifier.padding(start = 30.dp, end = 29.dp, top = if (role !=null) 47.dp else 270.dp),
+                    modifier = Modifier.padding(start = 30.dp, end = 29.dp, top = if (state.role !=null) 47.dp else 270.dp),
                     horizontalArrangement = Arrangement.Center
                 ){
                     BI_Button("Déconnexion", 371, 45, Color(0xFFE63946), Color(0xFFFFFFFF), 16, 400)
