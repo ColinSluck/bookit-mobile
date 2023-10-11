@@ -34,7 +34,6 @@ class LoginViewModel (application: Application) : ViewModel<LoginState>(LoginSta
             preferencesRepository.save("user", userString)
         }
     }
-
 }
 
 data class LoginState(

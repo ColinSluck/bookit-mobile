@@ -14,7 +14,6 @@ import io.ktor.http.contentType
 const val API_URL = "http://10.4.0.100:45455"
 
 class API() {
-
     private val client = createHttpClient(API_URL)
 
     suspend fun login(credentials: Credentials): User? {
