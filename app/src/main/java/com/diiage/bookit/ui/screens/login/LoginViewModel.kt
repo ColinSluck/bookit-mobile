@@ -44,8 +44,6 @@ class LoginViewModel (application: Application) : ViewModel<LoginState>(LoginSta
 
 
 }
-class LoginViewModel (application: Application) : ViewModel<LoginState>(LoginState(), application)
-
 data class LoginState(
     val email: String = "",
     val password: String = "",
