@@ -61,8 +61,6 @@ private fun MainContent(preferenceRepository: PreferenceRepository) {
 
     val startDestination = if (preferenceRepository.get("access_token") != null) Screen.Home.route else Screen.Login.route
 
-    val currentRoute = navController.currentBackStackEntry?.destination?.route
-
     Scaffold(bottomBar = {
         if (shouldShowNavBar(navController)) {
             Navbar(navController)
@@ -71,7 +69,7 @@ private fun MainContent(preferenceRepository: PreferenceRepository) {
         Box(modifier = if (shouldShowNavBar(navController)) Modifier.padding(bottom = 87.dp) else Modifier) {
             NavHost(navController = navController, startDestination = startDestination) {
 
-                composable(Screen.Profil.route) { ProfileScreen(navController) }
+                composable(Screen.Profile.route) { ProfileScreen(navController) }
 
                 composable(Screen.Bookings.route) { BookingsScreen(navController) }
 

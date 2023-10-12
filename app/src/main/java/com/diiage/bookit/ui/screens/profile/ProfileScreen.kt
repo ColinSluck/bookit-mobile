@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -20,6 +21,10 @@ import com.diiage.bookit.ui.core.composables.BI_Button
 import com.diiage.bookit.ui.composables.PersonalInformation
 import com.diiage.bookit.ui.composables.ProfileHeader
 import com.diiage.bookit.ui.composables.QuickAnnouncement
+import com.diiage.bookit.ui.core.NavigationEvent
+import com.diiage.bookit.ui.core.Screen
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 
 private typealias UIState = ProfileState
 
@@ -27,6 +32,14 @@ private typealias UIState = ProfileState
 fun ProfileScreen(navController: NavController) {
     val viewModel: ProfileViewModel = viewModel()
     val state by viewModel.state.collectAsState()
+
+    LaunchedEffect(viewModel) {
+        viewModel.events
+            .onEach { event ->
+                if (event is NavigationEvent.NavigateToLogin)
+                    navController.navigate(Screen.Login.route)
+            }.collect()
+    }
 
     ProfileContent(
         state = state,

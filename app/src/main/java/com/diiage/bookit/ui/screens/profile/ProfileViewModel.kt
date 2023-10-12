@@ -4,6 +4,7 @@ import android.app.Application
 import com.diiage.bookit.domain.models.Credentials
 import com.diiage.bookit.domain.models.User
 import com.diiage.bookit.domain.repositories.PreferenceRepository
+import com.diiage.bookit.ui.core.NavigationEvent
 import com.diiage.bookit.ui.core.ViewModel
 import kotlinx.serialization.json.Json
 import org.koin.core.component.inject
@@ -33,6 +34,8 @@ class ProfileViewModel(application: Application) : ViewModel<ProfileState>(Profi
         preferencesRepository.remove("access_token")
         preferencesRepository.remove("refresh_token")
         preferencesRepository.remove("user")
+
+        sendEvent(NavigationEvent.NavigateToLogin)
     }
 
 }

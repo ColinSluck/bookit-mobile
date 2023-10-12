@@ -28,7 +28,8 @@ private typealias UIState = SignupState
 
 @Composable
 fun SignUp(state: UIState = UIState(),
-           handleAction: (SignupAction) -> Unit) {
+           handleAction: (SignupAction) -> Unit
+) {
     Box (
         modifier = Modifier
             .fillMaxWidth()

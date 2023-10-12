@@ -5,7 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.diiage.bookit.data.remote.API
 import com.diiage.bookit.domain.models.Credentials
 import com.diiage.bookit.domain.repositories.PreferenceRepository
+import com.diiage.bookit.ui.core.NavigationEvent
 import com.diiage.bookit.ui.core.ViewModel
+import com.diiage.bookit.ui.core.functions.isValidLoginForm
 import org.koin.core.component.inject
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
@@ -20,12 +22,13 @@ class LoginViewModel (application: Application) : ViewModel<LoginState>(LoginSta
     fun handleAction(action: LoginAction) {
         when (action) {
             is LoginAction.OnConnect -> login(action.credentials)
+            is LoginAction.OnSignup -> sendEvent(NavigationEvent.NavigateToSignup)
         }
     }
 
     private fun login(credentials: Credentials) {
         viewModelScope.launch {
-            if(!isValidEmail(credentials.email)) return@launch
+            if(!isValidLoginForm(credentials)) return@launch
 
             val user = api.login(credentials) ?: return@launch
 
@@ -34,12 +37,12 @@ class LoginViewModel (application: Application) : ViewModel<LoginState>(LoginSta
 
             val userString = Json.encodeToString(user)
             preferencesRepository.save("user", userString)
+
+            sendEvent(NavigationEvent.NavigateToHome)
         }
     }
 
-    private fun isValidEmail(email: String) : Boolean {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
+
 }
 
 data class LoginState(
@@ -49,4 +52,5 @@ data class LoginState(
 
 sealed interface LoginAction {
     data class OnConnect(val credentials: Credentials) : LoginAction
+    data class OnSignup(val signup: Boolean? = null) : LoginAction
 }

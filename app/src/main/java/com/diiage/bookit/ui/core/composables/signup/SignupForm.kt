@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -18,10 +19,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -87,22 +92,54 @@ fun SignUpForm(handleAction: (SignupAction) -> Unit) {
                 }
             })
         }
-        Row (
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
             horizontalArrangement = Arrangement.Center,
         ) {
-            Text(
-                text = "Vous avez déjà un compte ? Cliquez ici",
+            val text = "Vous avez déjà un compte ? "
+            val clickableText = "Cliquez ici"
+
+            // Combine normal text with clickable text
+            val annotatedString = buildAnnotatedString {
+                withStyle(style = SpanStyle(color = Color(0xFF7A7A7A))) {
+                    append(text)
+                }
+                withStyle(
+                    style = SpanStyle(
+                        color = Color(0xFF7A7A7A),
+                        textDecoration = TextDecoration.Underline
+                    )
+                ) {
+                    // Make "Cliquez ici" clickable
+                    pushStringAnnotation(
+                        tag = "clickable",
+                        annotation = clickableText
+                    )
+                    append(clickableText)
+                    pop()
+                }
+            }
+
+            ClickableText(
+                text = annotatedString,
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight(400),
                     color = Color(0xFF7A7A7A),
                     textAlign = TextAlign.Center,
-                )
+                ),
+                onClick = { offset ->
+                    // Check if the clicked text is "Cliquez ici"
+                    annotatedString.getStringAnnotations(tag = "clickable", start = offset, end = offset)
+                        .firstOrNull()?.let {
+                            handleAction(SignupAction.OnLoginClick())
+                        }
+                }
             )
         }
+
     }
 }
 

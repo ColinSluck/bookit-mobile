@@ -51,9 +51,9 @@ fun Navbar(
         NavbarButton(
             icon = R.drawable.navbar_button_profile,
             label = "Profil",
-            selected = navController.currentDestination?.route == Screen.Profil.route,
+            selected = navController.currentDestination?.route == Screen.Profile.route,
             onClick = {
-                navController.navigate(Screen.Profil.route) {
+                navController.navigate(Screen.Profile.route) {
                     launchSingleTop = true
                 }
             }
