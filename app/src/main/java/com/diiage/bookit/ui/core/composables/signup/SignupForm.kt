@@ -134,7 +134,7 @@ fun SignUpForm(handleAction: (SignupAction) -> Unit) {
                     // Check if the clicked text is "Cliquez ici"
                     annotatedString.getStringAnnotations(tag = "clickable", start = offset, end = offset)
                         .firstOrNull()?.let {
-                            handleAction(SignupAction.OnLoginClick())
+                            handleAction(SignupAction.OnLoginClick)
                         }
                 }
             )
