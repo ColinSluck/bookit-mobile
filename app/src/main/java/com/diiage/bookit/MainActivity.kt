@@ -71,7 +71,7 @@ private fun MainContent() {
 
                 composable(Screen.Home.route) { HomeScreen(navController) }
 
-                composable(Screen.Filter.route) { FilterScreen() }
+                composable(Screen.Filter.route) { FilterScreen(navController) }
 
             }
         }

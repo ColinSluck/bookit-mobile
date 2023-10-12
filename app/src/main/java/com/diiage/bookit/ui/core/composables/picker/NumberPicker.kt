@@ -206,7 +206,7 @@ fun <T> ListItemPicker(
                                 ))
                             ),
                         textStyle = TextStyle(
-                            fontSize = 24.sp,
+                            fontSize = 18.sp,
                             fontFamily = FontFamily(Font(R.font.poppins_regular)),
                             fontWeight = FontWeight(700),
                             color = Color(0xFF457B9D),

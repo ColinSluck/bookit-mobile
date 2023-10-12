@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
@@ -59,7 +60,7 @@ fun DetailsFilter() {
                 Text(
                     text = "personnes",
                     style = TextStyle(
-                        fontSize = 24.sp,
+                        fontSize = 20.sp,
                         fontFamily = FontFamily(Font(R.font.poppins_regular)),
                         fontWeight = FontWeight(700),
                         color = Color(0xFF457B9D),
@@ -85,14 +86,15 @@ fun DetailsFilter() {
             }
         }
         Column(
-            modifier = Modifier.padding(top = 176.dp),
+            modifier = Modifier.padding(top = 166.dp),
 
         ) {
             val mItemsList: List<String> = listOf("Machine à café", "Tableau blanc", "Télévision", "Gel hydroalcoolique")
             mItemsList.forEach { items ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.absoluteOffset(0.dp, (-12).dp)
                 ) {
                     val isChecked = remember { mutableStateOf(false) }
 
@@ -101,9 +103,9 @@ fun DetailsFilter() {
                         onCheckedChange = { isChecked.value = it },
                         enabled = true,
                         colors = CheckboxDefaults.colors(
-                            checkedColor = Color.Magenta,
-                            uncheckedColor = Color.DarkGray,
-                            checkmarkColor = Color.Cyan
+                            checkedColor = Color(0xFF457B9D),
+                            uncheckedColor = Color(0xFF457B9D),
+                            checkmarkColor = Color.White
                         )
                     )
                     Text(text = items)
