@@ -44,5 +44,5 @@ data class LoginState(
 
 sealed interface LoginAction {
     data class OnConnect(val credentials: Credentials) : LoginAction
-    data class OnSignup(val signup: Boolean? = null) : LoginAction
+    object OnSignup : LoginAction
 }
