@@ -8,6 +8,7 @@ sealed class Screen(val route: String){
     object Signup: Screen("signup")
     object Bookable: Screen("bookable")
     object Filter: Screen("filter")
+    object CreateBookable: Screen("createBookable")
 }
 
 sealed class NavigationEvent {

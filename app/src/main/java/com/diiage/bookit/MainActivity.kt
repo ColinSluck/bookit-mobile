@@ -27,6 +27,7 @@ import com.diiage.bookit.ui.core.theme.BookItTheme
 import com.diiage.bookit.ui.screens.bookable.BookableScreen
 import com.diiage.bookit.ui.screens.bookings.BookingsScreen
 import com.diiage.bookit.ui.screens.filter.FilterScreen
+import com.diiage.bookit.ui.screens.createBookable.CreateBookableScreen
 import com.diiage.bookit.ui.screens.home.HomeScreen
 import com.diiage.bookit.ui.screens.login.LoginScreen
 import com.diiage.bookit.ui.screens.profile.ProfileScreen
@@ -82,6 +83,8 @@ private fun MainContent(preferenceRepository: PreferenceRepository) {
                 composable(Screen.Login.route) { LoginScreen(navController) }
 
                 composable(Screen.Signup.route) { SignupScreen(navController) }
+                composable(Screen.CreateBookable.route) { CreateBookableScreen() }
+
             }
         }
     }
