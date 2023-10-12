@@ -3,6 +3,7 @@ package com.diiage.bookit.ui.screens.profile
 import android.app.Application
 import com.diiage.bookit.domain.models.Credentials
 import com.diiage.bookit.domain.models.User
+import com.diiage.bookit.domain.repositories.AuthRepository
 import com.diiage.bookit.domain.repositories.PreferenceRepository
 import com.diiage.bookit.ui.core.NavigationEvent
 import com.diiage.bookit.ui.core.ViewModel
@@ -13,6 +14,7 @@ import org.koin.core.component.inject
 class ProfileViewModel(application: Application) : ViewModel<ProfileState>(ProfileState(), application) {
 
     private val preferencesRepository: PreferenceRepository by inject()
+    private val authRepository: AuthRepository by inject()
 
     init {
         val userString = preferencesRepository.get("user")
@@ -31,9 +33,7 @@ class ProfileViewModel(application: Application) : ViewModel<ProfileState>(Profi
     }
 
     private fun disconnect() {
-        preferencesRepository.remove("access_token")
-        preferencesRepository.remove("refresh_token")
-        preferencesRepository.remove("user")
+        authRepository.logout()
 
         sendEvent(NavigationEvent.NavigateToLogin)
     }
