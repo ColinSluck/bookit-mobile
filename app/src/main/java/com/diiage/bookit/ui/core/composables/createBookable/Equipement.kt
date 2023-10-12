@@ -1,6 +1,7 @@
 package com.diiage.bookit.ui.core.composables.createBookable
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,8 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,27 +27,54 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.diiage.bookit.R
 
-@Composable fun Equipement(equipement : List<String> = listOf(
-    "Machine à café",
-    "Climatisation",
-    "Chauffage",
-    "Wifi",
-    "Télévision",
-    "Tableau blanc",
-    "Tableau",
-    "Vidéoprojecteur",
-    "Micro",
-    "Enceinte",
-)) {
+@Composable
+fun Equipement(
+    equipement: List<String> = listOf(
+        "Machine à café",
+        "Climatisation",
+        "Chauffage",
+        "Wifi",
+        "Télévision",
+        "Tableau blanc",
+        "Tableau",
+        "Vidéoprojecteur",
+        "Micro",
+        "Enceinte",
+    )
+) {
+    val activeStates = remember { mutableStateListOf(*Array(equipement.size) { 0 }) }
+
+    val modifierInActive = Modifier
+        .padding(8.dp)
+        .border(
+            width = 2.dp,
+            color = Color(0xFF457B9D),
+            shape = RoundedCornerShape(size = 5.dp)
+        )
+    val modifierActive = Modifier
+        .padding(8.dp)
+        .background(color = Color(0xFF457B9D), shape = RoundedCornerShape(size = 5.dp))
+
+    val textStyleInActive = TextStyle(
+        fontSize = 20.sp,
+        fontFamily = FontFamily(Font(R.font.poppins_bold)),
+        fontWeight = FontWeight(700),
+        color = Color(0xFF457B9D),
+    )
+    val textStyleActive = TextStyle(
+        fontSize = 20.sp,
+        fontFamily = FontFamily(Font(R.font.poppins_bold)),
+        fontWeight = FontWeight(700),
+        color = Color.White,
+    )
 
     Column {
         Text(
-            text = "Quels sont les équipements dont dispose votre bien ?",
+            text = "Quels sont les équipements dont dispose votre bien?",
             Modifier.padding(horizontal = 16.dp),
             style = TextStyle(
                 fontSize = 32.sp,
@@ -55,32 +85,23 @@ import com.diiage.bookit.R
             )
         )
 
-        equipement.chunked(2).forEach { row ->
+        equipement.chunked(2).forEachIndexed { rowIndex, row ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                row.forEach { bookableType ->
+                row.forEachIndexed { colIndex, bookableType ->
                     Button(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .border(
-                                width = 2.dp,
-                                color = Color(0xFF457B9D),
-                                shape = RoundedCornerShape(size = 5.dp)
-                            ),
+                        onClick = {
+                            activeStates[rowIndex * 2 + colIndex] = 1 - activeStates[rowIndex * 2 + colIndex]
+                        },
+                        modifier = if (activeStates[rowIndex * 2 + colIndex] == 1) modifierActive else modifierInActive,
                         colors = ButtonDefaults.buttonColors(Color.Transparent),
                         elevation = ButtonDefaults.elevation(0.dp, 0.dp, 0.dp),
                     ) {
                         Text(
                             text = bookableType,
-                            style = TextStyle(
-                                fontSize = 20.sp,
-                                fontFamily = FontFamily(Font(R.font.poppins_bold)),
-                                fontWeight = FontWeight(700),
-                                color = Color(0xFF457B9D),
-                            )
+                            style = if (activeStates[rowIndex * 2 + colIndex] == 1) textStyleActive else textStyleInActive
                         )
                     }
                 }
@@ -125,7 +146,5 @@ import com.diiage.bookit.R
                 )
             }
         }
-
-
     }
 }
