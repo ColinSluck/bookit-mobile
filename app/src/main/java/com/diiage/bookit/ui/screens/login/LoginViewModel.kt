@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.diiage.bookit.data.remote.API
 import com.diiage.bookit.domain.models.Credentials
+import com.diiage.bookit.domain.repositories.AuthRepository
 import com.diiage.bookit.domain.repositories.PreferenceRepository
 import com.diiage.bookit.ui.core.NavigationEvent
 import com.diiage.bookit.ui.core.ViewModel
@@ -15,9 +16,7 @@ import kotlinx.serialization.encodeToString
 
 class LoginViewModel (application: Application) : ViewModel<LoginState>(LoginState(), application) {
 
-    private val api: API by inject()
-
-    private val preferencesRepository: PreferenceRepository by inject()
+    private val authRepository: AuthRepository by inject()
 
     fun handleAction(action: LoginAction) {
         when (action) {
@@ -30,13 +29,7 @@ class LoginViewModel (application: Application) : ViewModel<LoginState>(LoginSta
         viewModelScope.launch {
             if(!isValidLoginForm(credentials)) return@launch
 
-            val user = api.login(credentials) ?: return@launch
-
-            preferencesRepository.save("access_token", user.accessToken)
-            preferencesRepository.save("refresh_token", user.refreshToken)
-
-            val userString = Json.encodeToString(user)
-            preferencesRepository.save("user", userString)
+            authRepository.login(credentials) ?: return@launch
 
             sendEvent(NavigationEvent.NavigateToHome)
         }
