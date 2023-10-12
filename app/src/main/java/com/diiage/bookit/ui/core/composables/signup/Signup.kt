@@ -21,9 +21,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.diiage.bookit.R
+import com.diiage.bookit.ui.screens.signup.SignupAction
+import com.diiage.bookit.ui.screens.signup.SignupState
+
+private typealias UIState = SignupState
 
 @Composable
-fun SignUp() {
+fun SignUp(state: UIState = UIState(),
+           handleAction: (SignupAction) -> Unit
+) {
     Box (
         modifier = Modifier
             .fillMaxWidth()
@@ -31,7 +37,7 @@ fun SignUp() {
     ) {
         Column {
             SignUpInformation()
-            SignUpForm()
+            SignUpForm(handleAction = handleAction)
         }
     }
 }
@@ -73,21 +79,6 @@ fun SignUpInformation() {
                     color = Color(0xFF7A7A7A),
                 )
             )
-        }
-    }
-}
-
-@Preview
-@Composable
-fun SignUpPreview() {
-    Box (
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color(0xFFFFFFFF))
-            .padding(40.dp)
-    ) {
-        Column {
-            SignUp()
         }
     }
 }

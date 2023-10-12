@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -46,6 +47,9 @@ android {
     }
 }
 
+val ktorVersion: String by project
+
+
 dependencies {
 
     implementation("androidx.core:core-ktx:1.9.0")
@@ -71,4 +75,14 @@ dependencies {
     //Koin
     implementation( "io.insert-koin:koin-androidx-compose:3.5.0")
     implementation("io.insert-koin:koin-android:3.5.0")
+
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-cio:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+
+    //WheelPicker
+    implementation("com.github.commandiron:WheelPickerCompose:1.1.11")
 }

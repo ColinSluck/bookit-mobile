@@ -1,36 +1,38 @@
-package com.diiage.bookit.ui.screens.login
+package com.diiage.bookit.ui.screens.signup
 
 import android.app.Application
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.ActivityNavigator
 import com.diiage.bookit.data.remote.API
 import com.diiage.bookit.domain.models.Credentials
+import com.diiage.bookit.domain.models.Signup
 import com.diiage.bookit.domain.repositories.PreferenceRepository
 import com.diiage.bookit.ui.core.NavigationEvent
 import com.diiage.bookit.ui.core.ViewModel
-import com.diiage.bookit.ui.core.functions.isValidLoginForm
+import com.diiage.bookit.ui.core.functions.isValidSignupForm
 import org.koin.core.component.inject
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
 
-class LoginViewModel (application: Application) : ViewModel<LoginState>(LoginState(), application) {
+class SignupViewModel (application: Application) : ViewModel<SignupState>(SignupState(), application) {
 
     private val api: API by inject()
 
     private val preferencesRepository: PreferenceRepository by inject()
 
-    fun handleAction(action: LoginAction) {
+    fun handleAction(action: SignupAction) {
         when (action) {
-            is LoginAction.OnConnect -> login(action.credentials)
-            is LoginAction.OnSignup -> sendEvent(NavigationEvent.NavigateToSignup)
+            is SignupAction.OnSignup -> signup(action.signup)
+            is SignupAction.OnLoginClick -> sendEvent(NavigationEvent.NavigateToLogin)
         }
     }
 
-    private fun login(credentials: Credentials) {
+    private fun signup(signup: Signup) {
         viewModelScope.launch {
-            if(!isValidLoginForm(credentials)) return@launch
+            if(!isValidSignupForm(signup)) return@launch
 
-            val user = api.login(credentials) ?: return@launch
+            val user = api.signup(signup) ?: return@launch
 
             preferencesRepository.save("access_token", user.accessToken)
             preferencesRepository.save("refresh_token", user.refreshToken)
@@ -41,15 +43,13 @@ class LoginViewModel (application: Application) : ViewModel<LoginState>(LoginSta
             sendEvent(NavigationEvent.NavigateToHome)
         }
     }
-
-
 }
-data class LoginState(
+
+data class SignupState(
     val email: String = "",
-    val password: String = "",
 )
 
-sealed interface LoginAction {
-    data class OnConnect(val credentials: Credentials) : LoginAction
-    data class OnSignup(val signup: Boolean? = null) : LoginAction
+sealed interface SignupAction {
+    data class OnSignup(val signup: Signup) : SignupAction
+    data class OnLoginClick(val clicked: Boolean? = null) : SignupAction
 }
