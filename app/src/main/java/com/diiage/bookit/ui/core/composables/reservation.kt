@@ -52,11 +52,8 @@ fun bookableView(
 
 ) {
 
-    Box (
-
-    ){
-        Column( // Colone qui contient : L'image(box), le nom(ligne1), Localisation(ligne2), Options(ligne3)
-        ) {
+    Box {
+        Column {
 
             Box(
                 Modifier
@@ -79,8 +76,7 @@ fun bookableView(
                 }
             }
 
-            Row(//ligne1 pour le nom
-            ) {
+            Row {
                 Text(
                     modifier = Modifier.padding(2.dp),
                     color = Color.Black,

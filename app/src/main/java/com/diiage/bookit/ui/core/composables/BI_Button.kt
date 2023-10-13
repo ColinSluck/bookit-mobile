@@ -34,7 +34,8 @@ import com.diiage.bookit.R
  * @param borderColor La couleur de la bordure du bouton (facultatif, par défaut [Color.Transparent]).
  */
 @Composable
-fun BI_Button(text: String, width: Any, height: Any, colorButton: Color, colorText: Color, textSize: Int, fontWeight: Int, borderColor: Color? = null) {
+fun BI_Button(text: String, width: Any, height: Any, colorButton: Color, colorText: Color, textSize: Int, fontWeight: Int, borderColor: Color? = null,
+              onClick: () -> Unit = {}) {
     val context = LocalContext.current
     val w = when (width) {
         is Int -> width.toInt().dp
@@ -50,7 +51,7 @@ fun BI_Button(text: String, width: Any, height: Any, colorButton: Color, colorTe
 
     Button(
         onClick = {
-            Toast.makeText(context, "Action réussi!", Toast.LENGTH_SHORT).show()
+            onClick()
         },
         modifier = Modifier
             .border(1.dp, borderColor ?: Color.Transparent, shape = RoundedCornerShape(size = 5.dp))
