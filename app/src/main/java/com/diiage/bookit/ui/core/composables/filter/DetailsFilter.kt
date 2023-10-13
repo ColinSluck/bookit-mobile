@@ -96,21 +96,17 @@ fun DetailsFilter(
             modifier = Modifier.padding(top = 166.dp),
 
         ) {
-            val mItemsList: List<String> = listOf("Machine à café", "Tableau blanc", "Télévision", "Gel hydroalcoolique")
-            var isChecked = remember {
-                mutableStateListOf(*Array(mItemsList.size) { false })
-            }
-            mItemsList.forEachIndexed { colIndex, items ->
+            state.materials.forEachIndexed { colIndex, items ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.absoluteOffset(0.dp, (-12).dp)
                 ) {
                     Checkbox(
-                        checked = isChecked[colIndex],
+                        checked = state.checked[colIndex],
                         onCheckedChange = {
-                            newChecked -> isChecked.toMutableList().also { it[colIndex] = newChecked }
-                                          },
+                            handleAction(FilterAction.UpdateChecked(colIndex, it))
+                        },
                         enabled = true,
                         colors = CheckboxDefaults.colors(
                             checkedColor = Color(0xFF457B9D),

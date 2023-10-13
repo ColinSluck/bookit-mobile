@@ -118,7 +118,7 @@ fun FilterContent(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(horizontal = 24.dp)
                 ){
-                    SelectedDate()
+                    SelectedDate(state, handleAction)
                 }
                 Row(
                     modifier = Modifier.padding(top = 34.dp,  start = 26.dp)
