@@ -14,4 +14,5 @@ sealed class Url(val path: String){
     object Bookings: Url("/bookings")
     object Booking: Url("/bookings/{id}")
     object BookingsAvailable: Url("/bookings/available")
+    object CreateBookable: Url("/bookables")
 }

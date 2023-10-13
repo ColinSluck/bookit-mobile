@@ -41,7 +41,7 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.diiage.bookit.R
 
-@OptIn(ExperimentalCoilApi::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun AddPhotos() {
     var selectImages by remember { mutableStateOf(listOf<Uri>()) }
@@ -107,15 +107,10 @@ fun AddPhotos() {
             }
         }
 
-        LazyColumn(
-            Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.8f),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            itemsIndexed(selectImages) { _, uri ->
+        Column {
+            selectImages.forEach {
                 Image(
-                    painter = rememberImagePainter(uri),
+                    painter = rememberImagePainter(it),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -125,10 +120,4 @@ fun AddPhotos() {
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun AddPhotosPreview() {
-    AddPhotos()
 }

@@ -28,8 +28,8 @@ class BookableRepositoryImpl(
         return mapper.toBookable(response)
     }
 
-    override fun createBookable(bookable: Bookable): Bookable {
-        TODO("Not yet implemented")
-//        val response = apiAuth.post<>()
+    override suspend fun createBookable(bookable: Bookable): Bookable {
+       val response = apiAuth.post<BookableResponse>(Url.CreateBookable.path, mapper.toCreateBookable(bookable))
+        return mapper.toBookable(response)
     }
 }

@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import com.diiage.bookit.domain.models.Bookable
 import com.diiage.bookit.ui.core.NavigationEvent
 import com.diiage.bookit.ui.core.ViewModel
 
@@ -17,9 +18,9 @@ class CreateBookableViewModel(application: Application) : ViewModel<CreateBookab
     )
 
     fun onNextStep() {
-        if (currentStep < stepColors.size - 1) {
-            currentStep++
-        }
+            if (currentStep < stepColors.size - 1) {
+                currentStep++
+            }
     }
 
     fun onPreviousStep() {
@@ -32,7 +33,7 @@ class CreateBookableViewModel(application: Application) : ViewModel<CreateBookab
         currentStep = 5
     }
 
-    public fun handleAction(action: CreateBookableAction) {
+    fun handleAction(action: CreateBookableAction) {
         when (action) {
             is CreateBookableAction.OnCloseClicked -> sendEvent(NavigationEvent.NavigateToProfile)
         }
@@ -41,7 +42,7 @@ class CreateBookableViewModel(application: Application) : ViewModel<CreateBookab
 }
 
 data class CreateBookableState(
-    val currentStep: Int = 0
+    val bookable : Bookable = Bookable(0, "", "", "", "", "", 0, 0)
 )
 
 sealed interface CreateBookableAction {
