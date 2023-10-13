@@ -123,7 +123,7 @@ fun FilterContent(
                 Row(
                     modifier = Modifier.padding(top = 34.dp,  start = 26.dp)
                 ) {
-                    DetailsFilter()
+                    DetailsFilter(state, handleAction)
                 }
                 Divider(
                     modifier = Modifier

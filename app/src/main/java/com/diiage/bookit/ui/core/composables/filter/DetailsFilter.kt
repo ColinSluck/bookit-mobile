@@ -1,5 +1,6 @@
 package com.diiage.bookit.ui.core.composables.filter
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +15,7 @@ import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -30,9 +32,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.diiage.bookit.R
 import com.diiage.bookit.ui.core.composables.picker.NumberPicker
+import com.diiage.bookit.ui.screens.filter.FilterAction
+import com.diiage.bookit.ui.screens.filter.FilterState
 
 @Composable
-fun DetailsFilter() {
+fun DetailsFilter(
+    state: FilterState,
+    handleAction: (FilterAction) -> Unit
+) {
     Box(
         Modifier.background(Color.White)
     ){
@@ -56,7 +63,7 @@ fun DetailsFilter() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
             ){
-                NumberPicker()
+                NumberPicker(state, handleAction)
                 Text(
                     text = "personnes",
                     style = TextStyle(
@@ -90,17 +97,20 @@ fun DetailsFilter() {
 
         ) {
             val mItemsList: List<String> = listOf("Machine à café", "Tableau blanc", "Télévision", "Gel hydroalcoolique")
-            mItemsList.forEach { items ->
+            var isChecked = remember {
+                mutableStateListOf(*Array(mItemsList.size) { false })
+            }
+            mItemsList.forEachIndexed { colIndex, items ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.absoluteOffset(0.dp, (-12).dp)
                 ) {
-                    val isChecked = remember { mutableStateOf(false) }
-
                     Checkbox(
-                        checked = isChecked.value,
-                        onCheckedChange = { isChecked.value = it },
+                        checked = isChecked[colIndex],
+                        onCheckedChange = {
+                            newChecked -> isChecked.toMutableList().also { it[colIndex] = newChecked }
+                                          },
                         enabled = true,
                         colors = CheckboxDefaults.colors(
                             checkedColor = Color(0xFF457B9D),
@@ -113,10 +123,4 @@ fun DetailsFilter() {
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun DetailsFilterPreview() {
-    DetailsFilter()
 }
