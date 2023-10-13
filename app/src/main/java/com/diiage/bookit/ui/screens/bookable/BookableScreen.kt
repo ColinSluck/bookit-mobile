@@ -141,7 +141,7 @@ fun BookableContent(
                 Text(text = state.location)
             }
 
-            state.materials.forEach() {
+            state.materials.forEach {
                 Row {
                     Text(text = it)
                 }

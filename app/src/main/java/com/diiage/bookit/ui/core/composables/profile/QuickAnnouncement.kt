@@ -30,17 +30,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.diiage.bookit.R
+import com.diiage.bookit.ui.screens.profile.ProfileAction
 
 @Composable
-fun QuickAnnouncement() {
+fun QuickAnnouncement(handleAction: (ProfileAction) -> Unit) {
 
-    Row(
-    ) {
+    Row {
         val context = LocalContext.current
        Button(
-           onClick = {
-               Toast.makeText(context, "L'annonce a bien été crée!", Toast.LENGTH_SHORT).show()
-           },
+           onClick = { handleAction(ProfileAction.OnCreateClicked) },
            modifier = Modifier
                .width(340.dp)
                .height(177.dp),
@@ -53,8 +51,7 @@ fun QuickAnnouncement() {
                    .weight(2f)
                    .fillMaxHeight()
            ){
-               Column(
-               ){
+               Column {
                    Text(
                        text = "Ajoutez votre annonce rapidement !",
                        style = TextStyle(
@@ -102,10 +99,4 @@ fun QuickAnnouncement() {
        }
     }
 
-}
-
-@Preview
-@Composable
-fun QuickAnnouncementPreview() {
-    QuickAnnouncement()
 }

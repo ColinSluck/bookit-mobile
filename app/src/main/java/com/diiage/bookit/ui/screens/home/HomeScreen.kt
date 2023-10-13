@@ -47,24 +47,27 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.diiage.bookit.R
+import com.diiage.bookit.ui.core.Screen
 import com.diiage.bookit.ui.core.composables.bookableView
 
 private typealias UIState = HomeState
 
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) {
     val viewModel: HomeViewModel = viewModel()
     val state by viewModel.state.collectAsState()
 
     HomeContent(
-        state = state
+        state = state,
+        navController = navController
     )
 }
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 private fun HomeContent(
-    state: UIState = UIState()
+    state: UIState = UIState(),
+    navController: NavController
 ){
     Box(
         modifier = Modifier
@@ -87,7 +90,9 @@ private fun HomeContent(
         val context = LocalContext.current
         Button(
             onClick = {
-                Toast.makeText(context, "Action réussi!", Toast.LENGTH_SHORT).show()
+                navController.navigate(Screen.Filter.route) {
+                    launchSingleTop = true
+                }
             },
             colors = ButtonDefaults.outlinedButtonColors(Color.Transparent),
             shape = RoundedCornerShape(29.dp),
@@ -326,5 +331,4 @@ private fun HomeContent(
 @Preview
 @Composable
 fun HomePreview(){
-    HomeContent()
 }

@@ -3,17 +3,14 @@ package com.diiage.bookit.ui.composables
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -23,29 +20,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.diiage.bookit.R
+import com.diiage.bookit.ui.core.composables.Line
 import com.diiage.bookit.ui.core.functions.calculateAccountAge
 
 @Composable
-fun Line(leftValue: Int, topValue: Int, rightValue: Int, bottomValue: Int, widthValue: Int) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(leftValue.dp, topValue.dp, rightValue.dp, bottomValue.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Divider(
-            modifier = Modifier
-                .padding(0.dp)
-                .width(widthValue.dp)
-                .background(color = Color(0x807A7A7A)),
-            color = Color(0x807A7A7A),
-            thickness = 1.dp
-        )
-    }
-}
-
-@Composable
-fun ProfilHeader(lastnameValue: String, firstnameValue: String, createdAccountValue: String) {
+fun ProfileHeader(lastnameValue: String, firstnameValue: String, createdAccountValue: String) {
     Column(
         Modifier.background(color = Color(0xFFFFFFFF))
     ) {
@@ -112,6 +91,6 @@ fun ProfilHeader(lastnameValue: String, firstnameValue: String, createdAccountVa
 
 @Preview
 @Composable
-fun ProfilHeaderPreview() {
-    ProfilHeader(lastnameValue = "MARTIN", firstnameValue = "Lucas", createdAccountValue = "2020-09-05T07:15:58.774737")
+fun ProfileHeaderPreview() {
+    ProfileHeader(lastnameValue = "MARTIN", firstnameValue = "Lucas", createdAccountValue = "2020-09-05T07:15:58.774737")
 }

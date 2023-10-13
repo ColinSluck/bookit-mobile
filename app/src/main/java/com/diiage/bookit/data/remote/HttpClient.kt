@@ -18,7 +18,7 @@ import io.ktor.serialization.kotlinx.json.*
 
 fun createHttpClient(
     baseUrl: String,
-    engine: HttpClientEngine = CIO.create()
+    engine: HttpClientEngine = CIO.create(),
 ): HttpClient = HttpClient(engine) {
     defaultRequest { url(baseUrl) }
 
