@@ -29,6 +29,7 @@ class ProfileViewModel(application: Application) : ViewModel<ProfileState>(Profi
     fun handleAction(action: ProfileAction) {
         when (action) {
             is ProfileAction.OnDisconnect -> disconnect()
+            is ProfileAction.OnCreateClicked -> sendEvent(NavigationEvent.NavigateToCreateBookable)
         }
     }
 
@@ -46,4 +47,5 @@ data class ProfileState(
 
 sealed interface ProfileAction {
     object OnDisconnect : ProfileAction
+    object OnCreateClicked : ProfileAction
 }

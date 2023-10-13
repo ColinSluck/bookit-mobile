@@ -2,6 +2,7 @@ package com.diiage.bookit.ui.core.composables.createBookable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,8 +16,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.diiage.bookit.R
+import com.diiage.bookit.ui.screens.createBookable.CreateBookableAction
 
-@Composable fun Header() {
+@Composable fun Header(
+    handleAction: (CreateBookableAction) -> Unit
+) {
     Box(
         modifier = Modifier
             .background(Color.White)
@@ -30,10 +34,7 @@ import com.diiage.bookit.R
                     .padding(16.dp)
                     .width(30.dp)
                     .height(30.dp)
+                    .clickable { handleAction(CreateBookableAction.OnCloseClicked) }
             )
         }
-}
-
-@Preview @Composable fun HeaderPreview() {
-    Header()
 }

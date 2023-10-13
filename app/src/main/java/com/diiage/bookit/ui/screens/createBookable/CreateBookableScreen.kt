@@ -7,12 +7,18 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.diiage.bookit.ui.core.NavigationEvent
+import com.diiage.bookit.ui.core.Screen
 import com.diiage.bookit.ui.core.composables.createBookable.BokableTypeList
 import com.diiage.bookit.ui.core.composables.createBookable.Header
 import com.diiage.bookit.ui.core.composables.createBookable.Home
@@ -22,15 +28,31 @@ import com.diiage.bookit.ui.core.composables.createBookable.MaxCapacity
 import com.diiage.bookit.ui.core.composables.createBookable.Equipement
 import com.diiage.bookit.ui.core.composables.createBookable.AddPhotos
 import com.diiage.bookit.ui.core.composables.createBookable.Confirmation
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun CreateBookableScreen() {
+fun CreateBookableScreen(navController: NavController) {
     val viewModel: CreateBookableViewModel = viewModel()
 
-    Column {
-        Header()
-        Box {
+    LaunchedEffect(viewModel) {
+        viewModel.events
+            .onEach { event ->
+                if (event is NavigationEvent.NavigateToProfile)
+                    navController.navigate(Screen.Profile.route)
+            }.collect()
+    }
+
+
+    Column(
+        modifier = Modifier
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Header(handleAction = viewModel::handleAction)
+        Box (
+        ) {
             when (viewModel.currentStep) {
                 0 -> Step1Content()
                 1 -> Step2Content()
@@ -92,8 +114,3 @@ fun Step6Content() {
     Confirmation()
 }
 
-@Preview(showBackground = true)
-@Composable
-fun CreateBookableScreenPreview() {
-    CreateBookableScreen()
-}

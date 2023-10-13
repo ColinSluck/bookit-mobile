@@ -38,6 +38,8 @@ fun ProfileScreen(navController: NavController) {
             .onEach { event ->
                 if (event is NavigationEvent.NavigateToLogin)
                     navController.navigate(Screen.Login.route)
+                else if (event is NavigationEvent.NavigateToCreateBookable)
+                    navController.navigate(Screen.CreateBookable.route)
             }.collect()
     }
 
@@ -63,7 +65,7 @@ private fun ProfileContent(
                         .padding(horizontal = 45.dp, vertical = 36.dp),
                     horizontalArrangement = Arrangement.Center
                 ){
-                    QuickAnnouncement()
+                    QuickAnnouncement(handleAction = handleAction)
                 }
             }
             PersonalInformation(lastnameValue = state.user.lastName, firstnameValue = state.user.firstName, emailValue = state.user.email)

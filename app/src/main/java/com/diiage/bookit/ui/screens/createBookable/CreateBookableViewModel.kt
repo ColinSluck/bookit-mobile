@@ -1,13 +1,15 @@
 package com.diiage.bookit.ui.screens.createBookable
 
 
+import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.ViewModel
+import com.diiage.bookit.ui.core.NavigationEvent
+import com.diiage.bookit.ui.core.ViewModel
 
-class CreateBookableViewModel : ViewModel() {
+class CreateBookableViewModel(application: Application) : ViewModel<CreateBookableState>(CreateBookableState(), application) {
     var currentStep by mutableStateOf(0)
 
     val stepColors = listOf(
@@ -29,4 +31,19 @@ class CreateBookableViewModel : ViewModel() {
     fun onFinish() {
         currentStep = 5
     }
+
+    public fun handleAction(action: CreateBookableAction) {
+        when (action) {
+            is CreateBookableAction.OnCloseClicked -> sendEvent(NavigationEvent.NavigateToProfile)
+        }
+    }
+
+}
+
+data class CreateBookableState(
+    val currentStep: Int = 0
+)
+
+sealed interface CreateBookableAction {
+    object OnCloseClicked : CreateBookableAction
 }
