@@ -1,5 +1,6 @@
 package com.diiage.bookit.ui.core.composables.picker
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationResult
 import androidx.compose.animation.core.AnimationVector1D
@@ -22,6 +23,7 @@ import androidx.compose.material.ProvideTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -42,18 +44,25 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.diiage.bookit.R
+import com.diiage.bookit.ui.screens.filter.FilterAction
+import com.diiage.bookit.ui.screens.filter.FilterState
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
-fun NumberPicker() {
-    var state by remember { mutableStateOf(5) }
+fun NumberPicker(
+    state: FilterState,
+    handleAction: (FilterAction) -> Unit
+) {
+    var state by mutableStateOf(state.capacity)
     NbPicker(
         value = state,
         range = 1..50,
         onValueChange = {
             state = it
+            handleAction(FilterAction.UpdateCapacity(it))
         }
     )
 }
@@ -206,7 +215,7 @@ fun <T> ListItemPicker(
                                 ))
                             ),
                         textStyle = TextStyle(
-                            fontSize = 24.sp,
+                            fontSize = 18.sp,
                             fontFamily = FontFamily(Font(R.font.poppins_regular)),
                             fontWeight = FontWeight(700),
                             color = Color(0xFF457B9D),

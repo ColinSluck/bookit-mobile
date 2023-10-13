@@ -48,7 +48,7 @@ import kotlin.math.roundToInt
 
 @Composable
 fun HoursPicker() {
-    val possibleValues = listOf("08:00", "08:15", "08:30", "08:45", "09:00")
+    val possibleValues = listOf("08:00", "08:15", "08:30", "08:45", "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30")
     var state by remember { mutableStateOf(possibleValues[0]) }
     ListItemPicker(
         label = { it },
@@ -79,7 +79,7 @@ fun <T> ListItemPicker(
 ) {
     val minimumAlpha = 0.3f
     val verticalMargin = 0.dp
-    val numbersColumnHeight = 20.dp
+    val numbersColumnHeight = 80.dp
     val halfNumbersColumnHeight = numbersColumnHeight / 2
     val halfNumbersColumnHeightPx = with(LocalDensity.current) { halfNumbersColumnHeight.toPx() }
 

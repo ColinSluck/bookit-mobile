@@ -78,7 +78,7 @@ private fun MainContent(preferenceRepository: PreferenceRepository) {
 
                 composable(Screen.Home.route) { HomeScreen(navController) }
 
-                composable(Screen.Filter.route) { FilterScreen() }
+                composable(Screen.Filter.route) { FilterScreen(navController) }
 
                 composable(Screen.Login.route) { LoginScreen(navController) }
 

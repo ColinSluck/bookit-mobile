@@ -53,7 +53,7 @@ fun SelectedDate() {
                     fontFamily = FontFamily(Font(R.font.poppins_regular)),
                     fontWeight = FontWeight(700)
                 ),
-                modifier = Modifier.padding(horizontal = 100.dp)
+                modifier = Modifier.padding(start = 100.dp, top = 21.dp)
             )
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,

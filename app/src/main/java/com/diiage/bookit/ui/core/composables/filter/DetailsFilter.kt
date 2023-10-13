@@ -1,5 +1,6 @@
 package com.diiage.bookit.ui.core.composables.filter
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -7,12 +8,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -29,9 +32,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.diiage.bookit.R
 import com.diiage.bookit.ui.core.composables.picker.NumberPicker
+import com.diiage.bookit.ui.screens.filter.FilterAction
+import com.diiage.bookit.ui.screens.filter.FilterState
 
 @Composable
-fun DetailsFilter() {
+fun DetailsFilter(
+    state: FilterState,
+    handleAction: (FilterAction) -> Unit
+) {
     Box(
         Modifier.background(Color.White)
     ){
@@ -55,11 +63,11 @@ fun DetailsFilter() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
             ){
-                NumberPicker()
+                NumberPicker(state, handleAction)
                 Text(
                     text = "personnes",
                     style = TextStyle(
-                        fontSize = 24.sp,
+                        fontSize = 20.sp,
                         fontFamily = FontFamily(Font(R.font.poppins_regular)),
                         fontWeight = FontWeight(700),
                         color = Color(0xFF457B9D),
@@ -85,25 +93,29 @@ fun DetailsFilter() {
             }
         }
         Column(
-            modifier = Modifier.padding(top = 176.dp),
+            modifier = Modifier.padding(top = 166.dp),
 
         ) {
             val mItemsList: List<String> = listOf("Machine à café", "Tableau blanc", "Télévision", "Gel hydroalcoolique")
-            mItemsList.forEach { items ->
+            var isChecked = remember {
+                mutableStateListOf(*Array(mItemsList.size) { false })
+            }
+            mItemsList.forEachIndexed { colIndex, items ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.absoluteOffset(0.dp, (-12).dp)
                 ) {
-                    val isChecked = remember { mutableStateOf(false) }
-
                     Checkbox(
-                        checked = isChecked.value,
-                        onCheckedChange = { isChecked.value = it },
+                        checked = isChecked[colIndex],
+                        onCheckedChange = {
+                            newChecked -> isChecked.toMutableList().also { it[colIndex] = newChecked }
+                                          },
                         enabled = true,
                         colors = CheckboxDefaults.colors(
-                            checkedColor = Color.Magenta,
-                            uncheckedColor = Color.DarkGray,
-                            checkmarkColor = Color.Cyan
+                            checkedColor = Color(0xFF457B9D),
+                            uncheckedColor = Color(0xFF457B9D),
+                            checkmarkColor = Color.White
                         )
                     )
                     Text(text = items)
@@ -111,10 +123,4 @@ fun DetailsFilter() {
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun DetailsFilterPreview() {
-    DetailsFilter()
 }
