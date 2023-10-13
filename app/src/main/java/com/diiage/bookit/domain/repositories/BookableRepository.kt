@@ -8,5 +8,5 @@ interface BookableRepository {
 
     suspend fun getBookable(id: Int): Bookable
 
-    fun createBookable(bookable: Bookable): Bookable
+    suspend fun createBookable(bookable: Bookable): Bookable
 }

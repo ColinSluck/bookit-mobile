@@ -58,9 +58,3 @@ fun AddInformation() {
             )
         }
 }
-
-@Preview
-@Composable
-fun AddInformationPreview() {
-    AddInformation()
-}
