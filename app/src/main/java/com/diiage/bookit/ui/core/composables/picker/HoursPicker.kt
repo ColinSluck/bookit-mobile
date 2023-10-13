@@ -42,12 +42,32 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.diiage.bookit.R
+import com.diiage.bookit.ui.screens.filter.FilterAction
+import com.diiage.bookit.ui.screens.filter.FilterState
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
 @Composable
-fun HoursPicker() {
+fun HoursPickerStart(
+    state: FilterState,
+    handleAction: (FilterAction) -> Unit
+) {
+    val possibleValues = listOf("08:00", "08:15", "08:30", "08:45", "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30")
+    var state by remember { mutableStateOf(possibleValues[0]) }
+    ListItemPicker(
+        label = { it },
+        value = state,
+        onValueChange = { state = it },
+        list = possibleValues
+    )
+}
+
+@Composable
+fun HoursPickerEnd(
+    state: FilterState,
+    handleAction: (FilterAction) -> Unit
+) {
     val possibleValues = listOf("08:00", "08:15", "08:30", "08:45", "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30")
     var state by remember { mutableStateOf(possibleValues[0]) }
     ListItemPicker(
