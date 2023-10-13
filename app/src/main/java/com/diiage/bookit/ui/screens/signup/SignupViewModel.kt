@@ -44,5 +44,5 @@ data class SignupState(
 
 sealed interface SignupAction {
     data class OnSignup(val signup: Signup) : SignupAction
-    data class OnLoginClick(val clicked: Boolean? = null) : SignupAction
+    object OnLoginClick : SignupAction
 }

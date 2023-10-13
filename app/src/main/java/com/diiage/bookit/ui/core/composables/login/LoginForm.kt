@@ -108,7 +108,7 @@ fun LoginForm(
                     // Check if the clicked text is "Inscrivez-vous"
                     annotatedString.getStringAnnotations(tag = "clickable", start = offset, end = offset)
                         .firstOrNull()?.let {
-                            handleAction(LoginAction.OnSignup())
+                            handleAction(LoginAction.OnSignup)
                         }
                 }
             )

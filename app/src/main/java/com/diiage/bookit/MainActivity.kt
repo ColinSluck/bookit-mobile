@@ -83,7 +83,8 @@ private fun MainContent(preferenceRepository: PreferenceRepository) {
                 composable(Screen.Login.route) { LoginScreen(navController) }
 
                 composable(Screen.Signup.route) { SignupScreen(navController) }
-                composable(Screen.CreateBookable.route) { CreateBookableScreen() }
+
+                composable(Screen.CreateBookable.route) { CreateBookableScreen(navController) }
 
             }
         }
@@ -96,7 +97,8 @@ fun shouldShowNavBar(navController: NavHostController): Boolean {
     val routesWithoutNavBar = setOf(
         Screen.Filter.route,
         Screen.Login.route,
-        Screen.Signup.route
+        Screen.Signup.route,
+        Screen.CreateBookable.route
     )
 
     return currentRoute !in routesWithoutNavBar
