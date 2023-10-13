@@ -77,7 +77,7 @@ private fun HomeContent(
 
     ){
         Text(
-            text = "Bienvenue Logan !",
+            text = "Bienvenue " + state.firstName + " !",
             style = TextStyle(
                 fontSize = 24.sp,
                 fontFamily = FontFamily(Font(R.font.poppins_regular)),
