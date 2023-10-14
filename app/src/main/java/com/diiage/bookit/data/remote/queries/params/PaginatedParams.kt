@@ -9,14 +9,8 @@ data class PaginatedParams (
 ){
     fun toStringValues(): StringValues {
         return StringValues.build {
-            this@PaginatedParams::class.members.forEach {
-                if (it is KProperty1<*, *>) {
-                    val value = it.call(this@PaginatedParams)
-                    if (value != null) {
-                        append(it.name, value.toString())
-                    }
-                }
-            }
+            append("page", page.toString())
+            append("limit", limit.toString())
         }
     }
 }
