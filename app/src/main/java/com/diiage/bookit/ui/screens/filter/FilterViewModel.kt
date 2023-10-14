@@ -67,6 +67,7 @@ data class FilterState(
    val checked: List<Boolean> = emptyList(),
    val materials: List<String> = listOf("Machine à café", "Tableau blanc", "Télévision", "Gel hydroalcoolique"),
    val slots: List<Slot> = emptyList(),
+    val selectedSlotId: Int? = null,
 )
 
 sealed interface FilterAction {

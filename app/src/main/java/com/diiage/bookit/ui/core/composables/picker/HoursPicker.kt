@@ -53,13 +53,16 @@ fun HoursPickerStart(
     state: FilterState,
     handleAction: (FilterAction) -> Unit
 ) {
-    val possibleValues = listOf("08:00", "08:15", "08:30", "08:45", "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30")
-    var state by remember { mutableStateOf(possibleValues[0]) }
+    val selectedSlotId = state.selectedSlotId
+    val slots = state.slots
+    val selectedSlot = slots.find { it.id == selectedSlotId }
+    val startTimeOptions = selectedSlot!!.startTime
+    var value by remember { mutableStateOf(startTimeOptions.first()) }
     ListItemPicker(
-        label = { it },
-        value = state,
-        onValueChange = { state = it },
-        list = possibleValues
+        label = { it.toString() },
+        value = value,
+        onValueChange = { value = it as Char },
+        list = slots
     )
 }
 
@@ -68,13 +71,16 @@ fun HoursPickerEnd(
     state: FilterState,
     handleAction: (FilterAction) -> Unit
 ) {
-    val possibleValues = listOf("08:00", "08:15", "08:30", "08:45", "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30")
-    var state by remember { mutableStateOf(possibleValues[0]) }
+    val selectedSlotId = state.selectedSlotId
+    val selectedSlot = state.slots.find { it.id == selectedSlotId }
+    val slots = state.slots
+    val endTimeOptions = selectedSlot!!.endTime
+    var state by remember { mutableStateOf(endTimeOptions.first()) }
     ListItemPicker(
-        label = { it },
+        label = { it.toString() },
         value = state,
-        onValueChange = { state = it },
-        list = possibleValues
+        onValueChange = { state = it as Char },
+        list = slots
     )
 }
 
