@@ -2,17 +2,14 @@ package com.diiage.bookit.ui.screens.login
 
 import android.app.Application
 import androidx.lifecycle.viewModelScope
-import com.diiage.bookit.data.remote.API
+import com.diiage.bookit.data.remote.ErrorMessage
+import com.diiage.bookit.domain.exceptions.LoginException
 import com.diiage.bookit.domain.models.Credentials
 import com.diiage.bookit.domain.repositories.AuthRepository
-import com.diiage.bookit.domain.repositories.PreferenceRepository
 import com.diiage.bookit.ui.core.NavigationEvent
 import com.diiage.bookit.ui.core.ViewModel
-import com.diiage.bookit.ui.core.functions.isValidLoginForm
 import org.koin.core.component.inject
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.encodeToString
 
 class LoginViewModel (application: Application) : ViewModel<LoginState>(LoginState(), application) {
 
@@ -27,19 +24,32 @@ class LoginViewModel (application: Application) : ViewModel<LoginState>(LoginSta
 
     private fun login(credentials: Credentials) {
         viewModelScope.launch {
-            if(!isValidLoginForm(credentials)) return@launch
+            updateState { copy(isLoading = true) }
 
-            authRepository.login(credentials) ?: return@launch
+            try {
+                authRepository.login(credentials)
 
-            sendEvent(NavigationEvent.NavigateToHome)
+                sendEvent(NavigationEvent.NavigateToHome)
+            } catch (e: LoginException) {
+                when (e) {
+                    LoginException.IncorrectPassword ->
+                        updateState { copy(error = ErrorMessage.IncorrectPassword.message, isLoading = false) }
+
+                    LoginException.ValidationError ->
+                        updateState { copy(error = ErrorMessage.ValidationError.message, isLoading = false) }
+
+                    LoginException.ServerError ->
+                        updateState { copy(error = ErrorMessage.ServerError.message, isLoading = false) }
+
+                }
+            }
         }
     }
 
-
 }
 data class LoginState(
-    val email: String = "",
-    val password: String = "",
+    val isLoading : Boolean = false,
+    val error: String? = null,
 )
 
 sealed interface LoginAction {

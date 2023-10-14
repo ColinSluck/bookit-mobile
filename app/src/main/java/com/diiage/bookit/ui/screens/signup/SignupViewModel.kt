@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.ActivityNavigator
 import com.diiage.bookit.data.remote.API
+import com.diiage.bookit.data.remote.ErrorMessage
+import com.diiage.bookit.domain.exceptions.SignupException
 import com.diiage.bookit.domain.models.Credentials
 import com.diiage.bookit.domain.models.Signup
 import com.diiage.bookit.domain.repositories.AuthRepository
@@ -29,17 +31,31 @@ class SignupViewModel (application: Application) : ViewModel<SignupState>(Signup
 
     private fun signup(signup: Signup) {
         viewModelScope.launch {
-            if(!isValidSignupForm(signup)) return@launch
+            updateState { copy(isLoading = true) }
 
-            authRepository.signup(signup) ?: return@launch
+            try {
+                authRepository.signup(signup)
 
-            sendEvent(NavigationEvent.NavigateToHome)
+                sendEvent(NavigationEvent.NavigateToHome)
+            } catch(e: SignupException) {
+                when (e) {
+                    SignupException.SignupError ->
+                        updateState { copy(error = ErrorMessage.SignupError.message, isLoading = false) }
+
+                    SignupException.ValidationError ->
+                        updateState { copy(error = ErrorMessage.ValidationError.message, isLoading = false) }
+
+                    SignupException.ServerError ->
+                        updateState { copy(error = ErrorMessage.ServerError.message, isLoading = false) }
+                }
+            }
         }
     }
 }
 
 data class SignupState(
-    val email: String = "",
+    val isLoading : Boolean = false,
+    val error: String? = null,
 )
 
 sealed interface SignupAction {

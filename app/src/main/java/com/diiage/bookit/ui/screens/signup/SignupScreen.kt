@@ -51,7 +51,7 @@ fun SignupContent(
             .padding(horizontal = 32.dp, vertical = 16.dp)
             .verticalScroll(rememberScrollState())
     ){
-        SignUp(handleAction = handleAction)
+        SignUp(state, handleAction = handleAction)
     }
 }
 
