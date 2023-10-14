@@ -37,7 +37,7 @@ fun SignUp(state: UIState = UIState(),
     ) {
         Column {
             SignUpInformation()
-            SignUpForm(handleAction = handleAction)
+            SignUpForm(handleAction = handleAction, state)
         }
     }
 }

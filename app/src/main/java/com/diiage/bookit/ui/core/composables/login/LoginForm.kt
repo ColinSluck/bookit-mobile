@@ -2,6 +2,7 @@ package com.diiage.bookit.ui.core.composables.login
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,8 +10,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -26,16 +29,17 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.diiage.bookit.domain.models.Credentials
 import com.diiage.bookit.ui.core.composables.InputForm
 import com.diiage.bookit.ui.screens.login.LoginAction
+import com.diiage.bookit.ui.screens.login.LoginState
 
 @Composable
 fun LoginForm(
-    handleAction: (LoginAction) -> Unit
+    handleAction: (LoginAction) -> Unit,
+    state: LoginState
 ) {
     val emailState = remember { mutableStateOf(TextFieldValue("")) }
     val passwordState = remember { mutableStateOf(TextFieldValue("")) }
@@ -53,7 +57,7 @@ fun LoginForm(
         Row (
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 64.dp)
+                .padding(bottom = 48.dp)
         ) {
             InputForm(label = "Mot de passe", textState = passwordState, isPasswordField = true)
         }
@@ -64,7 +68,19 @@ fun LoginForm(
             LoginButton(onClick = {
                 val credentials = Credentials(emailState.value.text, passwordState.value.text)
                 handleAction(LoginAction.OnConnect(credentials))
-            })
+            }, isLoading = state.isLoading)
+        }
+        state.error?.let {
+            Text(
+                text = it,
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight(600),
+                    color = Color(0xFFFF9999),
+                    textAlign = TextAlign.Center,
+                ),
+                modifier = Modifier.padding(top = 8.dp).fillMaxWidth(),
+            )
         }
         Row(
             modifier = Modifier
@@ -75,7 +91,6 @@ fun LoginForm(
             val text = "Vous n'avez pas de compte ? "
             val clickableText = "Inscrivez-vous"
 
-            // Combine normal text with clickable text
             val annotatedString = buildAnnotatedString {
                 withStyle(style = SpanStyle(color = Color(0xFF7A7A7A))) {
                     append(text)
@@ -86,7 +101,6 @@ fun LoginForm(
                         textDecoration = TextDecoration.Underline
                     )
                 ) {
-                    // Make "Inscrivez-vous" clickable
                     pushStringAnnotation(
                         tag = "clickable",
                         annotation = clickableText
@@ -105,7 +119,6 @@ fun LoginForm(
                     textAlign = TextAlign.Center,
                 ),
                 onClick = { offset ->
-                    // Check if the clicked text is "Inscrivez-vous"
                     annotatedString.getStringAnnotations(tag = "clickable", start = offset, end = offset)
                         .firstOrNull()?.let {
                             handleAction(LoginAction.OnSignup)
@@ -118,26 +131,30 @@ fun LoginForm(
 }
 
 @Composable
-fun LoginButton(onClick: () -> Unit) {
+fun LoginButton(onClick: () -> Unit, isLoading: Boolean = false) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(69.dp)
             .background(
-                color = Color(0xFF457B9D),
+                color = if (isLoading) Color.Gray else Color(0xFF457B9D),
                 shape = RoundedCornerShape(size = 5.dp)
             )
-            .clickable(onClick = onClick), // rendez le composant cliquable
+            .clickable(enabled = !isLoading, onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = "Connexion",
-            style = TextStyle(
-                fontSize = 20.sp,
-                fontWeight = FontWeight(700),
-                color = Color(0xFFFFFFFF),
-                textAlign = TextAlign.Center,
+        if (isLoading) {
+            CircularProgressIndicator(color = Color.White)
+        } else {
+            Text(
+                text = "Connexion",
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight(700),
+                    color = Color(0xFFFFFFFF),
+                    textAlign = TextAlign.Center,
+                )
             )
-        )
+        }
     }
 }
