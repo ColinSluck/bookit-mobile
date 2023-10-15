@@ -170,7 +170,7 @@ fun FilterContent(
 
                     ){
                         Button(
-                            onClick = { /*TODO*/ },
+                            onClick = { handleAction(FilterAction.Search) },
                             colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color(0xFF457B9D)),
                             border = BorderStroke(1.dp, Color(0xFF457B9D)),
                             modifier = Modifier

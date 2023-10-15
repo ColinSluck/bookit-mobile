@@ -42,7 +42,7 @@ class CreateBookableViewModel(application: Application) : ViewModel<CreateBookab
 }
 
 data class CreateBookableState(
-    val bookable : Bookable = Bookable(0, "", "", "", "", "", 0, 0)
+    val bookable : Bookable? = null
 )
 
 sealed interface CreateBookableAction {
