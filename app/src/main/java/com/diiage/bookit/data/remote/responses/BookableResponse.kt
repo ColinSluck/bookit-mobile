@@ -14,4 +14,6 @@ data class BookableResponse(
     val place: String,
     val maxCapacity: Int,
     val bookableTypeId: Int,
+
+    val images: List<String>,
 )

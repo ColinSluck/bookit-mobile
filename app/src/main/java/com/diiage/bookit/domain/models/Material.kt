@@ -3,17 +3,10 @@ package com.diiage.bookit.domain.models
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Bookable (
+data class Material(
     val id: Int,
-
-    val name: String,
-    val description: String,
-    val place: String,
-    val maxCapacity: Int,
+    val libelle: String,
     val bookableTypeId: Int,
-
     val createdAt: String,
     val updatedAt: String,
-
-    val images: List<String>,
-)
+) {}

@@ -8,6 +8,7 @@ import com.diiage.bookit.data.remote.responses.BookableResponse
 import com.diiage.bookit.data.remote.responses.PaginatedResponse
 import com.diiage.bookit.domain.models.Bookable
 import com.diiage.bookit.domain.models.Paginated
+import com.diiage.bookit.domain.models.Search
 import com.diiage.bookit.domain.repositories.BookableRepository
 import io.ktor.util.*
 

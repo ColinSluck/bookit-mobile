@@ -9,7 +9,7 @@ data class PaginatedParams (
 ){
     fun toStringValues(): StringValues {
         return StringValues.build {
-            append("page", page.toString())
+            append("offset", ((page - 1) * limit).toString())
             append("limit", limit.toString())
         }
     }

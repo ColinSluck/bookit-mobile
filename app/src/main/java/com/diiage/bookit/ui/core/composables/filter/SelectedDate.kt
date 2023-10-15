@@ -1,5 +1,6 @@
 package com.diiage.bookit.ui.core.composables.filter
 
+import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,7 +23,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,6 +34,7 @@ import com.diiage.bookit.ui.core.composables.picker.HoursPickerEnd
 import com.diiage.bookit.ui.core.composables.picker.HoursPickerStart
 import com.diiage.bookit.ui.screens.filter.FilterAction
 import com.diiage.bookit.ui.screens.filter.FilterState
+import java.time.LocalDate
 
 
 @Composable
@@ -71,19 +72,25 @@ fun SelectedDate(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(top = 24.dp, bottom = 24.dp)
                 ) {
-                    WheelDatePicker(
-                        rowCount = 1,
-                        size = DpSize(300.dp, 36.dp),
-                        textStyle = TextStyle(
-                            fontSize = 16.sp,
-                            fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                            fontWeight = FontWeight(700)
-                        ),
-                        textColor = Color(0xFF457B9D),
-                        selectorProperties = WheelPickerDefaults.selectorProperties(
-                            enabled = false,
-                        ),
-                    ) { snappedDate -> }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        WheelDatePicker(
+                            rowCount = 1,
+                            size = DpSize(300.dp, 36.dp),
+                            textStyle = TextStyle(
+                                fontSize = 16.sp,
+                                fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                                fontWeight = FontWeight(700)
+                            ),
+                            textColor = Color(0xFF457B9D),
+                            selectorProperties = WheelPickerDefaults.selectorProperties(
+                                enabled = false,
+                            ),
+                            minDate = LocalDate.now(),
+                            maxDate = LocalDate.MAX,
+                        ) { snappedDate ->
+                            handleAction(FilterAction.SelectDate(snappedDate))
+                        }
+                    }
                 }
             }
             Line(leftValue = 28, topValue = 0, rightValue = 28, bottomValue = 0, widthValue = 327)
