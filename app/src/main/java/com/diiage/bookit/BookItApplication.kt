@@ -10,6 +10,7 @@ class BookItApplication : Application() {
         super.onCreate()
 
         startKoin {
+            printLogger()
             androidContext(this@BookItApplication)
             modules(dataModule)
         }

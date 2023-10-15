@@ -6,7 +6,6 @@ import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.DecayAnimationSpec
 import androidx.compose.animation.core.calculateTargetValue
 import androidx.compose.animation.core.exponentialDecay
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.draggable
@@ -17,7 +16,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.LocalTextStyle
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ProvideTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -53,28 +51,46 @@ fun HoursPickerStart(
     state: FilterState,
     handleAction: (FilterAction) -> Unit
 ) {
-    val possibleValues = listOf("08:00", "08:15", "08:30", "08:45", "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30")
-    var state by remember { mutableStateOf(possibleValues[0]) }
-    ListItemPicker(
-        label = { it },
-        value = state,
-        onValueChange = { state = it },
-        list = possibleValues
-    )
+    val slots = state.slots
+    val slotStartTimes = slots.map { it.startTime } // Liste des heures de début
+
+    // Trouvez le slot correspondant à state.selectedSlotId
+    val defaultSlot = slots.find { it.id == state.selectedSlotId }
+    val defaultStartTime = defaultSlot?.startTime ?: slotStartTimes.firstOrNull()
+
+    // Si slotStartTimes est vide ou si defaultStartTime est null, affichez un message
+    if(slotStartTimes.isEmpty() || defaultStartTime == null) {
+        Text("Loading available slots...")
+    } else {
+        var selectedStartTime by remember { mutableStateOf(defaultStartTime) }
+
+        ListItemPicker(
+            label = { it.toString() },
+            value = selectedStartTime,
+            onValueChange = {
+                selectedStartTime = it as String
+                val selectedSlot = slots.find { it.startTime == selectedStartTime }
+                handleAction(FilterAction.SelectSlot(selectedSlot?.id ?: state.selectedSlotId))
+            },
+            list = slotStartTimes
+        )
+    }
 }
+
 
 @Composable
 fun HoursPickerEnd(
     state: FilterState,
     handleAction: (FilterAction) -> Unit
 ) {
-    val possibleValues = listOf("08:00", "08:15", "08:30", "08:45", "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30")
-    var state by remember { mutableStateOf(possibleValues[0]) }
+    val selectedSlotId = state.selectedSlotId
+    val selectedSlot = state.slots.find { it.id == selectedSlotId }
+    val endTime = selectedSlot?.endTime ?: ""
     ListItemPicker(
-        label = { it },
-        value = state,
-        onValueChange = { state = it },
-        list = possibleValues
+        label = { it.toString() },
+        value = endTime,
+        onValueChange = {}, // Pas de changement ici car c'est fixe
+        list = listOf(endTime) // On affiche seulement l'heure de fin du créneau sélectionné
     )
 }
 
@@ -97,6 +113,11 @@ fun <T> ListItemPicker(
     list: List<T>,
     textStyle: TextStyle = LocalTextStyle.current,
 ) {
+    if(value !in list) {
+        onValueChange(list.firstOrNull() ?: return)
+        return
+    }
+
     val minimumAlpha = 0.3f
     val verticalMargin = 0.dp
     val numbersColumnHeight = 80.dp
@@ -108,9 +129,11 @@ fun <T> ListItemPicker(
     val animatedOffset = remember { Animatable(0f) }
         .apply {
             val index = list.indexOf(value)
+            if (index == -1) throw IllegalStateException("Value is not in the list.") // Vérification pour s'assurer que la valeur existe dans la liste
+            val lowerBound = -((list.count() - 1) - index) * halfNumbersColumnHeightPx
+            val upperBound = index * halfNumbersColumnHeightPx
             val offsetRange = remember(value, list) {
-                -((list.count() - 1) - index) * halfNumbersColumnHeightPx to
-                        index * halfNumbersColumnHeightPx
+                minOf(lowerBound, upperBound) to maxOf(lowerBound, upperBound)
             }
             updateBounds(offsetRange.first, offsetRange.second)
         }

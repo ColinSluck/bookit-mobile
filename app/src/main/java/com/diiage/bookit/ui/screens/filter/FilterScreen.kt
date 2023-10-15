@@ -114,8 +114,9 @@ fun FilterContent(
             Column(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
-                    .padding(top = 60.dp)
+                    .padding(top = 80.dp)
                     .fillMaxHeight()
+                    .verticalScroll(rememberScrollState())
             ){
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -138,8 +139,8 @@ fun FilterContent(
                 )
                 Row(
                     modifier = Modifier
-                        .padding(top = 20.dp, start = 15.dp),
-                    horizontalArrangement = Arrangement.Center,
+                        .padding(vertical = 20.dp).fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
                 ) {
                    Column (
                        horizontalAlignment = Alignment.CenterHorizontally,
@@ -166,7 +167,7 @@ fun FilterContent(
                        }
                    }
                     Column (
-                        modifier = Modifier.padding(start = 10.dp, end = 10.dp)
+
                     ){
                         Button(
                             onClick = { /*TODO*/ },

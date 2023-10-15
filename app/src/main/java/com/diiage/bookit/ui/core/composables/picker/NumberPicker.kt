@@ -56,12 +56,10 @@ fun NumberPicker(
     state: FilterState,
     handleAction: (FilterAction) -> Unit
 ) {
-    var state by mutableStateOf(state.capacity)
     NbPicker(
-        value = state,
+        value = state.capacity,
         range = 1..50,
         onValueChange = {
-            state = it
             handleAction(FilterAction.UpdateCapacity(it))
         }
     )

@@ -65,7 +65,7 @@ fun DetailsFilter(
             ){
                 NumberPicker(state, handleAction)
                 Text(
-                    text = "personnes",
+                    text = "personne" + if (state.capacity > 1) "s" else "",
                     style = TextStyle(
                         fontSize = 20.sp,
                         fontFamily = FontFamily(Font(R.font.poppins_regular)),
