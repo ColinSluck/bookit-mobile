@@ -54,6 +54,7 @@ class FilterViewModel(application: Application) : ViewModel<FilterState>(FilterS
          is FilterAction.ResetFilters -> resetFilter()
          is FilterAction.UpdateCapacity -> updateCapacity(action.capacity)
          is FilterAction.UpdateChecked -> updateChecked(action.index ,action.checked)
+         is FilterAction.SelectSlot -> updateState { copy(selectedSlotId = action.slotId) }
       }
    }
 
@@ -67,11 +68,12 @@ data class FilterState(
    val checked: List<Boolean> = emptyList(),
    val materials: List<String> = listOf("Machine à café", "Tableau blanc", "Télévision", "Gel hydroalcoolique"),
    val slots: List<Slot> = emptyList(),
-    val selectedSlotId: Int? = null,
+    val selectedSlotId: Int = 33
 )
 
 sealed interface FilterAction {
    object ResetFilters : FilterAction
    data class UpdateCapacity(val capacity: Int) : FilterAction
    data class UpdateChecked(val index: Int, val checked: Boolean) : FilterAction
+    data class SelectSlot(val slotId: Int) : FilterAction
 }

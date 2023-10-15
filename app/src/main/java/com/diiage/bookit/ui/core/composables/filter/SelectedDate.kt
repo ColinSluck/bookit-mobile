@@ -103,7 +103,7 @@ fun SelectedDate(
                         )
                     }
                     Row {
-                        //HoursPickerStart(state, handleAction)
+                        HoursPickerStart(state, handleAction)
                     }
                 }
                 Column(
@@ -128,7 +128,7 @@ fun SelectedDate(
                             color = Color(0xFF7A7A7A)
                         )
                     )
-                    //HoursPickerEnd(state, handleAction)
+                    HoursPickerEnd(state, handleAction)
                 }
             }
         }

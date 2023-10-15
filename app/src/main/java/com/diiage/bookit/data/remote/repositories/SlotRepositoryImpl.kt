@@ -18,6 +18,9 @@ class SlotRepositoryImpl(
 
         val response = apiAuth.get<PaginatedResponse<Slot>>(Url.Slots.path, query)
 
-        return Paginated<Slot>(response.data, response.totalCount)
+        // startTime & EndTime are in format "15:30:00" -> we need to convert them to "15:30"
+        return Paginated<Slot>(response.data.map {
+            Slot(it.id, it.startTime.substring(0, 5), it.endTime.substring(0, 5))
+        }, response.totalCount)
     }
 }
