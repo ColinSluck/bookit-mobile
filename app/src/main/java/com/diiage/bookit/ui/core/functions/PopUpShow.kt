@@ -1,4 +1,4 @@
-package com.diiage.bookit.ui.core.composables
+package com.diiage.bookit.ui.core.functions
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideOutVertically
@@ -20,6 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.diiage.bookit.ui.core.composables.AreYouSureCancelPopUp
+import com.diiage.bookit.ui.core.composables.AreYouSurePopUp
+import com.diiage.bookit.ui.core.composables.ConfirmationPopUp
+import com.diiage.bookit.ui.core.composables.InvitationSuccessPopUp
+import com.diiage.bookit.ui.core.composables.InviteCollabPopUp
+import com.diiage.bookit.ui.core.composables.PasswordDemand
+import com.diiage.bookit.ui.screens.profile.ProfileAction
 
 @Composable
 fun MyScreen() {
@@ -123,12 +130,12 @@ fun MyScreen() {
         AnimatedPopup(
             isVisible = isAreYouSureTwo,
             onDismiss = { isAreYouSureTwo = false }
-        ) {
+        ) {/*
             AreYouSureCancelPopUp(
                 onCloseClick = {isAreYouSureTwo = false},
                 onValidateClick = {isAreYouSureTwo = false
                                     isConfirmSuppAccount = true}
-            )
+            )*/ PopUp_Deconnection()
         }
 
 
@@ -168,6 +175,41 @@ fun AnimatedPopup(
         content()
     }
 }
+
+@Composable
+fun PopUp_Deconnection() {
+    var isAreYouSureTwo by remember { mutableStateOf(false) }
+    AnimatedPopup(
+        isVisible = isAreYouSureTwo,
+        onDismiss = { isAreYouSureTwo = false }
+    ) {
+        AreYouSureCancelPopUp(
+            onCloseClick = {isAreYouSureTwo = false},
+            onValidateClick = {isAreYouSureTwo = false
+                }
+        )
+    }
+
+}
+
+@Composable
+fun PopUp_DeleteAccount(action: ProfileAction) {
+    var isAreYouSureTwo by remember { mutableStateOf(false) }
+    var isConfirmSuppAccount by remember { mutableStateOf(false) }
+    AnimatedPopup(
+        isVisible = isAreYouSureTwo,
+        onDismiss = { isAreYouSureTwo = false }
+    ) {
+        AreYouSureCancelPopUp(
+            onCloseClick = {isAreYouSureTwo = false},
+            onValidateClick = {isAreYouSureTwo = false
+                isConfirmSuppAccount = true
+            }
+        )
+    }
+
+}
+
 
 @Preview(showBackground = true)
 @Composable

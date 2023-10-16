@@ -11,7 +11,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 
-const val API_URL = "http://10.4.0.100:45455"
+const val API_URL = "http://10.4.0.169:45455"
 
 class API() {
     private val client = createHttpClient(API_URL)
