@@ -1,6 +1,5 @@
 package com.diiage.bookit.ui.core.composables.createBookable
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
@@ -14,18 +13,19 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.diiage.bookit.R
 import com.diiage.bookit.ui.core.composables.InputForm
+import com.diiage.bookit.ui.screens.createBookable.CreateBookableAction
+import com.diiage.bookit.ui.screens.createBookable.CreateBookableState
 
 
 @Composable
-fun AddInformation() {
-    val stringName = remember { mutableStateOf(TextFieldValue("")) }
-    val stringLoc = remember { mutableStateOf(TextFieldValue("")) }
-    val stringDesc = remember { mutableStateOf(TextFieldValue("")) }
+fun AddInformation(state: CreateBookableState, handleAction: (CreateBookableAction) -> Unit) {
+    val stringName = remember { mutableStateOf(TextFieldValue(state.bookable.name)) }
+    val stringLoc = remember { mutableStateOf(TextFieldValue(state.bookable.place)) }
+    val stringDesc = remember { mutableStateOf(TextFieldValue(state.bookable.description)) }
 
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         Text(
@@ -42,18 +42,21 @@ fun AddInformation() {
             InputForm(
                 label = "Nom de l'annonce",
                 textState = stringName,
+                onChange = { handleAction(CreateBookableAction.OnNameChanged(it.text)) },
                 characterLimit = 50
             )
 
             InputForm(
                 label = "Lieu",
                 textState = stringLoc,
+                onChange = { handleAction(CreateBookableAction.OnLocationChanged(it.text)) },
                 characterLimit = 200
             )
 
             InputForm(
                 label = "Description",
                 textState = stringDesc,
+                onChange = { handleAction(CreateBookableAction.OnDescriptionChanged(it.text)) },
                 characterLimit = 200
             )
         }

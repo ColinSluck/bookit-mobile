@@ -7,7 +7,7 @@ sealed class Preferences(val name: String){
 }
 
 sealed class Url(val path: String){
-    object BaseUrl: Url("http://192.168.1.14:45455")
+    object BaseUrl: Url("http://10.4.0.100:45455")
     object Login: Url("/api/auth/login")
     object Signup: Url("/api/auth/signup")
 
@@ -15,7 +15,7 @@ sealed class Url(val path: String){
     object Bookings: Url("/bookings")
     object Booking: Url("/bookings/{id}")
     object BookingsAvailable: Url("/bookings/available")
-    object CreateBookable: Url("/bookables")
+    object CreateBookable: Url("/api/bookables")
     object SearchBookable: Url("/api/bookables/search")
 
     // Slots
