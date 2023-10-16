@@ -10,6 +10,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -29,10 +31,12 @@ import com.diiage.bookit.ui.core.navigate
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 
+private typealias UIState = CreateBookableState
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun CreateBookableScreen(navController: NavController) {
     val viewModel: CreateBookableViewModel = viewModel()
+    val state by viewModel.state.collectAsState()
 
     LaunchedEffect(viewModel) {
         viewModel.events
@@ -49,13 +53,14 @@ fun CreateBookableScreen(navController: NavController) {
         Header(handleAction = viewModel::handleAction)
 
         Column(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
                 .verticalScroll(rememberScrollState())
         ) {
             when (viewModel.currentStep) {
                 0 -> Step1Content()
                 1 -> Step2Content()
-                2 -> Step3Content()
+                2 -> Step3Content(state, handleAction = viewModel::handleAction)
                 3 -> Step4Content()
                 4 -> Step5Content()
                 5 -> Step6Content()
@@ -87,13 +92,13 @@ fun Step2Content() {
 }
 
 @Composable
-fun Step3Content() {
+fun Step3Content(state: CreateBookableState, handleAction: (CreateBookableAction) -> Unit) {
     Column {
-        AddInformation()
+        AddInformation(state, handleAction)
 
         Spacer(modifier = Modifier.padding(16.dp))
 
-        MaxCapacity()
+        MaxCapacity(handleAction)
     }
 }
 

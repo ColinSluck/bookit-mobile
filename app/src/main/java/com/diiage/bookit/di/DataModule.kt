@@ -31,7 +31,7 @@ val dataModule = module {
     single { API() }
     single { ApiAuth(get()) }
 
-    single<BookableRepository> { BookableRepositoryImpl(get(), get()) }
+    single<BookableRepository> { BookableRepositoryImpl(get()) }
     single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
     single<SlotRepository> { SlotRepositoryImpl(get()) }
     single<MaterialRepository> { MaterialRepositoryImpl(get()) }

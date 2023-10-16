@@ -35,9 +35,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.diiage.bookit.R
+import com.diiage.bookit.ui.screens.createBookable.CreateBookableAction
 
 @Composable
-fun MaxCapacity() {
+fun MaxCapacity(handleAction: (CreateBookableAction) -> Unit) {
     var count by remember { mutableStateOf(0) }
 
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
@@ -75,6 +76,7 @@ fun MaxCapacity() {
                     if (count > 0) {
                         count--
                     }
+                    handleAction(CreateBookableAction.OnCapacityChanged(count.toString()))
                 },
                 text = "-"
             )
@@ -89,11 +91,12 @@ fun MaxCapacity() {
                     color = Color(0xFF000000),
                 ),
                 color = Color.Black,
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier.padding(8.dp),
             )
 
             CircularButton(
-                onClick = { count++ },
+                onClick = { count++
+                    handleAction(CreateBookableAction.OnCapacityChanged(count.toString())) },
                 text = "+"
             )
 
@@ -149,16 +152,4 @@ fun CircularButton(
             )
         )
     }
-}
-
-@Preview
-@Composable
-fun CircularButtonPreview() {
-    CircularButton(onClick = {}, text = "+")
-}
-
-@Preview
-@Composable
-fun MaxCapacityPreview() {
-    MaxCapacity()
 }
