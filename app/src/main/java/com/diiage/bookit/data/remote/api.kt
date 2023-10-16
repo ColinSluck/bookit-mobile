@@ -1,5 +1,7 @@
 package com.diiage.bookit.data.remote
 
+import com.diiage.bookit.domain.exceptions.LoginException
+import com.diiage.bookit.domain.exceptions.SignupException
 import com.diiage.bookit.domain.models.Credentials
 import com.diiage.bookit.domain.models.Signup
 import com.diiage.bookit.domain.models.User
@@ -11,14 +13,12 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 
-const val API_URL = "http://10.4.0.169:45455"
-
 class API() {
-    private val client = createHttpClient(API_URL)
+    private val client = createHttpClient(Url.BaseUrl.path)
 
     suspend fun login(credentials: Credentials): User? {
         try {
-            val response: HttpResponse = client.post("/api/auth/login") {
+            val response: HttpResponse = client.post(Url.Login.path) {
                 contentType(ContentType.Application.Json)
                 setBody(credentials)
             }
@@ -28,15 +28,14 @@ class API() {
             }
 
             return response.body<User>()
-
         } catch (e: Exception) {
-            throw e
+            throw LoginException.ServerError;
         }
     }
 
     suspend fun signup(signup: Signup): User? {
         try {
-            val response: HttpResponse = client.post("/api/auth/signup") {
+            val response: HttpResponse = client.post(Url.Signup.path) {
                 contentType(ContentType.Application.Json)
                 setBody(signup)
             }
@@ -47,10 +46,9 @@ class API() {
 
             return response.body<User>()
         } catch (e: Exception) {
-            throw e
+            throw SignupException.ServerError;
         }
     }
-
 }
 
 

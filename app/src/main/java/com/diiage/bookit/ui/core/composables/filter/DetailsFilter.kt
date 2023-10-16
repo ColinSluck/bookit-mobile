@@ -3,6 +3,7 @@ package com.diiage.bookit.ui.core.composables.filter
 import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Text
@@ -65,7 +68,7 @@ fun DetailsFilter(
             ){
                 NumberPicker(state, handleAction)
                 Text(
-                    text = "personnes",
+                    text = "personne" + if (state.capacity > 1) "s" else "",
                     style = TextStyle(
                         fontSize = 20.sp,
                         fontFamily = FontFamily(Font(R.font.poppins_regular)),
@@ -93,24 +96,19 @@ fun DetailsFilter(
             }
         }
         Column(
-            modifier = Modifier.padding(top = 166.dp),
-
+            modifier = Modifier.padding(top = 166.dp)
         ) {
-            val mItemsList: List<String> = listOf("Machine à café", "Tableau blanc", "Télévision", "Gel hydroalcoolique")
-            var isChecked = remember {
-                mutableStateListOf(*Array(mItemsList.size) { false })
-            }
-            mItemsList.forEachIndexed { colIndex, items ->
+            state.materials.forEachIndexed { colIndex, items ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.absoluteOffset(0.dp, (-12).dp)
                 ) {
                     Checkbox(
-                        checked = isChecked[colIndex],
+                        checked = state.materialCheckedIds.contains(items.id),
                         onCheckedChange = {
-                            newChecked -> isChecked.toMutableList().also { it[colIndex] = newChecked }
-                                          },
+                            handleAction(FilterAction.UpdateChecked(colIndex, it))
+                        },
                         enabled = true,
                         colors = CheckboxDefaults.colors(
                             checkedColor = Color(0xFF457B9D),
@@ -118,8 +116,23 @@ fun DetailsFilter(
                             checkmarkColor = Color.White
                         )
                     )
-                    Text(text = items)
+                    Text(text = items.libelle)
                 }
+            }
+
+            if (state.totalMaterial > state.materials.size) {
+                Text(
+                    text = "Afficher plus",
+                    color = Color.Gray,
+                    modifier = Modifier.clickable {
+                        handleAction(FilterAction.LoadMoreMaterials)
+                    }.padding(bottom = 8.dp),
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                        fontWeight = FontWeight(400),
+                    )
+                )
             }
         }
     }

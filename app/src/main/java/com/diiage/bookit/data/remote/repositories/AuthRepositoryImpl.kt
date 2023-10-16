@@ -1,6 +1,8 @@
 package com.diiage.bookit.data.remote.repositories
 
 import com.diiage.bookit.data.remote.API
+import com.diiage.bookit.domain.exceptions.LoginException
+import com.diiage.bookit.domain.exceptions.SignupException
 import com.diiage.bookit.domain.models.Credentials
 import com.diiage.bookit.domain.models.Signup
 import com.diiage.bookit.domain.models.User
@@ -12,10 +14,10 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class AuthRepositoryImpl(private val api : API, private val preferenceRepository: PreferenceRepository) : AuthRepository {
-    override suspend fun login(credentials: Credentials): User? {
-        if(!isValidLoginForm(credentials)) return null
+    override suspend fun login(credentials: Credentials): User {
+        if(!isValidLoginForm(credentials)) throw LoginException.ValidationError;
 
-        val user = api.login(credentials) ?: return null
+        val user = api.login(credentials) ?: throw LoginException.IncorrectPassword
 
         preferenceRepository.save("access_token", user.accessToken)
         preferenceRepository.save("refresh_token", user.refreshToken)
@@ -26,10 +28,10 @@ class AuthRepositoryImpl(private val api : API, private val preferenceRepository
         return user
     }
 
-    override suspend fun signup(signup: Signup): User? {
-        if(!isValidSignupForm(signup)) return null;
+    override suspend fun signup(signup: Signup): User {
+        if(!isValidSignupForm(signup)) throw SignupException.ValidationError;
 
-        val user = api.signup(signup) ?: return null;
+        val user = api.signup(signup) ?: throw SignupException.SignupError;
 
         preferenceRepository.save("access_token", user.accessToken)
         preferenceRepository.save("refresh_token", user.refreshToken)

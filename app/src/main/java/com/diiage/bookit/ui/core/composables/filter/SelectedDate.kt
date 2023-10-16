@@ -1,5 +1,6 @@
 package com.diiage.bookit.ui.core.composables.filter
 
+import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,7 +23,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,11 +30,18 @@ import com.commandiron.wheel_picker_compose.WheelDatePicker
 import com.commandiron.wheel_picker_compose.core.WheelPickerDefaults
 import com.diiage.bookit.R
 import com.diiage.bookit.ui.core.composables.Line
-import com.diiage.bookit.ui.core.composables.picker.HoursPicker
+import com.diiage.bookit.ui.core.composables.picker.HoursPickerEnd
+import com.diiage.bookit.ui.core.composables.picker.HoursPickerStart
+import com.diiage.bookit.ui.screens.filter.FilterAction
+import com.diiage.bookit.ui.screens.filter.FilterState
+import java.time.LocalDate
 
 
 @Composable
-fun SelectedDate() {
+fun SelectedDate(
+    state: FilterState,
+    handleAction: (FilterAction) -> Unit
+    ) {
     Box(
         Modifier
             .background(Color.White, RoundedCornerShape(5.dp))
@@ -59,33 +66,39 @@ fun SelectedDate() {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxWidth()
-            ){
+            ) {
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(top = 24.dp, bottom = 24.dp)
-                ){
-                    WheelDatePicker(
-                        rowCount = 1,
-                        size = DpSize(300.dp, 36.dp),
-                        textStyle = TextStyle(
-                            fontSize = 16.sp,
-                            fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                            fontWeight = FontWeight(700)
-                        ),
-                        textColor = Color(0xFF457B9D),
-                        selectorProperties = WheelPickerDefaults.selectorProperties(
-                            enabled = false,
-                        ),
-                    ){ snappedDate -> }
+                ) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        WheelDatePicker(
+                            rowCount = 1,
+                            size = DpSize(300.dp, 36.dp),
+                            textStyle = TextStyle(
+                                fontSize = 16.sp,
+                                fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                                fontWeight = FontWeight(700)
+                            ),
+                            textColor = Color(0xFF457B9D),
+                            selectorProperties = WheelPickerDefaults.selectorProperties(
+                                enabled = false,
+                            ),
+                            minDate = LocalDate.now(),
+                            maxDate = LocalDate.MAX,
+                        ) { snappedDate ->
+                            handleAction(FilterAction.SelectDate(snappedDate))
+                        }
+                    }
                 }
             }
             Line(leftValue = 28, topValue = 0, rightValue = 28, bottomValue = 0, widthValue = 327)
             Row(
                 Modifier.padding(start = 74.dp, top = 22.dp, bottom = 12.dp)
-            ){
-                Column{
-                    Row{
+            ) {
+                Column {
+                    Row {
                         Text(
                             text = "De",
                             style = TextStyle(
@@ -97,12 +110,12 @@ fun SelectedDate() {
                         )
                     }
                     Row {
-                        HoursPicker()
+                        HoursPickerStart(state, handleAction)
                     }
                 }
                 Column(
                     Modifier.padding(start = 52.dp)
-                ){
+                ) {
                     Image(
                         painter = painterResource(id = R.drawable.right_arrow),
                         contentDescription = "right arrow",
@@ -112,25 +125,19 @@ fun SelectedDate() {
                 }
                 Column(
                     Modifier.padding(start = 49.dp)
-                ){
-                       Text(
-                           text = "À",
-                           style = TextStyle(
-                                 fontSize = 14.sp,
-                                 fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                                 fontWeight = FontWeight(400),
-                                 color = Color(0xFF7A7A7A)
-                           )
-                       )
-                        HoursPicker()
+                ) {
+                    Text(
+                        text = "À",
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                            fontWeight = FontWeight(400),
+                            color = Color(0xFF7A7A7A)
+                        )
+                    )
+                    HoursPickerEnd(state, handleAction)
                 }
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun SelectedDatePreview() {
-    SelectedDate()
 }
