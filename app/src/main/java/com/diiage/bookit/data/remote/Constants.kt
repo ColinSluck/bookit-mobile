@@ -7,7 +7,7 @@ sealed class Preferences(val name: String){
 }
 
 sealed class Url(val path: String){
-    object BaseUrl: Url("http://192.168.1.14:45455")
+    object BaseUrl: Url("http://10.4.0.100:45455")
     object Login: Url("/api/auth/login")
     object Signup: Url("/api/auth/signup")
 
@@ -30,4 +30,6 @@ sealed class ErrorMessage(val message: String){
     object SignupError: ErrorMessage("Impossible de créer le compte.")
     object ValidationError: ErrorMessage("Veuillez vérifier les champs saisis.")
     object ServerError: ErrorMessage("Une erreur est survenue.")
+
+    object  BookableError: ErrorMessage("Une erreur est survenue dans la réservation.")
 }

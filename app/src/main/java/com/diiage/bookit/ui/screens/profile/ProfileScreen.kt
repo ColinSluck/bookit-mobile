@@ -19,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -32,15 +31,16 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.diiage.bookit.R
-import com.diiage.bookit.ui.core.composables.BI_Button
 import com.diiage.bookit.ui.composables.PersonalInformation
 import com.diiage.bookit.ui.composables.ProfileHeader
 import com.diiage.bookit.ui.composables.QuickAnnouncement
 import com.diiage.bookit.ui.core.NavigationEvent
 import com.diiage.bookit.ui.core.Screen
+import com.diiage.bookit.ui.core.composables.BI_Button
 import com.diiage.bookit.ui.core.functions.PopUp_Deconnection
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
+
 
 private typealias UIState = ProfileState
 
@@ -66,7 +66,7 @@ fun ProfileScreen(navController: NavController) {
 }
 
 @Composable
-private fun ProfileContent(
+public fun ProfileContent(
     state: UIState = UIState(),
     handleAction: (ProfileAction) -> Unit
 ) {
@@ -95,17 +95,18 @@ private fun ProfileContent(
                     modifier = Modifier.padding(start = 30.dp, end = 29.dp, top = 36.dp),
                     horizontalArrangement = Arrangement.Center
                 ){
-                    val scope = rememberCoroutineScope()
-                    //BI_Button("Déconnexion", 371, 45, Color(0xFFE63946), Color(0xFFFFFFFF), 16, 400, onClick = PopUp_Deconnection())
-                    Button(
-                        onClick = {
+                    val showPopup = PopUp_Deconnection()
 
-                            /*TODO*/
-                        },
+                    Button(
+                        onClick = { showPopup },
                         modifier = Modifier
-                            .border(1.dp, Color.Transparent, shape = RoundedCornerShape(size = 5.dp))
-                            .width(104.dp)
-                            .height(24.dp),
+                            .border(
+                                1.dp,
+                                Color.Transparent,
+                                shape = RoundedCornerShape(size = 5.dp)
+                            )
+                            .width(371.dp)
+                            .height(45.dp),
                         colors = ButtonDefaults.outlinedButtonColors(Color(0xFFE63946)),
                         shape = RoundedCornerShape(size = 5.dp)
                     ) {

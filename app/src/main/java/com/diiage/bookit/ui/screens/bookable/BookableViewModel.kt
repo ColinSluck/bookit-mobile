@@ -1,12 +1,38 @@
 package com.diiage.bookit.ui.screens.bookable
 
 import android.app.Application
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.res.imageResource
+import androidx.lifecycle.viewModelScope
 import com.diiage.bookit.R
+import com.diiage.bookit.data.remote.ErrorMessage
+import com.diiage.bookit.domain.repositories.BookableRepository
 import com.diiage.bookit.ui.core.ViewModel
+import kotlinx.coroutines.launch
+import org.koin.core.component.inject
 
 class BookableViewModel(application: Application) : ViewModel<BookableState>(BookableState(), application)
+{
+    private val bookableRepository : BookableRepository by inject()
+
+    init {
+        getBookabe()
+    }
+    fun getBookabe(){
+        viewModelScope.launch {
+            try {
+                val bookable = bookableRepository.getBookable(545797)
+                updateState { copy(initialImages = bookable.images) }
+                updateState { copy(title = bookable.name) }
+                updateState { copy(description = bookable.description) }
+                updateState { copy(people = bookable.maxCapacity) }
+                updateState { copy(location = bookable.place) }
+
+            }catch (e:Exception){
+                updateState { copy(error(ErrorMessage.BookableError.message))}
+            }
+        }
+
+    }
+}
 
 data class BookableState(
     val initialImages: List<Int> = listOf(
@@ -20,5 +46,7 @@ data class BookableState(
     val people: Int = 6,
     val location: String = "1er étage",
     val materials: List<String> = listOf("Tableau", "Machine à café"),
-    val available: Boolean = false
+    val available: Boolean = false,
+    val bookableId:Int = 545797
 )
+

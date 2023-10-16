@@ -177,7 +177,7 @@ fun AnimatedPopup(
 }
 
 @Composable
-fun PopUp_Deconnection() {
+fun PopUp_Deconnection(){
     var isAreYouSureTwo by remember { mutableStateOf(false) }
     AnimatedPopup(
         isVisible = isAreYouSureTwo,

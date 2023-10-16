@@ -15,5 +15,5 @@ data class Bookable (
     val createdAt: String,
     val updatedAt: String,
 
-    val images: List<String>,
+    val images: List<Int>,
 )
