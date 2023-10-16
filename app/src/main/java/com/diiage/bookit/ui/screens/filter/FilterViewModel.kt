@@ -6,12 +6,14 @@ import com.diiage.bookit.data.remote.ErrorMessage
 import com.diiage.bookit.domain.models.Material
 import com.diiage.bookit.domain.models.Search
 import com.diiage.bookit.domain.models.Slot
-import com.diiage.bookit.domain.repositories.BookableRepository
 import com.diiage.bookit.domain.repositories.MaterialRepository
 import com.diiage.bookit.domain.repositories.SearchRepository
 import com.diiage.bookit.domain.repositories.SlotRepository
+import com.diiage.bookit.ui.core.Destination
 import com.diiage.bookit.ui.core.ViewModel
 import kotlinx.coroutines.launch
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.koin.core.component.inject
 import java.time.LocalDate
 
@@ -99,23 +101,16 @@ class FilterViewModel(application: Application) : ViewModel<FilterState>(FilterS
         val search = Search(
             minCapacity = state.value.capacity,
             slotId = state.value.selectedSlotId,
-            date = state.value.selectedDate,
+            date = state.value.selectedDate.toString(),
             bookableTypeId = state.value.currentBookableTypeId,
             materialIds = state.value.materialCheckedIds
         )
 
-        viewModelScope.launch {
-            updateState { copy(isLoading = true) }
-            try {
-                val response = searchRepository.searchBookable(search)
+        updateState { copy(search = search) }
 
-                print(response.totalCount)
-            } catch (e: Exception) {
-                print(e.message)
-                updateState { copy(error = ErrorMessage.ServerError.message) }
-            }
-            updateState { copy(isLoading = false) }
-        }
+        val searchJson: String = Json.encodeToString(search)
+
+        sendEvent(Destination.Search(searchJson))
     }
 
 }
@@ -131,7 +126,8 @@ data class FilterState(
     val materials: List<Material> = emptyList(),
     val materialCheckedIds: List<Int> = emptyList(),
     val totalMaterial: Int = 0,
-    val selectedDate: LocalDate? = null
+    val selectedDate: LocalDate? = null,
+    val search: Search = Search()
 )
 
 sealed interface FilterAction {

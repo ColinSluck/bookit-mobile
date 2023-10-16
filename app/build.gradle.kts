@@ -1,5 +1,6 @@
 plugins {
     id("com.android.application")
+    id("kotlin-parcelize")
     id("org.jetbrains.kotlin.android")
     kotlin("plugin.serialization")
 }
@@ -62,7 +63,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.ui:ui:1.3.3")
     implementation("androidx.compose.material:material:1.3.1")
-    implementation("androidx.navigation:navigation-compose:2.7.2")
+    implementation("androidx.navigation:navigation-compose:2.5.3")
     implementation("androidx.navigation:navigation-runtime-ktx:2.7.4")
     implementation("io.coil-kt:coil-compose:1.3.2")
     testImplementation("junit:junit:4.13.2")

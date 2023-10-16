@@ -5,6 +5,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Bookable (
     val id: Int,
+    val createdAt: String,
+    val updatedAt: String,
 
     val name: String,
     val description: String,
@@ -12,8 +14,5 @@ data class Bookable (
     val maxCapacity: Int,
     val bookableTypeId: Int,
 
-    val createdAt: String,
-    val updatedAt: String,
-
-    val images: List<Int>,
+    val images: List<String>? = null,
 )

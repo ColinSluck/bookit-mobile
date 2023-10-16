@@ -14,9 +14,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.diiage.bookit.ui.core.Destination
 import com.diiage.bookit.ui.core.NavigationEvent
-import com.diiage.bookit.ui.core.Screen
 import com.diiage.bookit.ui.core.composables.signup.SignUp
+import com.diiage.bookit.ui.core.navigate
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 
@@ -29,9 +30,9 @@ fun SignupScreen(navController: NavController) {
         viewModel.events
             .onEach { event ->
                 if (event is NavigationEvent.NavigateToHome)
-                    navController.navigate(Screen.Home.route)
+                    navController.navigate(Destination.Home)
                 else if (event is NavigationEvent.NavigateToLogin)
-                    navController.navigate(Screen.Login.route)
+                    navController.navigate(Destination.Login)
             }.collect()
     }
 

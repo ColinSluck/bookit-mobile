@@ -20,8 +20,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.diiage.bookit.domain.models.Search
 import com.diiage.bookit.domain.repositories.PreferenceRepository
-import com.diiage.bookit.ui.core.Screen
+import com.diiage.bookit.ui.core.Destination
+import com.diiage.bookit.ui.core.composable
 import com.diiage.bookit.ui.core.composables.navbar.Navbar
 import com.diiage.bookit.ui.core.theme.BookItTheme
 import com.diiage.bookit.ui.screens.bookable.BookableScreen
@@ -31,7 +33,10 @@ import com.diiage.bookit.ui.screens.createBookable.CreateBookableScreen
 import com.diiage.bookit.ui.screens.home.HomeScreen
 import com.diiage.bookit.ui.screens.login.LoginScreen
 import com.diiage.bookit.ui.screens.profile.ProfileScreen
+import com.diiage.bookit.ui.screens.search.SearchScreen
 import com.diiage.bookit.ui.screens.signup.SignupScreen
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
@@ -60,7 +65,7 @@ private fun MainContent(preferenceRepository: PreferenceRepository) {
 
     val navController = rememberNavController()
 
-    val startDestination = if (preferenceRepository.get("access_token") != null) Screen.Home.route else Screen.Login.route
+    val startDestination = if (preferenceRepository.get("access_token") != null) Destination.Home else Destination.Login
 
     Scaffold(bottomBar = {
         if (shouldShowNavBar(navController)) {
@@ -68,24 +73,32 @@ private fun MainContent(preferenceRepository: PreferenceRepository) {
         }
     }) {
         Box(modifier = if (shouldShowNavBar(navController)) Modifier.padding(bottom = 87.dp) else Modifier) {
-            NavHost(navController = navController, startDestination = startDestination) {
+            NavHost(navController = navController, startDestination = startDestination.route) {
 
-                composable(Screen.Profile.route) { ProfileScreen(navController) }
+                composable(Destination.Profile) { ProfileScreen(navController) }
 
-                composable(Screen.Bookings.route) { BookingsScreen(navController) }
+                composable(Destination.Bookings) { BookingsScreen(navController) }
 
-                composable(Screen.Bookable.route) { BookableScreen(navController) }
+                composable(Destination.Bookable) { BookableScreen(navController) }
 
-                composable(Screen.Home.route) { HomeScreen(navController) }
+                composable(Destination.Home) { HomeScreen(navController) }
 
-                composable(Screen.Filter.route) { FilterScreen(navController) }
+                composable(Destination.Filter) { FilterScreen(navController) }
 
-                composable(Screen.Login.route) { LoginScreen(navController) }
+                composable(Destination.Login) { LoginScreen(navController) }
 
-                composable(Screen.Signup.route) { SignupScreen(navController) }
+                composable(Destination.Signup) { SignupScreen(navController) }
 
-                composable(Screen.CreateBookable.route) { CreateBookableScreen(navController) }
+                composable(Destination.CreateBookable) { CreateBookableScreen(navController) }
 
+                composable(
+                    destination = Destination.Search(),
+                ) { backStackEntry ->
+                    SearchScreen(
+                        navController = navController,
+                        search = backStackEntry.arguments?.getString("search") ?: Json.encodeToString(Search())
+                    )
+                }
             }
         }
     }
@@ -93,13 +106,13 @@ private fun MainContent(preferenceRepository: PreferenceRepository) {
 
 @Composable
 fun shouldShowNavBar(navController: NavHostController): Boolean {
-    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination
     val routesWithoutNavBar = setOf(
-        Screen.Filter.route,
-        Screen.Login.route,
-        Screen.Signup.route,
-        Screen.CreateBookable.route
+        Destination.Filter.route,
+        Destination.Login.route,
+        Destination.Signup.route,
+        Destination.CreateBookable.route
     )
 
-    return currentRoute !in routesWithoutNavBar
+    return currentRoute?.route !in routesWithoutNavBar
 }

@@ -31,7 +31,8 @@ fun InputForm(
     label: String,
     textState: MutableState<TextFieldValue>,
     characterLimit: Int? = null,
-    isPasswordField: Boolean = false
+    isPasswordField: Boolean = false,
+    onChange: (TextFieldValue) -> Unit = {}
 ) {
     val passwordVisibility = remember { mutableStateOf(false) }
 
@@ -45,6 +46,7 @@ fun InputForm(
                 } else if (isPasswordField) {
                     textState.value = it
                 }
+                onChange(it)
             },
             label = { Text(
                 text = label,

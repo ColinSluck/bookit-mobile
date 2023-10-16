@@ -34,7 +34,9 @@ import com.diiage.bookit.R
 import com.diiage.bookit.ui.composables.PersonalInformation
 import com.diiage.bookit.ui.composables.ProfileHeader
 import com.diiage.bookit.ui.composables.QuickAnnouncement
+import com.diiage.bookit.ui.core.Destination
 import com.diiage.bookit.ui.core.NavigationEvent
+import com.diiage.bookit.ui.core.navigate
 import com.diiage.bookit.ui.core.Screen
 import com.diiage.bookit.ui.core.composables.BI_Button
 import com.diiage.bookit.ui.core.functions.PopUp_Deconnection
@@ -53,9 +55,9 @@ fun ProfileScreen(navController: NavController) {
         viewModel.events
             .onEach { event ->
                 if (event is NavigationEvent.NavigateToLogin)
-                    navController.navigate(Screen.Login.route)
+                    navController.navigate(Destination.Login)
                 else if (event is NavigationEvent.NavigateToCreateBookable)
-                    navController.navigate(Screen.CreateBookable.route)
+                    navController.navigate(Destination.CreateBookable)
             }.collect()
     }
 
