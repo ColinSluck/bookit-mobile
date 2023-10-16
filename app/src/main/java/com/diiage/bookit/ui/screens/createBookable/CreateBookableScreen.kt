@@ -14,8 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.diiage.bookit.ui.core.Destination
 import com.diiage.bookit.ui.core.NavigationEvent
-import com.diiage.bookit.ui.core.Screen
 import com.diiage.bookit.ui.core.composables.createBookable.BokableTypeList
 import com.diiage.bookit.ui.core.composables.createBookable.Header
 import com.diiage.bookit.ui.core.composables.createBookable.Home
@@ -25,6 +25,7 @@ import com.diiage.bookit.ui.core.composables.createBookable.MaxCapacity
 import com.diiage.bookit.ui.core.composables.createBookable.Equipement
 import com.diiage.bookit.ui.core.composables.createBookable.AddPhotos
 import com.diiage.bookit.ui.core.composables.createBookable.Confirmation
+import com.diiage.bookit.ui.core.navigate
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 
@@ -37,7 +38,7 @@ fun CreateBookableScreen(navController: NavController) {
         viewModel.events
             .onEach { event ->
                 if (event is NavigationEvent.NavigateToProfile)
-                    navController.navigate(Screen.Profile.route)
+                    navController.navigate(Destination.Profile)
             }.collect()
     }
 

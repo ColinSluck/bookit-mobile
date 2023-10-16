@@ -1,7 +1,6 @@
 package com.diiage.bookit.ui.screens.login
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -15,9 +14,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.diiage.bookit.ui.core.Destination
 import com.diiage.bookit.ui.core.NavigationEvent
-import com.diiage.bookit.ui.core.Screen
 import com.diiage.bookit.ui.core.composables.login.Login
+import com.diiage.bookit.ui.core.navigate
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 
@@ -30,9 +30,9 @@ fun LoginScreen(navController: NavController) {
         viewModel.events
             .onEach { event ->
                 if (event is NavigationEvent.NavigateToHome)
-                    navController.navigate(Screen.Home.route)
+                    navController.navigate(Destination.Home)
                 else if (event is NavigationEvent.NavigateToSignup)
-                    navController.navigate(Screen.Signup.route)
+                    navController.navigate(Destination.Signup)
             }.collect()
     }
 

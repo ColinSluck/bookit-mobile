@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.diiage.bookit.R
-import com.diiage.bookit.ui.core.Screen
+import com.diiage.bookit.ui.core.Destination
 
 @Composable
 fun Navbar(
@@ -29,9 +29,9 @@ fun Navbar(
         NavbarButton(
             icon = R.drawable.navbar_button_home,
             label = "Accueil",
-            selected = navController.currentDestination?.route == Screen.Home.route,
+            selected = navController.currentDestination?.route == Destination.Home.route,
             onClick = {
-                navController.navigate(Screen.Home.route) {
+                navController.navigate(Destination.Home.route) {
                     launchSingleTop = true
                 }
             }
@@ -40,9 +40,9 @@ fun Navbar(
         NavbarButton(
             icon = R.drawable.navbar_button_booking,
             label = "Réservations",
-            selected = navController.currentDestination?.route == Screen.Bookings.route,
+            selected = navController.currentDestination?.route == Destination.Bookings.route,
             onClick = {
-                navController.navigate(Screen.Bookings.route) {
+                navController.navigate(Destination.Bookings.route) {
                     launchSingleTop = true
                 }
             }
@@ -51,9 +51,9 @@ fun Navbar(
         NavbarButton(
             icon = R.drawable.navbar_button_profile,
             label = "Profil",
-            selected = navController.currentDestination?.route == Screen.Profile.route,
+            selected = navController.currentDestination?.route == Destination.Profile.route,
             onClick = {
-                navController.navigate(Screen.Profile.route) {
+                navController.navigate(Destination.Profile.route) {
                     launchSingleTop = true
                 }
             }

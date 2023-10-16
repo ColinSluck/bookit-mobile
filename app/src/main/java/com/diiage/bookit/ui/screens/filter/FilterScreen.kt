@@ -25,9 +25,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,10 +40,13 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.diiage.bookit.R
-import com.diiage.bookit.ui.core.Screen
+import com.diiage.bookit.ui.core.Destination
 import com.diiage.bookit.ui.core.composables.Line
 import com.diiage.bookit.ui.core.composables.filter.DetailsFilter
 import com.diiage.bookit.ui.core.composables.filter.SelectedDate
+import com.diiage.bookit.ui.core.navigate
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 
 private typealias UIState = FilterState
 
@@ -54,6 +54,15 @@ private typealias UIState = FilterState
 fun FilterScreen(navController: NavController) {
     val viewModel: FilterViewModel = viewModel()
     val state by viewModel.state.collectAsState()
+
+    LaunchedEffect(viewModel) {
+        viewModel.events
+            .onEach { event ->
+                if (event is Destination.Search) {
+                    navController.navigate(event)
+                }
+            }.collect()
+    }
 
     FilterContent(
         state = state,
