@@ -11,4 +11,5 @@ interface BookableMapper {
     fun toBookable(bookableResponse: BookableResponse): Bookable
     fun toBookables(bookableResponses: List<BookableResponse>): List<Bookable>
     fun toPaginedBookables(bookableResponses: PaginatedResponse<BookableResponse>): Paginated<Bookable>
+
 }

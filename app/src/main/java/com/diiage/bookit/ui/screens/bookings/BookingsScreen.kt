@@ -20,10 +20,14 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.diiage.bookit.R
+import com.diiage.bookit.ui.core.NavigationEvent
 import com.diiage.bookit.ui.core.Screen
 import com.diiage.bookit.ui.core.composables.bookings.CompactBookable
 import com.diiage.bookit.ui.core.composables.PreviewContent
 import com.diiage.bookit.ui.core.composables.bookings.NoNextBookings
+import com.diiage.bookit.ui.screens.profile.ProfileAction
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import java.time.LocalDate
 import java.util.*
 
@@ -34,18 +38,24 @@ fun BookingsScreen(navController: NavController) {
     val viewModel: BookingsViewModel = viewModel()
     val state by viewModel.state.collectAsState()
 
+    LaunchedEffect(viewModel) {
+        viewModel.events
+            .onEach { event ->
+                if (event is NavigationEvent.NavigateToBookable)
+                    navController.navigate(Screen.Bookable.route)
+            }.collect()
+    }
+
     BookingsContent(
         state = state,
-        onSelectBooking = {
-            navController.navigate(Screen.Bookable.route)
-        }
+        handleAction = viewModel::handleAction
     )
 }
 
 @Composable
 fun BookingsContent(
     state: UIState = UIState(),
-    onSelectBooking: () -> Unit
+    handleAction: (BookingsAction) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -85,16 +95,8 @@ fun BookingsContent(
                 location = "unknown",
                 materials = "unknown",
                 date = Date(),
-                onClick = onSelectBooking
+                onClick = { handleAction(BookingsAction.OnSelectBooking) }
             )
         }
     }
-}
-
-@Preview
-@Composable
-private fun BookingsPreview() = PreviewContent {
-    BookingsContent(
-        onSelectBooking = {}
-    )
 }

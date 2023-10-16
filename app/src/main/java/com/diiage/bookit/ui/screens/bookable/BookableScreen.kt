@@ -28,10 +28,14 @@ import com.diiage.bookit.ui.core.composables.PreviewContent
 
 private typealias UIState = BookableState
 @Composable
-fun BookableScreen(navController: NavController) {
+fun BookableScreen(
+    navController: NavController,
+    id: Int
+) {
     val viewModel: BookableViewModel = viewModel()
     val state by viewModel.state.collectAsState()
 
+    viewModel.init(id)
     BookableContent(
         state = state,
     )
@@ -42,7 +46,7 @@ fun BookableContent(
     state: UIState = UIState(),
 ) {
 
-    var images by remember { mutableStateOf(state.initialImages) }
+    var images by remember { mutableStateOf(state.bookable.) }
 
     Box(
         modifier = Modifier
@@ -99,7 +103,7 @@ fun BookableContent(
                     .padding(PaddingValues(15.dp, 5.dp, 15.dp, 0.dp))
             ) {
                 Text(
-                    text = state.title,
+                    text = state.bookable.name,
                     fontSize = 26.sp,
                     fontFamily = FontFamily(Font(R.font.poppins_bold)),
                     fontWeight = FontWeight(700),
@@ -116,7 +120,7 @@ fun BookableContent(
             }
 
             Text(
-                text = state.description,
+                text = state.bookable.description,
                 fontSize = 18.sp,
                 fontFamily = FontFamily(Font(R.font.poppins_bold)),
                 fontWeight = FontWeight(400),
@@ -134,7 +138,7 @@ fun BookableContent(
             )
 
             Row {
-                Text(text = "${state.people} personnes maximum")
+                Text(text = "${state.bookable.maxCapacity} personnes maximum")
             }
 
             Row {

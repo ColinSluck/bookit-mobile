@@ -15,4 +15,5 @@ sealed class NavigationEvent {
     object NavigateToHome : NavigationEvent()
     object NavigateToLogin : NavigationEvent()
     object NavigateToSignup : NavigationEvent()
+    object NavigateToBookable : NavigationEvent()
 }
