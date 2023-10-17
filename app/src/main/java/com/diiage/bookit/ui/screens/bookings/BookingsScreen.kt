@@ -21,6 +21,8 @@ import com.diiage.bookit.ui.core.composables.bookings.CompactBookable
 import com.diiage.bookit.ui.core.composables.PreviewContent
 import com.diiage.bookit.ui.core.composables.bookings.NoNextBookings
 import com.diiage.bookit.ui.core.navigate
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import java.util.*
 
 private typealias UIState = BookingsState
@@ -30,18 +32,29 @@ fun BookingsScreen(navController: NavController) {
     val viewModel: BookingsViewModel = viewModel()
     val state by viewModel.state.collectAsState()
 
+    LaunchedEffect(viewModel) {
+        viewModel.events
+            .onEach { event ->
+                if (event is Destination.Filter) {
+                    navController.navigate(event)
+                }
+            }.collect()
+    }
+
     BookingsContent(
         state = state,
         onSelectBooking = {
             navController.navigate(Destination.Bookable)
-        }
+        },
+        handleAction = viewModel::handleAction
     )
 }
 
 @Composable
 fun BookingsContent(
     state: UIState = UIState(),
-    onSelectBooking: () -> Unit
+    onSelectBooking: () -> Unit,
+    handleAction: (BookingsAction) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -61,7 +74,7 @@ fun BookingsContent(
         }
 
         item{
-            NoNextBookings()
+            NoNextBookings(handleAction)
         }
 
         item{
@@ -85,12 +98,4 @@ fun BookingsContent(
             )
         }
     }
-}
-
-@Preview
-@Composable
-private fun BookingsPreview() = PreviewContent {
-    BookingsContent(
-        onSelectBooking = {}
-    )
 }
