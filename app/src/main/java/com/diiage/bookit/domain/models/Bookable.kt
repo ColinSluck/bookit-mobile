@@ -15,4 +15,5 @@ data class Bookable (
     val bookableTypeId: Int,
 
     val images: List<String>? = null,
+    val materials: List<Material>? = null,
 )

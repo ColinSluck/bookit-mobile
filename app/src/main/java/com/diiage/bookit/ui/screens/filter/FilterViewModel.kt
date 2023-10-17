@@ -1,6 +1,7 @@
 package com.diiage.bookit.ui.screens.filter
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.diiage.bookit.data.remote.ErrorMessage
 import com.diiage.bookit.domain.models.Material
@@ -24,8 +25,9 @@ class FilterViewModel(application: Application) : ViewModel<FilterState>(FilterS
     private val searchRepository: SearchRepository by inject()
 
     init {
-      getSlots()
-      getMaterials()
+        Log.d("FilterViewModel", "FilterViewModel: init")
+        getSlots()
+        getMaterials()
     }
 
     private fun getSlots() {
