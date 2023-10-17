@@ -3,12 +3,12 @@ package com.diiage.bookit.ui.screens.search
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.diiage.bookit.data.remote.ErrorMessage
 import com.diiage.bookit.domain.models.Bookable
 import com.diiage.bookit.domain.models.Search
 import com.diiage.bookit.domain.models.User
 import com.diiage.bookit.domain.repositories.PreferenceRepository
 import com.diiage.bookit.domain.repositories.SearchRepository
+import com.diiage.bookit.ui.core.Destination
 import com.diiage.bookit.ui.core.ViewModel
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
@@ -68,6 +68,7 @@ class SearchViewModel(application: Application) : ViewModel<SearchState>(SearchS
     }
 
     private fun selectBookable(bookableId: Int) {
+        sendEvent(Destination.Bookable(bookableId.toString()))
     }
 
 }

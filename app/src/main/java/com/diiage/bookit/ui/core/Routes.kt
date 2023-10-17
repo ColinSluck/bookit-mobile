@@ -40,10 +40,14 @@ sealed class Destination(val route: String, val arguments: List<NamedNavArgument
     object Profile: Destination(route = "profile")
     object Login: Destination(route = "login")
     object Signup: Destination(route = "signup")
-    object Bookable: Destination(route = "bookable")
+    //object Bookable: Destination(route = "bookable")
     object Filter: Destination(route = "filter")
     object CreateBookable: Destination(route = "createBookable")
 
+    class Bookable(bookable: String = "{bookable}"): Destination(
+        route = "bookable/${bookable}",
+        arguments = listOf(navArgument("bookable") { type = NavType.StringType })
+    )
     class Search(search: String = "{search}"): Destination(
         route = "search/${search}",
         arguments = listOf(navArgument("search") { type = NavType.StringType })

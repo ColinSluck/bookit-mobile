@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.diiage.bookit.domain.models.Search
@@ -28,8 +27,8 @@ import com.diiage.bookit.ui.core.composables.navbar.Navbar
 import com.diiage.bookit.ui.core.theme.BookItTheme
 import com.diiage.bookit.ui.screens.bookable.BookableScreen
 import com.diiage.bookit.ui.screens.bookings.BookingsScreen
-import com.diiage.bookit.ui.screens.filter.FilterScreen
 import com.diiage.bookit.ui.screens.createBookable.CreateBookableScreen
+import com.diiage.bookit.ui.screens.filter.FilterScreen
 import com.diiage.bookit.ui.screens.home.HomeScreen
 import com.diiage.bookit.ui.screens.login.LoginScreen
 import com.diiage.bookit.ui.screens.profile.ProfileScreen
@@ -79,7 +78,6 @@ private fun MainContent(preferenceRepository: PreferenceRepository) {
 
                 composable(Destination.Bookings) { BookingsScreen(navController) }
 
-                composable(Destination.Bookable) { BookableScreen(navController) }
 
                 composable(Destination.Home) { HomeScreen(navController) }
 
@@ -90,6 +88,16 @@ private fun MainContent(preferenceRepository: PreferenceRepository) {
                 composable(Destination.Signup) { SignupScreen(navController) }
 
                 composable(Destination.CreateBookable) { CreateBookableScreen(navController) }
+
+                composable(
+                    destination = Destination.Bookable(),
+                ) { backStackEntry ->
+                    BookableScreen(
+                        navController = navController,
+                        id =  backStackEntry.arguments?.getString("bookable")!!.toInt()
+                    )
+                }
+
 
                 composable(
                     destination = Destination.Search(),

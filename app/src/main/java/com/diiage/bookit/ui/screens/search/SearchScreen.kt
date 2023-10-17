@@ -28,6 +28,9 @@ import androidx.navigation.NavController
 import com.diiage.bookit.ui.core.Destination
 import com.diiage.bookit.ui.core.composables.BookableCard
 import com.diiage.bookit.ui.core.composables.search.SearchBar
+import com.diiage.bookit.ui.core.navigate
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun SearchScreen(navController: NavController,
@@ -40,6 +43,12 @@ fun SearchScreen(navController: NavController,
 
     LaunchedEffect(search) {
         viewModel.init(search = search)
+        viewModel.events
+            .onEach { event ->
+                if (event is Destination.Bookable){
+                    navController.navigate(event)
+                }
+            }.collect()
     }
 
     SearchContent(
@@ -102,7 +111,7 @@ fun SearchContent(
                                 Row (
                                     modifier = Modifier.padding(top = 16.dp)
                                 ){
-                                    BookableCard(bookable = bookable)
+                                    BookableCard(bookable = bookable, handleAction = handleAction)
                                 }
                             }
                         }

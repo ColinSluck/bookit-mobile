@@ -2,6 +2,7 @@ package com.diiage.bookit.ui.core.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,11 +32,16 @@ import com.diiage.bookit.R
 import com.diiage.bookit.domain.models.Bookable
 import com.diiage.bookit.domain.models.Booking
 import com.diiage.bookit.ui.core.functions.formatMaterialsList
+import com.diiage.bookit.ui.screens.search.SearchAction
 
 
 @Composable
-fun BookableCard(bookable: Bookable, booking: Booking? = null) {
-    Box (modifier = Modifier.padding(horizontal = 18.dp)){
+fun BookableCard(bookable: Bookable, booking: Booking? = null, handleAction: (SearchAction) -> Unit) {
+    Box (
+        modifier = Modifier.padding(horizontal = 18.dp)
+            .clickable { handleAction(SearchAction.SelectBookable(bookable.id)) }
+
+        ){
         Column {
             Box(
                 Modifier
