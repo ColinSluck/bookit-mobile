@@ -10,15 +10,16 @@ import org.koin.core.component.inject
 
 class BookableViewModel(application: Application) : ViewModel<BookableState>(BookableState(), application)
 {
+
     private val bookableRepository : BookableRepository by inject()
 
-    init {
-        getBookabe()
+    fun init(id: Int) {
+        getBookabe(id)
     }
-    fun getBookabe(){
+    fun getBookabe(id: Int){
         viewModelScope.launch {
             try {
-                val bookable = bookableRepository.getBookable(545797)
+                val bookable = bookableRepository.getBookable(id)
                 updateState { copy(initialImages = bookable.images) }
                 updateState { copy(title = bookable.name) }
                 updateState { copy(description = bookable.description) }
