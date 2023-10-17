@@ -1,26 +1,17 @@
 package com.diiage.bookit.ui.core.composables
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,31 +25,22 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.diiage.bookit.R
-import java.time.format.DateTimeFormatter
+import com.diiage.bookit.domain.models.Bookable
+import com.diiage.bookit.domain.models.Booking
+import com.diiage.bookit.ui.core.functions.formatMaterialsList
 
 
 @Composable
-fun bookableView(
-                    bookableName : String,
-                    bookableLoc : String,
-                    bookableOptions : String,
-                    bookingDate: String,
-                    bookingTime: String,
-                    personNumber : String
-
-) {
-
-    Box {
+fun BookableCard(bookable: Bookable, booking: Booking? = null) {
+    Box (modifier = Modifier.padding(horizontal = 18.dp)){
         Column {
-
             Box(
                 Modifier
                     .clip(RoundedCornerShape(4.dp))
-            ) {//box pour l'image
+            ) {
 
                 Image(
                     painter = painterResource(id = R.drawable.rectangle8),
@@ -68,19 +50,25 @@ fun bookableView(
                         .width(353.dp)
                         .height(195.dp)
                 )
-                Row(
-                    Modifier
-                        .padding(start = 229.dp, top = 7.dp)
-                ){
-                    BookingDate(bookingDate = bookingDate, bookingTime = bookingTime)
+
+                if (booking != null) {
+                    Row(
+                        Modifier
+                            .padding(start = 229.dp, top = 7.dp)
+                    ){
+                        BookingDate(booking)
+                    }
                 }
             }
 
-            Row {
+            Row (
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+                ){
                 Text(
                     modifier = Modifier.padding(2.dp),
                     color = Color.Black,
-                    text = bookableName,
+                    text = bookable.name,
                     style = TextStyle(
                         fontSize = 14.sp,
                         fontFamily = FontFamily(Font(R.font.poppins_regular)),
@@ -88,19 +76,11 @@ fun bookableView(
                         color = Color(0xFF000000)
                     )
                 )
-
-                Column( //colonne qui contient un ligne pour afficher le nombre de participants
-                    modifier = Modifier.padding(start = 166.dp)
-                ) {
-                    PersonsNumber(
-                        personNumber = personNumber
-                    )
-                }
+                Capacity(bookable.maxCapacity)
             }
 
 
             Row(
-                //Ligne2 pour la localisation
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
@@ -113,7 +93,7 @@ fun bookableView(
                 Text(
                     modifier = Modifier.padding(2.dp),
                     color = Color.Black,
-                    text = bookableLoc,
+                    text = bookable.place,
                     style = TextStyle(
                         fontSize = 14.sp,
                         fontFamily = FontFamily(Font(R.font.poppins_regular)),
@@ -123,28 +103,29 @@ fun bookableView(
                 )
             }
 
-            Row(
-                //ligne3 pour les options
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.image10),
-                    contentDescription = "Icône Localisation",
-                    modifier = Modifier
-                        .size(20.dp)
-                )
-
-                Text(
-                    modifier = Modifier.padding(2.dp),
-                    color = Color.Black,
-                    text = bookableOptions,
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFF000000)
+            if (bookable.materials?.isNotEmpty() == true) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.image10),
+                        contentDescription = "Icône materials",
+                        modifier = Modifier
+                            .size(20.dp)
                     )
-                )
+
+                    Text(
+                        modifier = Modifier.padding(2.dp),
+                        color = Color.Black,
+                        text = formatMaterialsList(bookable.materials),
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                            fontWeight = FontWeight(400),
+                            color = Color(0xFF000000)
+                        )
+                    )
+                }
             }
 
         }
@@ -152,9 +133,8 @@ fun bookableView(
     }
 }
 @Composable
-fun PersonsNumber(//composable pour le nombre de participants
-    personNumber : String
-
+fun Capacity(
+    maxCapacity : Int
 ) {
     Row {
 
@@ -167,7 +147,7 @@ fun PersonsNumber(//composable pour le nombre de participants
         )
 
         Text(
-            text = personNumber,
+            text = maxCapacity.toString(),
             style = TextStyle(
                 fontSize = 16.sp,
                 fontFamily = FontFamily(Font(R.font.poppins_regular)),
@@ -182,14 +162,8 @@ fun PersonsNumber(//composable pour le nombre de participants
 
 @Composable
 fun BookingDate(
-    bookingDate: String,
-    bookingTime: String,
+    booking: Booking
 ) {
-   // val currentDate = LocalDate.now()
-    //val formattedDate = bookingDate.format(DateTimeFormatter.ofPattern("dd/MM"))
-    val formattedDate = bookingDate
-
-
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
@@ -200,7 +174,7 @@ fun BookingDate(
         Row(
             Modifier.padding(7.dp)
         ){
-            Text(text = "Le $formattedDate à $bookingTime",
+            Text(text = "Le ${booking.date}" + if(booking.startTime != null) " à ${booking.startTime}" else "",
                 style = TextStyle(
                     color = Color(0xFF000000),
                     fontSize = 11.sp,
@@ -220,16 +194,4 @@ fun BookingDate(
         }
     }
     
-}
-
-@Preview
-@Composable
-fun Preview1() {
-    bookableView(bookableName = "Salle de réunion D17", bookableLoc ="1er étage" , bookableOptions = "Tableau blanc, machine à café...", personNumber = "6", bookingDate = "14/09", bookingTime = "10:30")
-}
-
-@Preview
-@Composable
-fun Preview2() {
-    BookingDate("14/09", "10:30")
 }
