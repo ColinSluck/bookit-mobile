@@ -46,6 +46,7 @@ class API() {
 
             return response.body<User>()
         } catch (e: Exception) {
+            print(e)
             throw SignupException.ServerError;
         }
     }

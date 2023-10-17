@@ -1,6 +1,5 @@
 package com.diiage.bookit.ui.core.composables
 
-import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -34,8 +33,9 @@ import com.diiage.bookit.R
  * @param borderColor La couleur de la bordure du bouton (facultatif, par défaut [Color.Transparent]).
  */
 @Composable
-fun BI_Button(text: String, width: Any, height: Any, colorButton: Color, colorText: Color, textSize: Int, fontWeight: Int, borderColor: Color? = null,
-              onClick: () -> Unit = {}) {
+fun BI_Button(
+    text: String, width: Any, height: Any, colorButton: Color, colorText: Color, textSize: Int, fontWeight: Int, borderColor: Color? = null,
+    onClick: () -> Unit = {}) {
     val context = LocalContext.current
     val w = when (width) {
         is Int -> width.toInt().dp

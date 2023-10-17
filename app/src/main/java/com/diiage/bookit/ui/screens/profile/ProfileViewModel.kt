@@ -46,6 +46,8 @@ data class ProfileState(
 )
 
 sealed interface ProfileAction {
+
+    
     object OnDisconnect : ProfileAction
     object OnCreateClicked : ProfileAction
 }

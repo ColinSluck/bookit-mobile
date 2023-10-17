@@ -13,7 +13,7 @@ sealed class Url(val path: String){
 
     // Bookings
     object Bookings: Url("/bookings")
-    object Booking: Url("/bookings/{id}")
+    object Bookable: Url("/api/bookables/{id}")
     object BookingsAvailable: Url("/bookings/available")
     object CreateBookable: Url("/api/bookables")
     object SearchBookable: Url("/api/bookables/search")
@@ -30,4 +30,6 @@ sealed class ErrorMessage(val message: String){
     object SignupError: ErrorMessage("Impossible de créer le compte.")
     object ValidationError: ErrorMessage("Veuillez vérifier les champs saisis.")
     object ServerError: ErrorMessage("Une erreur est survenue.")
+
+    object  BookableError: ErrorMessage("Une erreur est survenue dans la réservation.")
 }
