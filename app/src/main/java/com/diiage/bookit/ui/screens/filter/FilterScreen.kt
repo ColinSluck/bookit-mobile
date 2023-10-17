@@ -1,5 +1,6 @@
 package com.diiage.bookit.ui.screens.filter
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -52,6 +53,8 @@ private typealias UIState = FilterState
 
 @Composable
 fun FilterScreen(navController: NavController) {
+    Log.d("FilterScreen", "FilterScreen")
+
     val viewModel: FilterViewModel = viewModel()
     val state by viewModel.state.collectAsState()
 

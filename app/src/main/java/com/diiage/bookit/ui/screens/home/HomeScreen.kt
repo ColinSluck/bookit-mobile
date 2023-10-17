@@ -1,6 +1,5 @@
 package com.diiage.bookit.ui.screens.home
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,7 +17,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -38,11 +36,14 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.diiage.bookit.R
+import com.diiage.bookit.domain.models.Bookable
+import com.diiage.bookit.domain.models.Booking
+import com.diiage.bookit.domain.models.Material
 import com.diiage.bookit.ui.core.Destination
-import com.diiage.bookit.ui.core.composables.bookableView
+import com.diiage.bookit.ui.core.composables.BookableCard
+import com.diiage.bookit.ui.core.composables.search.SearchBar
 
 private typealias UIState = HomeState
-
 
 @Composable
 fun HomeScreen(navController: NavController) {
@@ -66,71 +67,14 @@ private fun HomeContent(
             .verticalScroll(rememberScrollState())
 
     ){
-        Text(
-            text = "Bienvenue " + state.firstName + " !",
-            style = TextStyle(
-                fontSize = 24.sp,
-                fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                fontWeight = FontWeight(700),
-                color = Color(0xFF000000)
-            ),
-            modifier = Modifier
-                .padding(start = 39.dp, top = 50.dp)
-        )
-        val context = LocalContext.current
-        Button(
+        SearchBar(
+            firstName = state.firstName,
             onClick = {
                 navController.navigate(Destination.Filter.route) {
                     launchSingleTop = true
                 }
             },
-            colors = ButtonDefaults.outlinedButtonColors(Color.Transparent),
-            shape = RoundedCornerShape(29.dp),
-            border = BorderStroke(1.dp, Color(0x80000000)),
-            modifier = Modifier
-                .padding(top = 95.dp, start = 23.dp, end = 23.dp)
-                .width(384.dp)
-                .height(68.dp)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.image14),
-                contentDescription = null,
-                modifier = Modifier
-                    .width(30.dp)
-                    .height(30.dp)
-            )
-            Column(
-                verticalArrangement = Arrangement.SpaceEvenly,
-            ){
-                Row(
-                    modifier = Modifier
-                        .padding(start = 36.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ){
-                    Text(
-                        text = "Réservez maintenant !",
-                        style = TextStyle(
-                            fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                            fontWeight = FontWeight(400),
-                            color = Color(0xFF000000)
-                        )
-                    )
-                }
-                Row(
-                    Modifier
-                        .padding(start = 34.dp)
-                ){
-                    Text(
-                        text = "Une salle de réunion, une voiture...",
-                        style = TextStyle(
-                            fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                            fontWeight = FontWeight(400),
-                            color = Color(0xFF7A7A7A)
-                        )
-                    )
-                }
-            }
-        }
+        )
         Row(
             modifier = Modifier
                 .padding(top = 195.dp)
@@ -283,13 +227,21 @@ private fun HomeContent(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceEvenly
                 ){
-                    bookableView(
-                        bookableName = "Salle de Réunion D17",
-                        bookableLoc = "1er étage",
-                        bookableOptions = "Tableau blanc, machine à café...",
-                        bookingDate = "13/07",
-                        bookingTime = "10h30",
-                        personNumber = "6"
+                    BookableCard(
+                        Bookable(
+                            1,
+                            "", "",
+                            "Salle de Réunion D17", "",
+                            "1er étage", 6,
+                            2,
+                            emptyList(),
+                            listOf(
+                                Material(id = 1, libelle = "Machine à café", bookableTypeId = 2, createdAt = "2023-10-01", updatedAt = "2023-10-01"),
+                                Material(id = 2, libelle = "Tableau blanc", bookableTypeId = 2, createdAt = "2023-10-02", updatedAt = "2023-10-02"),
+                                Material(id = 3, libelle = "Chaise", bookableTypeId = 2, createdAt = "2023-10-03", updatedAt = "2023-10-03")
+                            ),
+                        ),
+                        Booking(1, 1, 2, "13/07", "10h30")
                     )
                 }
             }
@@ -304,13 +256,21 @@ private fun HomeContent(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceEvenly
                 ){
-                    bookableView(
-                        bookableName = "Salle de Réunion D17",
-                        bookableLoc = "1er étage",
-                        bookableOptions = "Tableau blanc, machine à café...",
-                        bookingDate = "13/07",
-                        bookingTime = "10h30",
-                        personNumber = "6"
+                    BookableCard(
+                        Bookable(
+                            1,
+                            "", "",
+                            "Salle de Réunion D17", "",
+                            "1er étage", 6,
+                            2,
+                            emptyList(),
+                            listOf(
+                                Material(id = 1, libelle = "Machine à café", bookableTypeId = 2, createdAt = "2023-10-01", updatedAt = "2023-10-01"),
+                                Material(id = 2, libelle = "Tableau blanc", bookableTypeId = 2, createdAt = "2023-10-02", updatedAt = "2023-10-02"),
+                                Material(id = 3, libelle = "Chaise", bookableTypeId = 2, createdAt = "2023-10-03", updatedAt = "2023-10-03")
+                            ),
+                        ),
+                        Booking(1, 1, 2, "13/07", "10h30")
                     )
                 }
             }
@@ -318,7 +278,3 @@ private fun HomeContent(
     }
 }
 
-@Preview
-@Composable
-fun HomePreview(){
-}

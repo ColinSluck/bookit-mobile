@@ -20,9 +20,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.diiage.bookit.R
+import com.diiage.bookit.ui.screens.bookings.BookingsAction
 
 @Composable
-fun NoNextBookings() {
+fun NoNextBookings(
+    handleAction: (BookingsAction) -> Unit) {
     Box(
         modifier = Modifier
             .border(width = 1.dp, color = Color(0xFF7A7A7A), shape = RoundedCornerShape(size = 5.dp))
@@ -62,7 +64,7 @@ fun NoNextBookings() {
             )
 
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { handleAction(BookingsAction.OnBookClick) },
                 shape = RoundedCornerShape(size = 5.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF457B9D),
@@ -84,10 +86,4 @@ fun NoNextBookings() {
             }
         }
     }
-}
-
-@Composable
-@Preview
-fun NoNextBookingsPreview() {
-    NoNextBookings()
 }
