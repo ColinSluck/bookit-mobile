@@ -1,19 +1,36 @@
 package com.diiage.bookit.ui.screens.bookable
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -23,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import com.diiage.bookit.R
 import com.diiage.bookit.ui.core.composables.PreviewContent
 
@@ -55,7 +73,7 @@ fun BookableContent(
                 .verticalScroll(rememberScrollState())
         ) {
             Image(
-                bitmap = ImageBitmap.imageResource(images[0]),
+                painter = rememberImagePainter(data = images?.get(0), builder = {crossfade(true)}),
                 contentScale = ContentScale.FillBounds,
                 contentDescription = "",
                 modifier = Modifier
@@ -72,9 +90,9 @@ fun BookableContent(
                     .padding(PaddingValues(0.dp, 10.dp, 0.dp, 5.dp))
             ) {
                 //foreach image in images except first
-                images.drop(1).drop(0).forEachIndexed { index, image ->
+                images?.drop(1)?.drop(0)?.forEachIndexed { index, image ->
                     Image(
-                        bitmap = ImageBitmap.imageResource(image),
+                        painter = rememberImagePainter(data = images?.get(index), builder = {crossfade(true)}),
                         contentScale = ContentScale.FillBounds,
                         contentDescription = "",
                         modifier = Modifier
@@ -82,9 +100,9 @@ fun BookableContent(
                             .height(85.dp)
                             .clip(RoundedCornerShape(29.dp))
                             .clickable {
-                                val updatedImages = images.toMutableList()
+                                val updatedImages = images!!.toMutableList()
                                 updatedImages[0] = image
-                                updatedImages[index + 1] = images[0]
+                                updatedImages[index + 1] = images!![0]
                                 images = updatedImages
                             }
                     )

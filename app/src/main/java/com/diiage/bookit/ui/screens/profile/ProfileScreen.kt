@@ -37,7 +37,6 @@ import com.diiage.bookit.ui.composables.QuickAnnouncement
 import com.diiage.bookit.ui.core.Destination
 import com.diiage.bookit.ui.core.NavigationEvent
 import com.diiage.bookit.ui.core.navigate
-import com.diiage.bookit.ui.core.Screen
 import com.diiage.bookit.ui.core.composables.BI_Button
 import com.diiage.bookit.ui.core.functions.PopUp_Deconnection
 import kotlinx.coroutines.flow.collect
