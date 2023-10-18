@@ -94,7 +94,7 @@ private fun MainContent(preferenceRepository: PreferenceRepository) {
                 ) { backStackEntry ->
                     BookableScreen(
                         navController = navController,
-                        id =  backStackEntry.arguments?.getString("bookable")!!.toInt()
+                        id =  backStackEntry.arguments?.getString("bookable")?.toInt() ?: 0
                     )
                 }
 

@@ -65,14 +65,11 @@ fun Stepper(currentStep: Int, onNextStep: () -> Unit, onPreviousStep: () -> Unit
                         .weight(1f)
                         .padding(start = 16.dp, end = 8.dp)
                         .fillMaxWidth()
-                        .clickable(enabled = currentStep > 0) {
-                            if (currentStep > 0) {
+                        .clickable {
                                 onPreviousStep()
-                            }
                         },
                     colors = ButtonDefaults.buttonColors(Color.Transparent),
                     onClick = onPreviousStep,
-                    enabled = currentStep > 0
                 ) {
                     Text(
                         text = "Retour",

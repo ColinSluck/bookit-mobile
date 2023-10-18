@@ -96,10 +96,8 @@ public fun ProfileContent(
                     modifier = Modifier.padding(start = 30.dp, end = 29.dp, top = 36.dp),
                     horizontalArrangement = Arrangement.Center
                 ){
-                    val showPopup = PopUp_Deconnection()
-
                     Button(
-                        onClick = { showPopup },
+                        onClick = { handleAction(ProfileAction.OnDisconnect) },
                         modifier = Modifier
                             .border(
                                 1.dp,

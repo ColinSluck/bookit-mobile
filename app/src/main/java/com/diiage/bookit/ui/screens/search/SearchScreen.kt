@@ -111,7 +111,9 @@ fun SearchContent(
                                 Row (
                                     modifier = Modifier.padding(top = 16.dp)
                                 ){
-                                    BookableCard(bookable = bookable, handleAction = handleAction)
+                                    BookableCard(bookable = bookable, onClick = {
+                                        handleAction(SearchAction.SelectBookable(bookable.id))
+                                    })
                                 }
                             }
                         }

@@ -2,6 +2,7 @@ package com.diiage.bookit.ui.screens.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,8 +14,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -34,8 +37,14 @@ import com.diiage.bookit.domain.models.Bookable
 import com.diiage.bookit.domain.models.Booking
 import com.diiage.bookit.domain.models.Material
 import com.diiage.bookit.ui.core.Destination
+import com.diiage.bookit.ui.core.NavigationEvent
 import com.diiage.bookit.ui.core.composables.BookableCard
+import com.diiage.bookit.ui.core.composables.bookings.NoNextBookings
 import com.diiage.bookit.ui.core.composables.search.SearchBar
+import com.diiage.bookit.ui.core.navigate
+import com.diiage.bookit.ui.screens.search.SearchAction
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 
 private typealias UIState = HomeState
 
@@ -44,15 +53,27 @@ fun HomeScreen(navController: NavController) {
     val viewModel: HomeViewModel = viewModel()
     val state by viewModel.state.collectAsState()
 
+    LaunchedEffect(viewModel) {
+        viewModel.events
+            .onEach { event ->
+                if (event is Destination.Bookable)
+                    navController.navigate(event)
+                else if (event is Destination.Bookings)
+                    navController.navigate(event)
+            }.collect()
+    }
+
     HomeContent(
         state = state,
-        navController = navController
+        navController = navController,
+        handleAction = viewModel::handleAction
     )
 }
 @Composable
 private fun HomeContent(
     state: UIState = UIState(),
-    navController: NavController
+    navController: NavController,
+    handleAction: (HomeAction) -> Unit = {}
 ){
     Box(
         modifier = Modifier
@@ -183,9 +204,10 @@ private fun HomeContent(
         }
         Row(
             Modifier
-                .padding(top = 277.dp, start = 39.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(top = 277.dp, start = 30.dp, end = 30.dp)
+                .fillMaxWidth()
+                .clickable { handleAction(HomeAction.OnBookingsClicked) },
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
                 text = "VOS RÉSERVATIONS",
@@ -207,69 +229,31 @@ private fun HomeContent(
             )
         }
         Column(
-            Modifier.padding(top = 344.dp)
+            Modifier.padding(top = 344.dp).fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ){
-
-            Row(
-                Modifier
-                    .padding(bottom = 42.dp)
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically,
-            ){
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.SpaceEvenly
-                ){
-                    BookableCard(
-                        Bookable(
-                            1,
-                            "", "",
-                            "Salle de Réunion D17", "",
-                            "1er étage", 6,
-                            2,
-                            emptyList(),
-                            listOf(
-                                Material(id = 1, libelle = "Machine à café", bookableTypeId = 2, createdAt = "2023-10-01", updatedAt = "2023-10-01"),
-                                Material(id = 2, libelle = "Tableau blanc", bookableTypeId = 2, createdAt = "2023-10-02", updatedAt = "2023-10-02"),
-                                Material(id = 3, libelle = "Chaise", bookableTypeId = 2, createdAt = "2023-10-03", updatedAt = "2023-10-03")
-                            ),
-                        ),
-                        Booking(1, 1, 2, "13/07", "10h30"),
-                        handleAction = {}
-
-                    )
-                }
-            }
-            Row(
-                Modifier
-                    .padding(bottom = 42.dp)
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically,
-            ){
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.SpaceEvenly
-                ){
-                    BookableCard(
-                        Bookable(
-                            1,
-                            "", "",
-                            "Salle de Réunion D17", "",
-                            "1er étage", 6,
-                            2,
-                            emptyList(),
-                            listOf(
-                                Material(id = 1, libelle = "Machine à café", bookableTypeId = 2, createdAt = "2023-10-01", updatedAt = "2023-10-01"),
-                                Material(id = 2, libelle = "Tableau blanc", bookableTypeId = 2, createdAt = "2023-10-02", updatedAt = "2023-10-02"),
-                                Material(id = 3, libelle = "Chaise", bookableTypeId = 2, createdAt = "2023-10-03", updatedAt = "2023-10-03")
-                            ),
-                        ),
-                        Booking(1, 1, 2, "13/07", "10h30"),
-                        handleAction = {}
-                    )
-                }
+            if(state.isLoading) {
+                CircularProgressIndicator(color = Color.White)
+            } else if(state.bookings.isNotEmpty()) {
+                state.bookings.forEach { booking ->
+                    Row(
+                        Modifier
+                            .padding(bottom = 42.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ){
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.SpaceEvenly
+                        ){
+                                BookableCard(bookable = booking.bookable, booking = booking, onClick = { handleAction(
+                                    HomeAction.OnBookableClicked(booking.bookableId)) })
+                            }
+                        }
+                    }
+            } else {
+                NoNextBookings(onClick = {handleAction(HomeAction.OnBookClicked)})
             }
         }
     }
