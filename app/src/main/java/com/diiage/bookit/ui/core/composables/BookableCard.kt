@@ -32,14 +32,13 @@ import com.diiage.bookit.R
 import com.diiage.bookit.domain.models.Bookable
 import com.diiage.bookit.domain.models.Booking
 import com.diiage.bookit.ui.core.functions.formatMaterialsList
-import com.diiage.bookit.ui.screens.search.SearchAction
 
 
 @Composable
-fun BookableCard(bookable: Bookable, booking: Booking? = null, handleAction: (SearchAction) -> Unit) {
+fun BookableCard(bookable: Bookable, booking: Booking? = null, onClick: () -> Unit) {
     Box (
         modifier = Modifier.padding(horizontal = 18.dp)
-            .clickable { handleAction(SearchAction.SelectBookable(bookable.id)) }
+            .clickable { onClick() }
 
         ){
         Column {
@@ -170,6 +169,11 @@ fun Capacity(
 fun BookingDate(
     booking: Booking
 ) {
+
+    // From 2023-10-18 to 18/10
+    val formattedDate = booking.date.substring(8, 10) + "/" + booking.date.substring(5, 7)
+    val formattedStartTime = booking.startTime.substring(0, 5)
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
@@ -180,7 +184,7 @@ fun BookingDate(
         Row(
             Modifier.padding(7.dp)
         ){
-            Text(text = "Le ${booking.date}" + if(booking.startTime != null) " à ${booking.startTime}" else "",
+            Text(text = "Le $formattedDate à $formattedStartTime",
                 style = TextStyle(
                     color = Color(0xFF000000),
                     fontSize = 11.sp,
@@ -192,10 +196,10 @@ fun BookingDate(
 
             Icon(
                 painter = painterResource(id = R.drawable.image18),
-                contentDescription = "Icône d'utilisateur",
+                contentDescription = "Icône d'horloge",
                 modifier = Modifier
                     .size(15.dp)
-                    .padding(start = 1.dp)
+                    .padding(start = 4.dp)
             )
         }
     }

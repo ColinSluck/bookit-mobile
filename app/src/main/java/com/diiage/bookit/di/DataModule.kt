@@ -8,11 +8,13 @@ import com.diiage.bookit.data.remote.mapper.BookableMapper
 import com.diiage.bookit.data.remote.repositories.BookableRepositoryImpl
 import com.diiage.bookit.domain.repositories.BookableRepository
 import com.diiage.bookit.data.remote.repositories.AuthRepositoryImpl
+import com.diiage.bookit.data.remote.repositories.BookingRepositoryImpl
 import com.diiage.bookit.data.remote.repositories.MaterialRepositoryImpl
 import com.diiage.bookit.data.remote.repositories.PreferenceRepositoryImpl
 import com.diiage.bookit.data.remote.repositories.SearchRepositoryImpl
 import com.diiage.bookit.data.remote.repositories.SlotRepositoryImpl
 import com.diiage.bookit.domain.repositories.AuthRepository
+import com.diiage.bookit.domain.repositories.BookingRepository
 import com.diiage.bookit.domain.repositories.MaterialRepository
 import com.diiage.bookit.domain.repositories.PreferenceRepository
 import com.diiage.bookit.domain.repositories.SearchRepository
@@ -36,4 +38,5 @@ val dataModule = module {
     single<SlotRepository> { SlotRepositoryImpl(get()) }
     single<MaterialRepository> { MaterialRepositoryImpl(get()) }
     single<SearchRepository> { SearchRepositoryImpl(get()) }
+    single<BookingRepository> { BookingRepositoryImpl(get()) }
 }

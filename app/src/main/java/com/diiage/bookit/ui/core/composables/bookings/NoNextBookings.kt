@@ -24,7 +24,7 @@ import com.diiage.bookit.ui.screens.bookings.BookingsAction
 
 @Composable
 fun NoNextBookings(
-    handleAction: (BookingsAction) -> Unit) {
+    onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .border(width = 1.dp, color = Color(0xFF7A7A7A), shape = RoundedCornerShape(size = 5.dp))
@@ -64,7 +64,7 @@ fun NoNextBookings(
             )
 
             Button(
-                onClick = { handleAction(BookingsAction.OnBookClick) },
+                onClick = { onClick() },
                 shape = RoundedCornerShape(size = 5.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF457B9D),
