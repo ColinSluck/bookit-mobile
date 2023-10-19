@@ -1,3 +1,21 @@
+/**
+ * Ce fichier contient des fonctions Composables pour la gestion de pop-ups et de modales
+ * dans une interface utilisateur Composable.
+ *
+ * Il définit un écran principal `MyScreen` qui comporte plusieurs boutons déclenchant
+ * l'affichage de pop-ups animés en utilisant la fonction `AnimatedPopup`.
+ *
+ * Les pop-ups comprennent :
+ * - InvitationSuccessPopUp : Pour afficher un message de succès d'invitation.
+ * - ConfirmationPopUp : Pour afficher un message de confirmation.
+ * - AreYouSurePopUp : Pour demander une confirmation avec un message personnalisé.
+ * - PopUp_Deconnection : Pour afficher un pop-up de déconnexion.
+ * - PopUp_DeleteAccount : Pour afficher un pop-up de suppression de compte.
+ * - InviteCollabPopUp : Pour inviter des collaborateurs.
+ *
+ * Le code utilise des variables d'état pour gérer la visibilité des pop-ups et les fermer
+ * en fonction des interactions de l'utilisateur.
+ */
 package com.diiage.bookit.ui.core.functions
 
 import androidx.compose.animation.AnimatedVisibility

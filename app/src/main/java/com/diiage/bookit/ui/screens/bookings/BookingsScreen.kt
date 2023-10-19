@@ -1,9 +1,27 @@
+/**
+ * Fichier : BookingsScreen.kt
+ *
+ * Description :
+ * Ce fichier contient les composants Compose pour l'écran de gestion des réservations de l'application. Il comprend
+ * les fonctions Composables pour afficher la liste des réservations, les boutons, les indicateurs de chargement, etc.
+ *
+ * Dépendances :
+ * - Android Compose
+ * - ViewModel de LiveData
+ * - NavController pour la navigation
+ *
+ * Notes importantes :
+ * - Les composants Compose sont utilisés pour créer l'interface utilisateur de l'écran de gestion des réservations.
+ * - L'écran affiche la liste des réservations de l'utilisateur et permet d'effectuer des actions telles que la sélection d'une réservation.
+ * - Les composants Compose sont conçus pour être utilisés avec le ViewModel BookingsViewModel.
+ * - La navigation est gérée via le NavController, avec des événements dirigés vers les destinations appropriées.
+ * - Les composants Compose comprennent des éléments tels que des boutons, des textes, des indicateurs de chargement, et des cartes de réservation.
+ */
 package com.diiage.bookit.ui.screens.bookings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState

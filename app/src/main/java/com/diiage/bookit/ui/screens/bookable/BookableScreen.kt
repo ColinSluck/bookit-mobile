@@ -51,6 +51,15 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import java.time.LocalDate
 
+/**
+ * Cette composable représente l'écran d'un "bookable". Elle affiche les détails d'un objet "bookable", y compris ses images,
+ * son nom, sa disponibilité, sa description, ses spécifications et ses équipements. Les utilisateurs peuvent également réserver
+ * cet "bookable" s'il est disponible.
+ *
+ * @param navController Le contrôleur de navigation pour la gestion de la navigation entre les écrans.
+ * @param id L'identifiant unique de l'objet "bookable" à afficher.
+ */
+
 private typealias UIState = BookableState
 
 /**

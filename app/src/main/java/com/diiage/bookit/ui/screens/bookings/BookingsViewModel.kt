@@ -1,3 +1,25 @@
+/**
+ * Fichier : BookingsViewModel.kt
+ *
+ * Description :
+ * Ce fichier contient la classe ViewModel chargée de gérer les réservations dans l'application. Le ViewModel
+ * gère diverses actions liées aux réservations, communique avec BookingRepository pour récupérer et manipuler les données,
+ * et fournit ces données aux composants d'interface utilisateur associés.
+ *
+ * Dépendances :
+ * - AndroidX ViewModel
+ * - Koin pour l'injection de dépendances
+ *
+ * Notes importantes :
+ * - Ce ViewModel est conçu pour interagir avec la fonctionnalité des réservations de l'application.
+ * - Il implémente une architecture basée sur l'état pour gérer l'état de l'interface utilisateur et les données.
+ * - Le ViewModel communique avec BookingRepository pour récupérer et mettre à jour les informations de réservation.
+ * - Il prend en charge des actions telles que la réservation, la sélection d'un élément réservable et le chargement de plus de réservations.
+ * - L'état du ViewModel comprend des informations sur l'état de chargement, les erreurs, les réservations récupérées et la pagination.
+ * - La gestion des exceptions est en place pour traiter les erreurs réseau et serveur.
+ * - Les événements d'interface utilisateur sont envoyés à l'aide de la classe Destination à des fins de navigation.
+ * - Le ViewModel est conçu pour être utilisé en conjonction avec les composants d'interface utilisateur associés.
+ */
 package com.diiage.bookit.ui.screens.bookings
 
 import android.app.Application

@@ -1,3 +1,21 @@
+/**
+ * Ce fichier contient plusieurs composables utilisés pour créer des pop-ups et des modales
+ * dans une interface utilisateur Composable. Ces composables incluent des pop-ups de
+ * confirmation, de succès d'invitation, d'invitations de collaborateurs, de demande de mot
+ * de passe, etc.
+ *
+ * Les principaux composables de ce fichier sont :
+ * - ConfirmationPopUp : Affiche un message de confirmation.
+ * - InvitationSuccessPopUp : Affiche un message de succès d'invitation.
+ * - AreYouSurePopUp : Demande une confirmation de l'utilisateur.
+ * - PopUp_Deconnection : Affiche un pop-up de déconnexion.
+ * - PopUp_DeleteAccount : Affiche un pop-up de suppression de compte.
+ * - InviteCollabPopUp : Permet d'inviter des collaborateurs.
+ * - PasswordDemand : Demande un mot de passe pour la confirmation.
+ *
+ * Le fichier utilise des variables d'état pour contrôler la visibilité des pop-ups
+ * en fonction des interactions de l'utilisateur.
+ */
 package com.diiage.bookit.ui.core.composables
 
 import androidx.compose.foundation.BorderStroke
