@@ -41,6 +41,8 @@ import org.koin.android.ext.android.inject
 class MainActivity : ComponentActivity() {
     private val preferenceRepository: PreferenceRepository by inject()
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -61,6 +63,8 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MainContent(preferenceRepository: PreferenceRepository) {
+
+
 
     val navController = rememberNavController()
 
