@@ -69,12 +69,12 @@ private typealias UIState = BookableState
  * @param id The unique identifier for the bookable item.
  */
 @Composable
-fun BookableScreen(navController: NavController, id: Int) {
+fun BookableScreen(navController: NavController, id: String) {
     val viewModel: BookableViewModel = viewModel()
     val state by viewModel.state.collectAsState()
-    viewModel.init(id)
 
-    LaunchedEffect(viewModel) {
+    LaunchedEffect(id) {
+        viewModel.init(id = id)
         viewModel.events
             .onEach { event ->
                 if (event is Destination.Bookings) {
@@ -101,9 +101,6 @@ fun BookableContent(
     state: UIState = UIState(),
     handleAction: (BookableAction) -> Unit
 ) {
-
-    var images by remember { mutableStateOf(state.initialImages) }
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -115,10 +112,10 @@ fun BookableContent(
                 .verticalScroll(rememberScrollState())
         ) {
             Image(
-                painter = if (images.isNullOrEmpty()) {
-                    painterResource(id = R.drawable.bookable_placeholder) // Chargez l'image par défaut depuis les ressources
+                painter = if (state.initialImages.isNullOrEmpty()) {
+                    painterResource(id = R.drawable.bookable_placeholder)
                 } else {
-                    rememberImagePainter(data = images!![0], builder = { crossfade(true) })
+                    rememberImagePainter(data = state.initialImages!![0], builder = { crossfade(true) })
                 },
                 contentScale = ContentScale.FillBounds,
                 contentDescription = "",
@@ -136,9 +133,9 @@ fun BookableContent(
                     .padding(PaddingValues(0.dp, 10.dp, 0.dp, 5.dp))
             ) {
                 //foreach image in images except first
-                images?.drop(1)?.drop(0)?.forEachIndexed { index, image ->
+                state.initialImages?.drop(1)?.drop(0)?.forEachIndexed { index, image ->
                     Image(
-                        painter = if (images.isNullOrEmpty()) {
+                        painter = if (state.initialImages.isEmpty()) {
                             painterResource(id = R.drawable.bookable_placeholder_2) // Chargez l'image miniature par défaut depuis les ressources
                         } else {
                             rememberImagePainter(data = image, builder = { crossfade(true) })
@@ -150,11 +147,11 @@ fun BookableContent(
                             .height(85.dp)
                             .clip(RoundedCornerShape(29.dp))
                             .clickable {
-                                if (!images.isNullOrEmpty()) {
-                                    val updatedImages = images!!.toMutableList()
+                                if (!state.initialImages.isNullOrEmpty()) {
+                                    val updatedImages = state.initialImages.toMutableList()
                                     updatedImages[0] = image
-                                    updatedImages[index + 1] = images!![0]
-                                    images = updatedImages
+                                    updatedImages[index + 1] = state.initialImages[0]
+                                    handleAction(BookableAction.OnImageUpdate(updatedImages))
                                 }
                             }
                     )
