@@ -56,10 +56,11 @@ fun HomeScreen(navController: NavController) {
     LaunchedEffect(viewModel) {
         viewModel.events
             .onEach { event ->
-                if (event is Destination.Bookable)
-                    navController.navigate(event)
-                else if (event is Destination.Bookings)
-                    navController.navigate(event)
+                when (event) {
+                    is Destination.Bookable -> navController.navigate(event)
+                    is Destination.Bookings -> navController.navigate(event)
+                    is Destination.Filter -> navController.navigate(event)
+                }
             }.collect()
     }
 
