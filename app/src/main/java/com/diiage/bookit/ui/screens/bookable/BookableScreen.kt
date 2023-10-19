@@ -1,24 +1,12 @@
 package com.diiage.bookit.ui.screens.bookable
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -155,23 +143,57 @@ fun BookableContent(
             )
             
             Text(
-                text = "Équipements disponibles :",
+                text = "Spécifications :",
+                modifier = Modifier.padding(PaddingValues(15.dp, 10.dp)),
                 fontSize = 18.sp,
+                //fontFamily = FontFamily(Font(R.font.poppins_bold)),
+                fontWeight = FontWeight(700),
+                color = Color.Black
+                ,
+            )
+
+            Row (horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(PaddingValues(15.dp, 10.dp))){
+                Icon(
+                    painter = painterResource(id = R.drawable.image8),
+                    contentDescription = "Icône localisation",
+                    modifier = Modifier
+                        .size(25.dp)
+                        //.padding(start = 1.dp)
+                )
+                Text(text = "${state.people} personnes maximum")
+            }
+
+            Row (horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(PaddingValues(15.dp, 10.dp))){
+                Icon(
+                    painter = painterResource(id = R.drawable.image9),
+                    contentDescription = "Icône localisation",
+                    modifier = Modifier
+                        .size(25.dp)
+                        //.padding(start = 1.dp)
+                )
+                Text(text = state.location)
+            }
+
+
+            Text(
+                text = "Equipements :",
+                fontSize = 18.sp,
+                modifier = Modifier.padding(PaddingValues(15.dp, 10.dp)),
                 //fontFamily = FontFamily(Font(R.font.poppins_bold)),
                 fontWeight = FontWeight(700),
                 color = Color.Black,
             )
 
-            Row {
-                Text(text = "${state.people} personnes maximum")
-            }
-
-            Row {
-                Text(text = state.location)
-            }
-
             state.materials.forEach {
-                Row {
+
+                Row(horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(PaddingValues(15.dp, 10.dp))) {
+
                     Text(text = it)
                 }
             }
