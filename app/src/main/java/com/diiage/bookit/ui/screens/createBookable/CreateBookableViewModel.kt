@@ -35,6 +35,8 @@ class CreateBookableViewModel(application: Application) : ViewModel<CreateBookab
     fun onPreviousStep() {
         if (currentStep > 0) {
             currentStep--
+        } else {
+            sendEvent(NavigationEvent.NavigateToProfile)
         }
     }
 
