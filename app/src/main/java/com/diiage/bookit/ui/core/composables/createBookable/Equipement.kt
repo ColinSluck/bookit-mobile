@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -30,24 +31,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.diiage.bookit.R
+import com.diiage.bookit.ui.screens.createBookable.CreateBookableAction
+import com.diiage.bookit.ui.screens.createBookable.CreateBookableState
 
 @Composable
-fun Equipement(
-    equipement: List<String> = listOf(
-        "Machine à café",
-        "Climatisation",
-        "Chauffage",
-        "Wifi",
-        "Télévision",
-        "Tableau blanc",
-        "Tableau",
-        "Vidéoprojecteur",
-        "Micro",
-        "Enceinte",
-    )
+fun Equipement(state: CreateBookableState, handleAction: (CreateBookableAction) -> Unit
 ) {
-    val activeStates = remember { mutableStateListOf(*Array(equipement.size) { 0 }) }
-
     val modifierInActive = Modifier
         .padding(8.dp)
         .border(
@@ -85,7 +74,7 @@ fun Equipement(
             )
         )
 
-        equipement.chunked(2).forEachIndexed { rowIndex, row ->
+        state.materials.chunked(2).forEachIndexed { rowIndex, row ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
@@ -93,18 +82,56 @@ fun Equipement(
                 row.forEachIndexed { colIndex, bookableType ->
                     Button(
                         onClick = {
-                            activeStates[rowIndex * 2 + colIndex] = 1 - activeStates[rowIndex * 2 + colIndex]
+                           handleAction(CreateBookableAction.OnUpdateChecked(colIndex, !state.materialCheckedIds.contains(bookableType.id)))
                         },
-                        modifier = if (activeStates[rowIndex * 2 + colIndex] == 1) modifierActive else modifierInActive,
+                        modifier = if (state.materialCheckedIds.contains(bookableType.id)) modifierActive else modifierInActive,
                         colors = ButtonDefaults.buttonColors(Color.Transparent),
                         elevation = ButtonDefaults.elevation(0.dp, 0.dp, 0.dp),
                     ) {
                         Text(
-                            text = bookableType,
-                            style = if (activeStates[rowIndex * 2 + colIndex] == 1) textStyleActive else textStyleInActive
+                            text = bookableType.libelle,
+                            style = if (state.materialCheckedIds.contains(bookableType.id)) textStyleActive else textStyleInActive
                         )
                     }
                 }
+            }
+        }
+
+        Column (
+            modifier = Modifier
+                .padding(32.dp)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            if (state.materials.size < state.totalMaterial) {
+                Button(onClick = { handleAction(CreateBookableAction.onLoadMoreMaterial) }) {
+                    Text(
+                        text = "Charger plus d'équipement",
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight(400),
+                            color = Color(0xFFFFFFFF)
+                        )
+                    )
+                }
+            }
+        }
+        if (state.isLoading) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Chargement...",
+                    style = TextStyle(
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight(700),
+                        color = Color(0xFF000000)
+                    ),
+                    modifier = Modifier
+                        .padding(top = 50.dp)
+                )
             }
         }
 

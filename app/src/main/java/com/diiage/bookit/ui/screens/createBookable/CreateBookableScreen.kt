@@ -43,6 +43,8 @@ fun CreateBookableScreen(navController: NavController) {
             .onEach { event ->
                 if (event is NavigationEvent.NavigateToProfile)
                     navController.navigate(Destination.Profile)
+                else if (event is Destination.Bookable)
+                    navController.navigate(event)
             }.collect()
     }
 
@@ -61,9 +63,9 @@ fun CreateBookableScreen(navController: NavController) {
                 0 -> Step1Content()
                 1 -> Step2Content()
                 2 -> Step3Content(state, handleAction = viewModel::handleAction)
-                3 -> Step4Content()
+                3 -> Step4Content(state, handleAction = viewModel::handleAction)
                 4 -> Step5Content()
-                5 -> Step6Content()
+                5 -> Step6Content(state, handleAction = viewModel::handleAction)
             }
         }
 
@@ -103,8 +105,8 @@ fun Step3Content(state: CreateBookableState, handleAction: (CreateBookableAction
 }
 
 @Composable
-fun Step4Content() {
-    Equipement()
+fun Step4Content(state: CreateBookableState, handleAction: (CreateBookableAction) -> Unit) {
+    Equipement(state = state, handleAction = handleAction)
 }
 
 @Composable
@@ -113,7 +115,7 @@ fun Step5Content() {
 }
 
 @Composable
-fun Step6Content() {
-    Confirmation()
+fun Step6Content(state: CreateBookableState, handleAction: (CreateBookableAction) -> Unit) {
+    Confirmation(state = state, handleAction = handleAction)
 }
 
