@@ -26,11 +26,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.diiage.bookit.R
 import com.diiage.bookit.domain.models.Bookable
 import com.diiage.bookit.domain.models.Booking
+import com.diiage.bookit.domain.models.Material
 import com.diiage.bookit.ui.core.functions.formatMaterialsList
 import com.diiage.bookit.ui.screens.search.SearchAction
 
@@ -38,7 +40,8 @@ import com.diiage.bookit.ui.screens.search.SearchAction
 @Composable
 fun BookableCard(bookable: Bookable, booking: Booking? = null, handleAction: (SearchAction) -> Unit) {
     Box (
-        modifier = Modifier.padding(horizontal = 18.dp)
+        modifier = Modifier
+            .padding(horizontal = 18.dp)
             .clickable { handleAction(SearchAction.SelectBookable(bookable.id)) }
 
         ){
@@ -200,4 +203,25 @@ fun BookingDate(
         }
     }
     
+}
+
+@Preview
+@Composable
+fun preview(){
+    BookableCard(
+        Bookable(
+            1,
+            "", "",
+            "Salle de Réunion D17", "",
+            "1er étage", 6,
+            2,
+            emptyList(),
+            listOf(
+                Material(id = 1, libelle = "Machine à café", bookableTypeId = 2, createdAt = "2023-10-01", updatedAt = "2023-10-01"),
+                Material(id = 2, libelle = "Tableau blanc", bookableTypeId = 2, createdAt = "2023-10-02", updatedAt = "2023-10-02"),
+                Material(id = 3, libelle = "Chaise", bookableTypeId = 2, createdAt = "2023-10-03", updatedAt = "2023-10-03")
+            ),
+        ),
+        Booking(1, 1, 2, "13/07", "10h30"),
+        handleAction = {})
 }

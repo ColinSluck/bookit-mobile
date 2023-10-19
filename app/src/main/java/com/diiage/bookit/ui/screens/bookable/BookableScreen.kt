@@ -1,5 +1,7 @@
 package com.diiage.bookit.ui.screens.bookable
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,12 +15,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -50,6 +54,7 @@ private typealias UIState = BookableState
 fun BookableScreen(navController: NavController, id: Int) {
     val viewModel: BookableViewModel = viewModel()
     val state by viewModel.state.collectAsState()
+    val isSuccessPopupVisible by remember { mutableStateOf(false) }
     viewModel.init(id)
     BookableContent(
         state = state,
@@ -64,6 +69,7 @@ fun BookableContent(
     var images by remember { mutableStateOf(state.initialImages) }
 
     Box(
+
         modifier = Modifier
             .fillMaxSize()
     ){
@@ -155,23 +161,57 @@ fun BookableContent(
             )
             
             Text(
-                text = "Équipements disponibles :",
+                text = "Spécifications :",
+                modifier = Modifier.padding(PaddingValues(15.dp, 10.dp)),
                 fontSize = 18.sp,
+                //fontFamily = FontFamily(Font(R.font.poppins_bold)),
+                fontWeight = FontWeight(700),
+                color = Color.Black
+                ,
+            )
+
+            Row (horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(PaddingValues(15.dp, 10.dp))){
+                Icon(
+                    painter = painterResource(id = R.drawable.image8),
+                    contentDescription = "Icône localisation",
+                    modifier = Modifier
+                        .size(25.dp)
+                        //.padding(start = 1.dp)
+                )
+                Text(text = "${state.people} personnes maximum")
+            }
+
+            Row (horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(PaddingValues(15.dp, 10.dp))){
+                Icon(
+                    painter = painterResource(id = R.drawable.image9),
+                    contentDescription = "Icône localisation",
+                    modifier = Modifier
+                        .size(25.dp)
+                        //.padding(start = 1.dp)
+                )
+                Text(text = state.location)
+            }
+
+
+            Text(
+                text = "Equipements :",
+                fontSize = 18.sp,
+                modifier = Modifier.padding(PaddingValues(15.dp, 10.dp)),
                 //fontFamily = FontFamily(Font(R.font.poppins_bold)),
                 fontWeight = FontWeight(700),
                 color = Color.Black,
             )
 
-            Row {
-                Text(text = "${state.people} personnes maximum")
-            }
-
-            Row {
-                Text(text = state.location)
-            }
-
             state.materials.forEach {
-                Row {
+
+                Row(horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(PaddingValues(15.dp, 10.dp))) {
+
                     Text(text = it)
                 }
             }
@@ -216,6 +256,20 @@ fun BookableContent(
 
 
 
+}
+
+@Composable
+fun AnimatedPopup(
+    isVisible: Boolean,
+    onDismiss: () -> Unit,
+    content: @Composable () -> Unit
+) {
+    AnimatedVisibility(
+        visible = isVisible,
+        exit = slideOutVertically(targetOffsetY = { -it }) // Animation de sortie
+    ) {
+        content()
+    }
 }
 
 @Preview
