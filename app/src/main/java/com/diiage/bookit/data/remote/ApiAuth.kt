@@ -1,14 +1,20 @@
 package com.diiage.bookit.data.remote
 
-import com.diiage.bookit.domain.models.FileItem
+import android.net.Uri
+import android.content.Context
+import com.diiage.bookit.domain.models.UploadableFile
 import com.diiage.bookit.domain.repositories.PreferenceRepository
 import io.ktor.client.call.*
 import io.ktor.client.request.*
-import io.ktor.client.request.forms.formData
+import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.http.content.PartData
 import io.ktor.util.*
-import java.io.File
+import io.ktor.utils.io.core.Input
+import io.ktor.utils.io.streams.asInput
+import java.io.ByteArrayInputStream
+import java.io.InputStream
 
 class ApiAuth(
     private val preferenceRepository: PreferenceRepository
@@ -33,29 +39,59 @@ class ApiAuth(
     suspend inline fun <reified T> delete(path: String): T {
         return createRequest(path, HttpMethod.Delete).body<T>();
     }
-    suspend inline fun <reified T> postMultipart(path: String, files: List<FileItem>): T {
-        return createRequest(path, HttpMethod.Post, files = files).body<T>()
+
+    suspend inline fun <reified T> postWithFiles(path: String, files: List<UploadableFile>? = null): T {
+        return createRequestWithFiles(path, HttpMethod.Post, files = files).body<T>();
     }
 
-    suspend fun createRequest(path: String, httpMethod: HttpMethod, queryParams: StringValues? = null, body: Any? = null, files: List<FileItem>? = null): HttpResponse {
-        val request: HttpRequestBuilder = HttpRequestBuilder()
+    suspend fun createRequest(
+        path: String,
+        httpMethod: HttpMethod,
+        queryParams: StringValues? = null,
+        body: Any? = null,
+    ): HttpResponse {
+
+        val request = HttpRequestBuilder()
         request.urlBuilder(path, queryParams)
 
         request.method = httpMethod
 
+        request.contentType(ContentType.Application.Json)
+        request.setBody(body)
+
+        request.authenticationHeader()
+
+        try {
+            return client.request(request)
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    suspend fun createRequestWithFiles(
+        path: String,
+        httpMethod: HttpMethod,
+        files: List<UploadableFile>? = null
+    ): HttpResponse {
+        val request = HttpRequestBuilder()
+        request.urlBuilder(path, null)
+
+        request.method = httpMethod
+
         if (files != null) {
-            request.contentType(ContentType.MultiPart.FormData)
-            val formData = formData {
-                files.forEachIndexed { index, fileItem ->
-                    append("file$index", fileItem.file.readBytes(), Headers.build {
-                        append(HttpHeaders.ContentDisposition, "filename=${fileItem.file.name}")
-                    })
-                }
+            val parts = mutableListOf<PartData>()
+
+            files.forEach { file ->
+                val byteArray = file.inputStream?.use { it.readBytes() } ?: file.byteArray
+                val streamProvider: () -> Input = { byteArray?.inputStream()?.asInput() ?: ByteArrayInputStream(ByteArray(0)).asInput() }
+
+                parts.add(PartData.FileItem(streamProvider, {}, headersOf(
+                    HttpHeaders.ContentDisposition,
+                    "form-data; name=\"files\"; filename=\"${file.name}\""
+                )))
             }
-            request.setBody(formData)
-        } else if (body != null) {
-            request.contentType(ContentType.Application.Json)
-            request.setBody(body)
+
+            request.setBody(MultiPartFormDataContent(parts))
         }
 
         request.authenticationHeader()

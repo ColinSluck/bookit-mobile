@@ -1,13 +1,14 @@
 package com.diiage.bookit.data.remote.repositories
 
+import android.net.Uri
 import com.diiage.bookit.data.remote.ApiAuth
 import com.diiage.bookit.data.remote.Url
 import com.diiage.bookit.data.remote.queries.params.PaginatedParams
 import com.diiage.bookit.domain.models.Bookable
 import com.diiage.bookit.domain.models.CreateBookable
-import com.diiage.bookit.domain.models.FileItem
 import com.diiage.bookit.domain.models.Image
 import com.diiage.bookit.domain.models.Paginated
+import com.diiage.bookit.domain.models.UploadableFile
 import com.diiage.bookit.data.remote.requests.BookBookable
 import com.diiage.bookit.data.remote.response.BookableSlots
 import com.diiage.bookit.domain.models.*
@@ -79,10 +80,9 @@ class BookableRepositoryImpl(
         return apiAuth.post<Book>(Url.BookBookable.path.replace("{id}", bookableId.toString()), book)
     }
 
-    override suspend fun uploadImages(bookableId: Int, images: List<FileItem>): Image {
-
+    override suspend fun uploadImages(bookableId: Int, uploadableFiles: List<UploadableFile>): List<Image> {
         val path = Url.UploadImage.path.replace("{id}", bookableId.toString())
 
-        return apiAuth.postMultipart<Image>(path, images)
+        return apiAuth.postWithFiles<List<Image>>(path, uploadableFiles)
     }
 }

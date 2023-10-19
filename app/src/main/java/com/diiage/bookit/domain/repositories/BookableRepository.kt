@@ -2,9 +2,9 @@ package com.diiage.bookit.domain.repositories
 
 import com.diiage.bookit.domain.models.Bookable
 import com.diiage.bookit.domain.models.CreateBookable
-import com.diiage.bookit.domain.models.FileItem
 import com.diiage.bookit.domain.models.Image
 import com.diiage.bookit.domain.models.Paginated
+import com.diiage.bookit.domain.models.UploadableFile
 import com.diiage.bookit.domain.models.Search
 import java.io.File
 import com.diiage.bookit.domain.models.*
@@ -58,5 +58,5 @@ interface BookableRepository {
      */
     suspend fun book(bookableId: Int, slotId: Int, date: String): Book
 
-    suspend fun uploadImages(bookableId: Int, images: List<FileItem>): Image
+    suspend fun uploadImages(bookableId: Int, uploadableFiles: List<UploadableFile>) : List<Image>
 }
