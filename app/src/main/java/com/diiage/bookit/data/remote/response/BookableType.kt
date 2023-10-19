@@ -9,8 +9,5 @@ internal data class BookableType (
     val CreatedAt : String,
     val UpdatedAt : String,
     val Libelle : String,
-
-
-
 )
 

@@ -32,6 +32,8 @@ import com.diiage.bookit.R
 import com.diiage.bookit.ui.core.composables.Line
 import com.diiage.bookit.ui.core.composables.picker.HoursPickerEnd
 import com.diiage.bookit.ui.core.composables.picker.HoursPickerStart
+import com.diiage.bookit.ui.screens.bookable.BookableAction
+import com.diiage.bookit.ui.screens.bookable.BookableState
 import com.diiage.bookit.ui.screens.filter.FilterAction
 import com.diiage.bookit.ui.screens.filter.FilterState
 import java.time.LocalDate
@@ -39,8 +41,8 @@ import java.time.LocalDate
 
 @Composable
 fun SelectedDate(
-    state: FilterState,
-    handleAction: (FilterAction) -> Unit
+    state: BookableState,
+    handleAction: (BookableAction) -> Unit
     ) {
     Box(
         Modifier
@@ -88,7 +90,7 @@ fun SelectedDate(
                             minDate = LocalDate.now(),
                             maxDate = LocalDate.MAX,
                         ) { snappedDate ->
-                            handleAction(FilterAction.SelectDate(snappedDate))
+                            handleAction(BookableAction.SelectDate(snappedDate))
                         }
                     }
                 }
