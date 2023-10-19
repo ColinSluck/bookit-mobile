@@ -52,14 +52,15 @@ fun BookableCard(bookable: Bookable, booking: Booking? = null, onClick: () -> Un
                     contentDescription = "bookable image",
                     contentScale = ContentScale.FillBounds,
                     modifier = Modifier
-                        .width(353.dp)
+                        .fillMaxWidth()
                         .height(195.dp)
                 )
 
                 if (booking != null) {
                     Row(
                         Modifier
-                            .padding(start = 229.dp, top = 7.dp)
+                            .align(Alignment.TopEnd)
+                            .padding(4.dp)
                     ){
                         BookingDate(booking)
                     }
@@ -172,7 +173,7 @@ fun BookingDate(
 
     // From 2023-10-18 to 18/10
     val formattedDate = booking.date.substring(8, 10) + "/" + booking.date.substring(5, 7)
-    val formattedStartTime = booking.startTime.substring(0, 5)
+    val formattedStartTime = booking.startTime?.substring(0, 5)
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -184,7 +185,7 @@ fun BookingDate(
         Row(
             Modifier.padding(7.dp)
         ){
-            Text(text = "Le $formattedDate à $formattedStartTime",
+            Text(text = if(formattedStartTime !=null) "Le $formattedDate à $formattedStartTime" else "Le $formattedDate",
                 style = TextStyle(
                     color = Color(0xFF000000),
                     fontSize = 11.sp,

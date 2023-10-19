@@ -40,6 +40,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.diiage.bookit.R
+import com.diiage.bookit.ui.screens.bookable.BookableAction
+import com.diiage.bookit.ui.screens.bookable.BookableState
 import com.diiage.bookit.ui.screens.filter.FilterAction
 import com.diiage.bookit.ui.screens.filter.FilterState
 import kotlinx.coroutines.launch
@@ -48,8 +50,8 @@ import kotlin.math.roundToInt
 
 @Composable
 fun HoursPickerStart(
-    state: FilterState,
-    handleAction: (FilterAction) -> Unit
+    state: BookableState,
+    handleAction: (BookableAction) -> Unit
 ) {
     val slots = state.slots
     val slotStartTimes = slots.map { it.startTime } // Liste des heures de début
@@ -70,7 +72,7 @@ fun HoursPickerStart(
             onValueChange = {
                 selectedStartTime = it as String
                 val selectedSlot = slots.find { it.startTime == selectedStartTime }
-                handleAction(FilterAction.SelectSlot(selectedSlot?.id ?: state.selectedSlotId))
+                handleAction(BookableAction.SelectSlot(selectedSlot?.id ?: state.selectedSlotId))
             },
             list = slotStartTimes
         )
@@ -80,8 +82,8 @@ fun HoursPickerStart(
 
 @Composable
 fun HoursPickerEnd(
-    state: FilterState,
-    handleAction: (FilterAction) -> Unit
+    state: BookableState,
+    handleAction: (BookableAction) -> Unit
 ) {
     val selectedSlotId = state.selectedSlotId
     val selectedSlot = state.slots.find { it.id == selectedSlotId }

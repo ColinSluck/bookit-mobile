@@ -1,52 +1,96 @@
 package com.diiage.bookit.ui.screens.bookable
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
+import com.commandiron.wheel_picker_compose.WheelDatePicker
+import com.commandiron.wheel_picker_compose.core.WheelPickerDefaults
 import com.diiage.bookit.R
+import com.diiage.bookit.ui.core.Destination
 import com.diiage.bookit.ui.core.composables.PreviewContent
+import com.diiage.bookit.ui.core.composables.filter.SelectedDate
+import com.diiage.bookit.ui.core.navigate
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
+import java.time.LocalDate
 
 private typealias UIState = BookableState
+
+/**
+ * Main entry point for displaying bookable content.
+ *
+ * @param navController Controls and monitors navigation actions.
+ * @param id The unique identifier for the bookable item.
+ */
 @Composable
 fun BookableScreen(navController: NavController, id: Int) {
     val viewModel: BookableViewModel = viewModel()
     val state by viewModel.state.collectAsState()
     viewModel.init(id)
+
+    LaunchedEffect(viewModel) {
+        viewModel.events
+            .onEach { event ->
+                if (event is Destination.Bookings) {
+                    navController.navigate(event)
+                }
+            }.collect()
+    }
+
     BookableContent(
         state = state,
+        handleAction = viewModel::handleAction
     )
 }
 
+
+/**
+ * Displays the main content of the bookable screen.
+ *
+ * @param state The current UI state of the screen.
+ * @param handleAction A lambda function to handle various actions/events.
+ */
 @Composable
 fun BookableContent(
     state: UIState = UIState(),
+    handleAction: (BookableAction) -> Unit
 ) {
 
     var images by remember { mutableStateOf(state.initialImages) }
@@ -149,7 +193,6 @@ fun BookableContent(
                 //fontFamily = FontFamily(Font(R.font.poppins_bold)),
                 fontWeight = FontWeight(700),
                 color = Color.Black
-                ,
             )
 
             Row (horizontalArrangement = Arrangement.SpaceBetween,
@@ -198,6 +241,8 @@ fun BookableContent(
                 }
             }
 
+            SelectedDate(state = state, handleAction = handleAction)
+
             Spacer(Modifier.height(94.dp))
         }
 
@@ -212,7 +257,7 @@ fun BookableContent(
         )
         {
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { handleAction(BookableAction.OnBook) },
                 enabled = state.available,
                 shape = RoundedCornerShape(size = 5.dp),
                 colors = ButtonDefaults.buttonColors(
@@ -240,8 +285,11 @@ fun BookableContent(
 
 }
 
+/**
+ * Preview function for the `BookableContent` Composable.
+ */
 @Preview
 @Composable
 private fun BookablePreview() = PreviewContent {
-    BookableContent()
+
 }

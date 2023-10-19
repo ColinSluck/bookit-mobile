@@ -9,7 +9,7 @@ data class Booking(
     val bookable: Bookable,
     val ownerId: Int,
     val date: String,
-    val startTime: String,
+    val startTime: String? = null,
     val createdAt: String,
     val updatedAt: String
 ) {
