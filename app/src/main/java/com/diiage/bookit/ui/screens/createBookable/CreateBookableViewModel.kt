@@ -82,7 +82,7 @@ class CreateBookableViewModel(application: Application) : ViewModel<CreateBookab
             try {
                 val response = bookableRepository.createBookable(state.value.bookable)
                 updateState { copy(createdBookable = response) }
-                uploadImages(state.value.images)
+                uploadImages()
 
             } catch (e: Exception) {
                 updateState { copy(error = ErrorMessage.ServerError.message) }
@@ -91,13 +91,20 @@ class CreateBookableViewModel(application: Application) : ViewModel<CreateBookab
         }
     }
 
-    private fun uploadImages(uris: List<Uri>) {
-        val fileItems = uris.mapIndexed { index, uri ->
+    private fun uploadImages() {
+        val fileItems = state.value.images.mapIndexed { index, uri ->
             val file = File(uri.path)
             FileItem(fieldName = "image_$index", file = file)
         }
-        updateState {
-            copy(images = fileItems)
+
+        viewModelScope.launch {
+            updateState { copy(isLoading = true) }
+            try {
+                val response = bookableRepository.uploadImages(state.value.createdBookable!!.id, fileItems)
+            } catch (e: Exception) {
+                Log.e("CreateBookableViewModel", "uploadImages: ${e.message}")
+                updateState { copy(error = ErrorMessage.ServerError.message) }
+            }
         }
     }
 
@@ -128,6 +135,9 @@ class CreateBookableViewModel(application: Application) : ViewModel<CreateBookab
             is CreateBookableAction.OnUpdateChecked -> updateChecked(action.index, action.value)
             is CreateBookableAction.onLoadMoreMaterial -> loadMoreMaterial()
             is CreateBookableAction.onCreatedBookable -> sendEvent(Destination.Bookable(state.value.createdBookable?.id.toString()))
+            is CreateBookableAction.UpdatePhotos -> updateState {
+                copy(images = action.images)
+            }
         }
     }
 
@@ -211,4 +221,5 @@ sealed interface CreateBookableAction {
     data class OnUpdateChecked(val index: Int, val value: Boolean) : CreateBookableAction
     object onLoadMoreMaterial : CreateBookableAction
     object onCreatedBookable : CreateBookableAction
+    data class UpdatePhotos(val images: List<Uri>) : CreateBookableAction
 }

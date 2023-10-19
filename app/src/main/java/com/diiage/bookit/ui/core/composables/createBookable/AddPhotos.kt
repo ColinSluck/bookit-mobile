@@ -50,10 +50,11 @@ fun AddPhotos(
     state: CreateBookableState,
     handleAction: (CreateBookableAction) -> Unit,
 ) {
-    var selectImages by remember { mutableStateOf(listOf<FileItem>()) }
+    var selectImages by remember { mutableStateOf(listOf<Uri>()) }
     val galleryLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetMultipleContents()) {
             selectImages = it
+            handleAction(CreateBookableAction.UpdatePhotos(it))
         }
 
     Column {
@@ -73,10 +74,10 @@ fun AddPhotos(
             Modifier
                 .padding(16.dp)
         ) {
+            // OPEN GALERY
             Button(
                 onClick = {
                     galleryLauncher.launch("image/*")
-                    handleAction(CreateBookableAction.UploadImages(selectImages))
                           },
                 modifier = Modifier
                     .border(
