@@ -12,7 +12,7 @@ sealed class Url(val path: String){
     object Signup: Url("/api/auth/signup")
 
     // Bookings
-    object Bookings: Url("/bookings")
+    object Bookings: Url("/api/bookings")
     object Bookable: Url("/api/bookables/{id}")
     object BookingsAvailable: Url("/bookings/available")
     object CreateBookable: Url("/api/bookables")
