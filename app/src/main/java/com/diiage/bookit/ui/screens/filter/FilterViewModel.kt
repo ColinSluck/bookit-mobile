@@ -22,7 +22,6 @@ class FilterViewModel(application: Application) : ViewModel<FilterState>(FilterS
 
     private val slotRepository: SlotRepository by inject()
     private val materialRepository: MaterialRepository by inject()
-    private val searchRepository: SearchRepository by inject()
 
     init {
         Log.d("FilterViewModel", "FilterViewModel: init")
