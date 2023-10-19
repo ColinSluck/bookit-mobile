@@ -1,11 +1,14 @@
 package com.diiage.bookit.data.remote
 
+import com.diiage.bookit.domain.models.FileItem
 import com.diiage.bookit.domain.repositories.PreferenceRepository
 import io.ktor.client.call.*
 import io.ktor.client.request.*
+import io.ktor.client.request.forms.formData
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.util.*
+import java.io.File
 
 class ApiAuth(
     private val preferenceRepository: PreferenceRepository
@@ -30,21 +33,35 @@ class ApiAuth(
     suspend inline fun <reified T> delete(path: String): T {
         return createRequest(path, HttpMethod.Delete).body<T>();
     }
+    suspend inline fun <reified T> postMultipart(path: String, files: List<FileItem>): T {
+        return createRequest(path, HttpMethod.Post, files = files).body<T>()
+    }
 
-    suspend fun createRequest(path: String, httpMethod: HttpMethod, queryParams: StringValues? =  null, body: Any? = null): HttpResponse {
+    suspend fun createRequest(path: String, httpMethod: HttpMethod, queryParams: StringValues? = null, body: Any? = null, files: List<FileItem>? = null): HttpResponse {
         val request: HttpRequestBuilder = HttpRequestBuilder()
-
         request.urlBuilder(path, queryParams)
 
         request.method = httpMethod
-        request.contentType(ContentType.Application.Json)
 
-        if(body != null) request.setBody(body)
+        if (files != null) {
+            request.contentType(ContentType.MultiPart.FormData)
+            val formData = formData {
+                files.forEachIndexed { index, fileItem ->
+                    append("file$index", fileItem.file.readBytes(), Headers.build {
+                        append(HttpHeaders.ContentDisposition, "filename=${fileItem.file.name}")
+                    })
+                }
+            }
+            request.setBody(formData)
+        } else if (body != null) {
+            request.contentType(ContentType.Application.Json)
+            request.setBody(body)
+        }
 
         request.authenticationHeader()
 
         try {
-            return client.request(request);
+            return client.request(request)
         } catch (e: Exception) {
             throw e
         }

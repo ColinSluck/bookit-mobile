@@ -64,7 +64,7 @@ fun CreateBookableScreen(navController: NavController) {
                 1 -> Step2Content()
                 2 -> Step3Content(state, handleAction = viewModel::handleAction)
                 3 -> Step4Content(state, handleAction = viewModel::handleAction)
-                4 -> Step5Content()
+                4 -> Step5Content(state, handleAction = viewModel::handleAction)
                 5 -> Step6Content(state, handleAction = viewModel::handleAction)
             }
         }
@@ -110,8 +110,8 @@ fun Step4Content(state: CreateBookableState, handleAction: (CreateBookableAction
 }
 
 @Composable
-fun Step5Content() {
-    AddPhotos()
+fun Step5Content(state: CreateBookableState, handleAction: (CreateBookableAction) -> Unit) {
+    AddPhotos(state, handleAction)
 }
 
 @Composable

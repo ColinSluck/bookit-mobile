@@ -40,11 +40,17 @@ import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.diiage.bookit.R
+import com.diiage.bookit.domain.models.FileItem
+import com.diiage.bookit.ui.screens.createBookable.CreateBookableAction
+import com.diiage.bookit.ui.screens.createBookable.CreateBookableState
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
-fun AddPhotos() {
-    var selectImages by remember { mutableStateOf(listOf<Uri>()) }
+fun AddPhotos(
+    state: CreateBookableState,
+    handleAction: (CreateBookableAction) -> Unit,
+) {
+    var selectImages by remember { mutableStateOf(listOf<FileItem>()) }
     val galleryLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetMultipleContents()) {
             selectImages = it
@@ -68,7 +74,10 @@ fun AddPhotos() {
                 .padding(16.dp)
         ) {
             Button(
-                onClick = { galleryLauncher.launch("image/*") },
+                onClick = {
+                    galleryLauncher.launch("image/*")
+                    handleAction(CreateBookableAction.UploadImages(selectImages))
+                          },
                 modifier = Modifier
                     .border(
                         width = 1.dp,

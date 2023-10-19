@@ -18,6 +18,7 @@ sealed class Url(val path: String){
     object BookBookable: Url("/api/bookables/{id}/bookings")
     object BookingsAvailable: Url("/bookings/available")
     object CreateBookable: Url("/api/bookables")
+    object UploadImage: Url("/api/bookables/{id}/images")
     object SearchBookable: Url("/api/bookables/search")
 
     // Slots

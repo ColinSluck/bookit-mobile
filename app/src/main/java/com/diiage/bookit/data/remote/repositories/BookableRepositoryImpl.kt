@@ -3,6 +3,10 @@ package com.diiage.bookit.data.remote.repositories
 import com.diiage.bookit.data.remote.ApiAuth
 import com.diiage.bookit.data.remote.Url
 import com.diiage.bookit.data.remote.queries.params.PaginatedParams
+import com.diiage.bookit.domain.models.Bookable
+import com.diiage.bookit.domain.models.CreateBookable
+import com.diiage.bookit.domain.models.FileItem
+import com.diiage.bookit.domain.models.Paginated
 import com.diiage.bookit.data.remote.requests.BookBookable
 import com.diiage.bookit.data.remote.response.BookableSlots
 import com.diiage.bookit.domain.models.*
@@ -72,5 +76,10 @@ class BookableRepositoryImpl(
     override suspend fun book(bookableId: Int, slotId: Int, date: String): Book {
         val book = BookBookable(date, slotId)
         return apiAuth.post<Book>(Url.BookBookable.path.replace("{id}", bookableId.toString()), book)
+    }
+
+    override suspend fun uploadImages(bookable: CreateBookable, imageFiles: List<FileItem>): Bookable {
+        val response = apiAuth.postMultipart<Bookable>(Url.UploadImage.path, imageFiles)
+        return response
     }
 }

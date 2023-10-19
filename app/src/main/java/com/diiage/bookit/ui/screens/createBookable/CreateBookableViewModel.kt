@@ -2,6 +2,7 @@ package com.diiage.bookit.ui.screens.createBookable
 
 
 import android.app.Application
+import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import com.diiage.bookit.data.remote.ErrorMessage
 import com.diiage.bookit.domain.models.Bookable
 import com.diiage.bookit.domain.models.CreateBookable
+import com.diiage.bookit.domain.models.FileItem
 import com.diiage.bookit.domain.models.Material
 import com.diiage.bookit.domain.repositories.AuthRepository
 import com.diiage.bookit.domain.repositories.BookableRepository
@@ -20,6 +22,7 @@ import com.diiage.bookit.ui.core.NavigationEvent
 import com.diiage.bookit.ui.core.ViewModel
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
+import java.io.File
 
 /**
  * CreateBookableViewModel is a ViewModel class for the 'CreateBookable' screen in the Android app.
@@ -79,10 +82,22 @@ class CreateBookableViewModel(application: Application) : ViewModel<CreateBookab
             try {
                 val response = bookableRepository.createBookable(state.value.bookable)
                 updateState { copy(createdBookable = response) }
+                uploadImages(state.value.images)
+
             } catch (e: Exception) {
                 updateState { copy(error = ErrorMessage.ServerError.message) }
             }
             updateState { copy(isLoading = false) }
+        }
+    }
+
+    private fun uploadImages(uris: List<Uri>) {
+        val fileItems = uris.mapIndexed { index, uri ->
+            val file = File(uri.path)
+            FileItem(fieldName = "image_$index", file = file)
+        }
+        updateState {
+            copy(images = fileItems)
         }
     }
 
@@ -180,7 +195,8 @@ data class CreateBookableState(
     val isLoading: Boolean = true,
     val error: String? = null,
     val materialCheckedIds: List<Int> = emptyList(),
-    val createdBookable: Bookable? = null
+    val createdBookable: Bookable? = null,
+    val images: List<Uri> = emptyList()
     )
 
 /**
@@ -194,6 +210,5 @@ sealed interface CreateBookableAction {
     data class OnCapacityChanged(val maxCapacity: String) : CreateBookableAction
     data class OnUpdateChecked(val index: Int, val value: Boolean) : CreateBookableAction
     object onLoadMoreMaterial : CreateBookableAction
-
     object onCreatedBookable : CreateBookableAction
 }
