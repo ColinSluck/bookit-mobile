@@ -7,7 +7,21 @@ import com.diiage.bookit.data.remote.responses.PaginatedResponse
 import com.diiage.bookit.domain.models.Paginated
 import com.diiage.bookit.domain.models.Slot
 import com.diiage.bookit.domain.repositories.SlotRepository
-
+/**
+ * This class, SlotRepositoryImpl, implements the SlotRepository interface, providing
+ * functionality for retrieving a paginated list of time slots available for bookings.
+ *
+ * The class uses an instance of the ApiAuth interface to make authenticated requests to the API.
+ * It defines the `getSlots` function, which retrieves time slots and converts the start and end times
+ * to a more readable format.
+ *
+ * @param apiAuth The API authentication interface used for making requests.
+ *
+ * @see SlotRepository
+ * @see Slot
+ * @see Paginated
+ * @see PaginatedParams
+ */
 class SlotRepositoryImpl(
     private val apiAuth: ApiAuth,
 ) : SlotRepository {

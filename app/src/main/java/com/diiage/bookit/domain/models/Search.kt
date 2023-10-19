@@ -3,6 +3,17 @@ package com.diiage.bookit.domain.models
 import io.ktor.util.StringValues
 import kotlinx.serialization.Serializable
 
+/**
+ * This data class, Search, represents a set of search criteria used to filter bookable items.
+ *
+ * @param minCapacity The minimum capacity required for bookable items.
+ * @param slotId The ID of the slot associated with bookable items.
+ * @param date The date for which bookable items are being searched.
+ * @param bookableTypeId The ID of the bookable type.
+ * @param materialIds A list of material IDs associated with bookable items.
+ * @param page The page number of results to retrieve (default is 1).
+ * @param limit The maximum number of results to return per page (default is 10).
+ */
 @Serializable
 data class Search(
     val minCapacity: Int? = null,

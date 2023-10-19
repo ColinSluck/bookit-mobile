@@ -10,6 +10,21 @@ import com.diiage.bookit.domain.models.Slot
 import com.diiage.bookit.domain.repositories.MaterialRepository
 import com.diiage.bookit.domain.repositories.SlotRepository
 
+/**
+ * This class, MaterialRepositoryImpl, implements the MaterialRepository interface, providing
+ * functionality for retrieving a paginated list of materials associated with a specific bookable type.
+ *
+ * The class uses an instance of the ApiAuth interface to make authenticated requests to the API.
+ * It defines the `getMaterials` function, which takes the bookable type ID, page number, and page size
+ * as parameters to retrieve materials.
+ *
+ * @param apiAuth The API authentication interface used for making requests.
+ *
+ * @see MaterialRepository
+ * @see Material
+ * @see Paginated
+ * @see PaginatedParams
+ */
 class MaterialRepositoryImpl(
     private val apiAuth: ApiAuth,
 ) : MaterialRepository {
