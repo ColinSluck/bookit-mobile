@@ -6,15 +6,17 @@ import com.diiage.bookit.domain.models.UploadableFile
 import com.diiage.bookit.domain.repositories.PreferenceRepository
 import io.ktor.client.call.*
 import io.ktor.client.request.*
-import io.ktor.client.request.forms.MultiPartFormDataContent
+import io.ktor.client.request.forms.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.http.append
 import io.ktor.http.content.PartData
 import io.ktor.util.*
-import io.ktor.utils.io.core.Input
+import io.ktor.utils.io.core.*
 import io.ktor.utils.io.streams.asInput
 import java.io.ByteArrayInputStream
 import java.io.InputStream
+import kotlin.io.use
 
 class ApiAuth(
     private val preferenceRepository: PreferenceRepository
@@ -68,6 +70,7 @@ class ApiAuth(
         }
     }
 
+    @OptIn(InternalAPI::class)
     suspend fun createRequestWithFiles(
         path: String,
         httpMethod: HttpMethod,
@@ -79,19 +82,25 @@ class ApiAuth(
         request.method = httpMethod
 
         if (files != null) {
-            val parts = mutableListOf<PartData>()
+            request.body = MultiPartFormDataContent(
+                formData {
+                    files.forEach { file ->
+                        val byteArray = file.inputStream?.use { it.readBytes() } ?: file.byteArray
+                        val contentType = ContentType.Image.JPEG // ou autre type de contenu si nécessaire
 
-            files.forEach { file ->
-                val byteArray = file.inputStream?.use { it.readBytes() } ?: file.byteArray
-                val streamProvider: () -> Input = { byteArray?.inputStream()?.asInput() ?: ByteArrayInputStream(ByteArray(0)).asInput() }
-
-                parts.add(PartData.FileItem(streamProvider, {}, headersOf(
-                    HttpHeaders.ContentDisposition,
-                    "form-data; name=\"files\"; filename=\"${file.name}\""
-                )))
-            }
-
-            request.setBody(MultiPartFormDataContent(parts))
+                        // Ajoute chaque fichier comme un élément de formulaire
+                        this.append(
+                            key = "files", // Assurez-vous que cela correspond au nom attendu côté serveur
+                            filename = file.name,
+                            contentType = contentType
+                        ) {
+                            if (byteArray != null) {
+                                writeFully(byteArray)
+                            }
+                        }
+                    }
+                }
+            )
         }
 
         request.authenticationHeader()

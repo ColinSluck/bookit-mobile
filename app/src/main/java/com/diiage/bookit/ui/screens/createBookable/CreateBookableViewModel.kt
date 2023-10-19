@@ -115,7 +115,7 @@ class CreateBookableViewModel(application: Application) : ViewModel<CreateBookab
             }
             is CreateBookableAction.OnUpdateChecked -> updateChecked(action.index, action.value)
             is CreateBookableAction.onLoadMoreMaterial -> loadMoreMaterial()
-            is CreateBookableAction.onCreatedBookable -> sendEvent(Destination.Bookable(state.value.createdBookable?.id.toString()))
+            is CreateBookableAction.onCreatedBookable -> sendEvent(Destination.Bookable(state.value.createdBookable?.id.toString() ?: "0"))
             is CreateBookableAction.OnImagesSelected -> {
                 updateState {
                     copy(selectedImages = action.images)
@@ -130,7 +130,8 @@ class CreateBookableViewModel(application: Application) : ViewModel<CreateBookab
         val uploadableFiles = state.value.selectedImages.map { uri ->
             val name = uri.lastPathSegment ?: "unknown"
             val inputStream = context.contentResolver.openInputStream(uri)
-            UploadableFile(name, inputStream = inputStream)
+            val mimeType = context.contentResolver.getType(uri) ?: "application/octet-stream"
+            UploadableFile(name, inputStream, mimeType = mimeType)
         }
 
         viewModelScope.launch {

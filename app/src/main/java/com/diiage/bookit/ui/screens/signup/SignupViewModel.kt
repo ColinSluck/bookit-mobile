@@ -2,21 +2,14 @@ package com.diiage.bookit.ui.screens.signup
 
 import android.app.Application
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.ActivityNavigator
-import com.diiage.bookit.data.remote.API
 import com.diiage.bookit.data.remote.ErrorMessage
 import com.diiage.bookit.domain.exceptions.SignupException
-import com.diiage.bookit.domain.models.Credentials
 import com.diiage.bookit.domain.models.Signup
 import com.diiage.bookit.domain.repositories.AuthRepository
-import com.diiage.bookit.domain.repositories.PreferenceRepository
 import com.diiage.bookit.ui.core.NavigationEvent
 import com.diiage.bookit.ui.core.ViewModel
-import com.diiage.bookit.ui.core.functions.isValidSignupForm
 import org.koin.core.component.inject
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.encodeToString
 
 class SignupViewModel (application: Application) : ViewModel<SignupState>(SignupState(), application) {
 
