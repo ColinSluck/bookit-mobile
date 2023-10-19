@@ -29,9 +29,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.diiage.bookit.R
+import com.diiage.bookit.ui.screens.createBookable.CreateBookableAction
+import com.diiage.bookit.ui.screens.createBookable.CreateBookableState
 
 @Composable
-fun Confirmation() {
+fun Confirmation(state: CreateBookableState, handleAction: (CreateBookableAction) -> Unit) {
     Box(
         modifier = Modifier
             .background(Color.White)
@@ -76,7 +78,7 @@ fun Confirmation() {
 
             Column() {
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = { handleAction(CreateBookableAction.onCreatedBookable) },
                     Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
@@ -100,10 +102,4 @@ fun Confirmation() {
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun ConfirmationPreview() {
-    Confirmation()
 }
