@@ -80,7 +80,8 @@ fun BookingsContent(
         )
 
         Column (
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if(state.isLoading) {
                 CircularProgressIndicator(color = Color.White)

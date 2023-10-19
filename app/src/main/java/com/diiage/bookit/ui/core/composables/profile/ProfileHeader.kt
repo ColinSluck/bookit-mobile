@@ -11,8 +11,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -22,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import com.diiage.bookit.R
 import com.diiage.bookit.ui.core.composables.Line
 import com.diiage.bookit.ui.core.functions.calculateAccountAge
+import com.diiage.bookit.ui.core.functions.generateDefaultProfilePicture
 
 @Composable
 fun ProfileHeader(lastnameValue: String, firstnameValue: String, createdAccountValue: String) {
@@ -43,20 +47,24 @@ fun ProfileHeader(lastnameValue: String, firstnameValue: String, createdAccountV
                 modifier = Modifier.padding(start = 39.dp)
             )
         }
+
+        val context = LocalContext.current
+        val bitmap = generateDefaultProfilePicture("$firstnameValue $lastnameValue", 69, 69)
+        val imageBitmap = rememberUpdatedState(bitmap)
+
         Row(
             Modifier
                 .fillMaxWidth()
                 .padding(start = 39.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ellipse8),
-                contentDescription = "image description",
+                bitmap = imageBitmap.value.asImageBitmap(),
+                contentDescription = "Profile Picture",
                 Modifier
                     .padding(1.dp)
                     .width(69.dp)
-                    .height(69.dp),
-
-                )
+                    .height(69.dp)
+            )
             Column {
                 Column(
                     modifier = Modifier
