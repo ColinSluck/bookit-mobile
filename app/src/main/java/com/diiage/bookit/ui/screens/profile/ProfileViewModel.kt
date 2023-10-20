@@ -1,7 +1,6 @@
 package com.diiage.bookit.ui.screens.profile
 
 import android.app.Application
-import com.diiage.bookit.domain.models.Credentials
 import com.diiage.bookit.domain.models.User
 import com.diiage.bookit.domain.repositories.AuthRepository
 import com.diiage.bookit.domain.repositories.PreferenceRepository

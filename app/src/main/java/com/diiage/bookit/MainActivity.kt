@@ -19,6 +19,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.diiage.bookit.domain.models.Bookable
 import com.diiage.bookit.domain.models.Search
 import com.diiage.bookit.domain.repositories.PreferenceRepository
 import com.diiage.bookit.ui.core.Destination
@@ -98,7 +99,7 @@ private fun MainContent(preferenceRepository: PreferenceRepository) {
                 ) { backStackEntry ->
                     BookableScreen(
                         navController = navController,
-                        id =  backStackEntry.arguments?.getString("bookable")?.toInt() ?: 0
+                        id =  backStackEntry.arguments?.getString("bookable") ?: "0"
                     )
                 }
 

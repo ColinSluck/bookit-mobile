@@ -8,7 +8,6 @@ import com.diiage.bookit.domain.models.Material
 import com.diiage.bookit.domain.models.Search
 import com.diiage.bookit.domain.models.Slot
 import com.diiage.bookit.domain.repositories.MaterialRepository
-import com.diiage.bookit.domain.repositories.SearchRepository
 import com.diiage.bookit.domain.repositories.SlotRepository
 import com.diiage.bookit.ui.core.Destination
 import com.diiage.bookit.ui.core.ViewModel

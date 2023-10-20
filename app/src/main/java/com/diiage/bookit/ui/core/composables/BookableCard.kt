@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberImagePainter
 import com.diiage.bookit.R
 import com.diiage.bookit.domain.models.Bookable
 import com.diiage.bookit.domain.models.Booking
@@ -48,7 +49,11 @@ fun BookableCard(bookable: Bookable, booking: Booking? = null, onClick: () -> Un
             ) {
 
                 Image(
-                    painter = painterResource(id = R.drawable.rectangle8),
+                    painter = if (bookable.images.isNullOrEmpty()) {
+                        painterResource(id = R.drawable.bookable_placeholder)
+                    } else {
+                        rememberImagePainter(data = bookable.images[0], builder = { crossfade(true) })
+                    },
                     contentDescription = "bookable image",
                     contentScale = ContentScale.FillBounds,
                     modifier = Modifier
