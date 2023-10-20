@@ -4,6 +4,7 @@ import android.app.Application
 import android.os.Build
 import androidx.lifecycle.viewModelScope
 import com.diiage.bookit.data.remote.ErrorMessage
+import com.diiage.bookit.domain.models.Material
 import com.diiage.bookit.domain.models.Search
 import com.diiage.bookit.domain.models.Slot
 import com.diiage.bookit.domain.repositories.BookableRepository
@@ -105,6 +106,7 @@ class BookableViewModel(application: Application) : ViewModel<BookableState>(Boo
                 updateState { copy(description = bookable.description) }
                 updateState { copy(people = bookable.maxCapacity) }
                 updateState { copy(location = bookable.place) }
+                updateState { copy(materials = bookable.materials!!) }
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     selectDate(LocalDate.now())
@@ -142,7 +144,7 @@ data class BookableState(
     val description: String = "La salle de réunion est un espace dédié aux réunions et aux discussions professionnelles. Elle est équipée de tables, de chaises, d'un matériel audiovisuel et d'une machine à café pour faciliter les présentations et offrir un moment de détente aux participants. Cet espace permet aux collaborateurs de se réunir, d'échanger des idées, de prendre des décisions importantes et de profiter d'une pause café. La salle de réunion est un lieu essentiel pour favoriser la collaboration, la productivité et le bien-être au sein de l'entreprise.",
     val people: Int = 6,
     val location: String = "1er étage",
-    val materials: List<String> = listOf("Tableau", "Machine à café"),
+    val materials: List<Material> = emptyList(),
     val available: Boolean = true,
     val bookableId:Int = -1,
 

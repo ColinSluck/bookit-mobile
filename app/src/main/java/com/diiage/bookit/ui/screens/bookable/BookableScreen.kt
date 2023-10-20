@@ -243,7 +243,7 @@ fun BookableContent(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(PaddingValues(15.dp, 10.dp))) {
 
-                    Text(text = it)
+                    Text(text = it.libelle)
                 }
             }
             Row(horizontalArrangement = Arrangement.SpaceBetween,
