@@ -2,6 +2,7 @@ package com.diiage.bookit.ui.screens.createBookable
 
 
 import android.app.Application
+import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,7 +13,7 @@ import com.diiage.bookit.data.remote.ErrorMessage
 import com.diiage.bookit.domain.models.Bookable
 import com.diiage.bookit.domain.models.CreateBookable
 import com.diiage.bookit.domain.models.Material
-import com.diiage.bookit.domain.repositories.AuthRepository
+import com.diiage.bookit.domain.models.UploadableFile
 import com.diiage.bookit.domain.repositories.BookableRepository
 import com.diiage.bookit.domain.repositories.MaterialRepository
 import com.diiage.bookit.ui.core.Destination
@@ -79,7 +80,9 @@ class CreateBookableViewModel(application: Application) : ViewModel<CreateBookab
             try {
                 val response = bookableRepository.createBookable(state.value.bookable)
                 updateState { copy(createdBookable = response) }
+                postImages()
             } catch (e: Exception) {
+                Log.e("CreateBookableViewModel", "onFinish: ${e.message}")
                 updateState { copy(error = ErrorMessage.ServerError.message) }
             }
             updateState { copy(isLoading = false) }
@@ -112,7 +115,35 @@ class CreateBookableViewModel(application: Application) : ViewModel<CreateBookab
             }
             is CreateBookableAction.OnUpdateChecked -> updateChecked(action.index, action.value)
             is CreateBookableAction.onLoadMoreMaterial -> loadMoreMaterial()
-            is CreateBookableAction.onCreatedBookable -> sendEvent(Destination.Bookable(state.value.createdBookable?.id.toString()))
+            is CreateBookableAction.onCreatedBookable -> sendEvent(Destination.Bookable(state.value.createdBookable?.id.toString() ?: "0"))
+            is CreateBookableAction.OnImagesSelected -> {
+                updateState {
+                    copy(selectedImages = action.images)
+                }
+            }
+        }
+    }
+
+    private fun postImages() {
+        val context = getApplication<Application>().applicationContext
+
+        val uploadableFiles = state.value.selectedImages.map { uri ->
+            val name = uri.lastPathSegment ?: "unknown"
+            val inputStream = context.contentResolver.openInputStream(uri)
+            val mimeType = context.contentResolver.getType(uri) ?: "application/octet-stream"
+            UploadableFile(name, inputStream, mimeType = mimeType)
+        }
+
+        viewModelScope.launch {
+            updateState { copy(isLoading = true) }
+            try {
+                val result = bookableRepository.uploadImages(state.value.createdBookable?.id ?: 0, uploadableFiles)
+                Log.e("CreateBookableViewModel", "onFinish: $result")
+            } catch (e: Exception) {
+                Log.e("CreateBookableViewModel", "onFinish: ${e.message}")
+                updateState { copy(error = ErrorMessage.ServerError.message) }
+            }
+            updateState { copy(isLoading = false) }
         }
     }
 
@@ -180,7 +211,8 @@ data class CreateBookableState(
     val isLoading: Boolean = true,
     val error: String? = null,
     val materialCheckedIds: List<Int> = emptyList(),
-    val createdBookable: Bookable? = null
+    val createdBookable: Bookable? = null,
+    val selectedImages: List<Uri> = emptyList()
     )
 
 /**
@@ -194,6 +226,6 @@ sealed interface CreateBookableAction {
     data class OnCapacityChanged(val maxCapacity: String) : CreateBookableAction
     data class OnUpdateChecked(val index: Int, val value: Boolean) : CreateBookableAction
     object onLoadMoreMaterial : CreateBookableAction
-
     object onCreatedBookable : CreateBookableAction
+    data class OnImagesSelected(val images: List<Uri>) : CreateBookableAction
 }

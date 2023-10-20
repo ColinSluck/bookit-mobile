@@ -4,16 +4,14 @@ import android.app.Application
 import android.os.Build
 import androidx.lifecycle.viewModelScope
 import com.diiage.bookit.data.remote.ErrorMessage
-import com.diiage.bookit.domain.models.Material
 import com.diiage.bookit.domain.models.Search
 import com.diiage.bookit.domain.models.Slot
 import com.diiage.bookit.domain.repositories.BookableRepository
 import com.diiage.bookit.domain.repositories.SlotRepository
 import com.diiage.bookit.ui.core.Destination
-import com.diiage.bookit.ui.core.NavigationEvent
 import com.diiage.bookit.ui.core.ViewModel
-import com.diiage.bookit.ui.screens.login.LoginAction
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import org.koin.core.component.inject
 import java.time.LocalDate
 
@@ -33,8 +31,9 @@ class BookableViewModel(application: Application) : ViewModel<BookableState>(Boo
      *
      * @param id The unique identifier for the bookable item.
      */
-    fun init(id: Int) {
-        getBookabe(id)
+
+    fun init(id: String) {
+        getBookabe(id.toInt())
     }
 
     /**
@@ -47,6 +46,7 @@ class BookableViewModel(application: Application) : ViewModel<BookableState>(Boo
             is BookableAction.SelectDate -> selectDate(action.selectedDate)
             is BookableAction.SelectSlot -> selectSlot(action.slotId)
             is BookableAction.OnBook -> book()
+            is BookableAction.OnImageUpdate -> { updateState { copy(initialImages = action.updatedImages) } }
         }
     }
 
@@ -78,6 +78,7 @@ class BookableViewModel(application: Application) : ViewModel<BookableState>(Boo
         updateState { copy(selectedDate = selectedDate) }
 
         viewModelScope.launch{
+            if(state.value.bookableId == -1) return@launch
             val unavailableSlots = bookableRepository.getAvailableSlots(state.value.bookableId, selectedDate.toString())
             val allSlots = slotRepository.getSlots()
 
@@ -95,6 +96,7 @@ class BookableViewModel(application: Application) : ViewModel<BookableState>(Boo
      */
     fun getBookabe(id: Int){
         viewModelScope.launch {
+            updateState { copy(isLoading = true) }
             try {
                 val bookable = bookableRepository.getBookable(id)
                 updateState { copy(bookableId = bookable.id) }
@@ -111,6 +113,8 @@ class BookableViewModel(application: Application) : ViewModel<BookableState>(Boo
             }catch (e:Exception){
                 updateState { copy(error = ErrorMessage.BookableError.message)}
             }
+            updateState { copy(isLoading = false) }
+
         }
     }
 }
@@ -133,6 +137,7 @@ class BookableViewModel(application: Application) : ViewModel<BookableState>(Boo
  */
 data class BookableState(
     val initialImages: List<String>? = emptyList(),
+    val isLoading: Boolean = true,
     val title: String = "Salle de réunion D17",
     val description: String = "La salle de réunion est un espace dédié aux réunions et aux discussions professionnelles. Elle est équipée de tables, de chaises, d'un matériel audiovisuel et d'une machine à café pour faciliter les présentations et offrir un moment de détente aux participants. Cet espace permet aux collaborateurs de se réunir, d'échanger des idées, de prendre des décisions importantes et de profiter d'une pause café. La salle de réunion est un lieu essentiel pour favoriser la collaboration, la productivité et le bien-être au sein de l'entreprise.",
     val people: Int = 6,
@@ -154,6 +159,7 @@ sealed interface BookableAction {
     data class SelectDate(val selectedDate: LocalDate) : BookableAction
 
     data class SelectSlot(val slotId: Int) : BookableAction
+    data class OnImageUpdate(val updatedImages: MutableList<String>) : BookableAction
 
     object OnBook: BookableAction
 }
