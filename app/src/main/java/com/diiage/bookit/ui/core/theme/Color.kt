@@ -1,4 +1,4 @@
-package com.diiage.bookit.ui.theme
+package com.diiage.bookit.ui.core.theme
 
 import androidx.compose.ui.graphics.Color
 

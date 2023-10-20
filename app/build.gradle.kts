@@ -1,16 +1,18 @@
 plugins {
     id("com.android.application")
+    id("kotlin-parcelize")
     id("org.jetbrains.kotlin.android")
+    kotlin("plugin.serialization")
 }
 
 android {
     namespace = "com.diiage.bookit"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.diiage.bookit"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -46,6 +48,9 @@ android {
     }
 }
 
+val ktorVersion: String by project
+
+
 dependencies {
 
     implementation("androidx.core:core-ktx:1.9.0")
@@ -56,6 +61,11 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.ui:ui:1.3.3")
+    implementation("androidx.compose.material:material:1.3.1")
+    implementation("androidx.navigation:navigation-compose:2.5.3")
+    implementation("androidx.navigation:navigation-runtime-ktx:2.7.4")
+    implementation("io.coil-kt:coil-compose:1.3.2")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -63,4 +73,23 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    //Koin
+    implementation( "io.insert-koin:koin-androidx-compose:3.5.0")
+    implementation("io.insert-koin:koin-android:3.5.0")
+
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-cio:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+
+    //WheelPicker
+    implementation("com.github.commandiron:WheelPickerCompose:1.1.11")
+
+    //mapper
+    implementation ("org.mapstruct:mapstruct:1.4.2.Final")
+    annotationProcessor ("org.mapstruct:mapstruct-processor:1.4.2.Final")
+
 }
